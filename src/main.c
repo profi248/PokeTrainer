@@ -141,7 +141,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
       snprintf(temperature_buffer, sizeof(temperature_buffer), "%d°", faren);
     }
     //snprintf(conditions_buffer, sizeof(conditions_buffer), "%s", conditions_tuple->value->cstring);
-    snprintf(conditions_buffer, sizeof(conditions_buffer), "%d", option);
+    snprintf(conditions_buffer, sizeof(conditions_buffer), "%d", option); //I'm printing to see if it's changing
 
     // Assemble full string and display
     snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s, %s", temperature_buffer, conditions_buffer);
