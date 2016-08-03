@@ -1,0 +1,90 @@
+{
+    "author": "rentsmdi",
+    "dependencies": {
+        "pebble-clay": "1.0.0"
+    },
+    "keywords": [],
+    "name": "poketrainer",
+    "pebble": {
+        "capabilities": [
+            "location",
+            "configurable",
+            "health"
+        ],
+        "displayName": "Poke Trainer",
+        "enableMultiJS": true,
+        "messageKeys": [
+            "Temperature",
+            "Conditions",
+            "UNITS"
+        ],
+        "projectType": "native",
+        "resources": {
+            "media": [
+                {
+                    "file": "images/backgroundPTR.png",
+                    "name": "IMAGE_BACKGROUND",
+                    "targetPlatforms": [
+                        "chalk"
+                    ],
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/background.png",
+                    "name": "IMAGE_BACKGROUND",
+                    "targetPlatforms": [
+                        "basalt"
+                    ],
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/trainerM.png",
+                    "name": "IMAGE_TRAINERM",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/menuicon.png",
+                    "menuIcon": true,
+                    "name": "IMAGE_MENUICON",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/shoe.png",
+                    "name": "IMAGE_STEP",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "fonts/pokemonGB.ttf",
+                    "name": "FONT_PERFECT_DOS_22",
+                    "targetPlatforms": null,
+                    "type": "font"
+                },
+                {
+                    "file": "fonts/pokemontext.ttf",
+                    "name": "FONT_PERFECT_DOS_12",
+                    "targetPlatforms": null,
+                    "type": "font"
+                },
+                {
+                    "file": "images/bluetooth.png",
+                    "name": "IMAGE_BT_ICON",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                }
+            ]
+        },
+        "sdkVersion": "3",
+        "targetPlatforms": [
+            "basalt",
+            "chalk"
+        ],
+        "uuid": "4757df8f-bef9-459e-884b-b0442098a079",
+        "watchapp": {
+            "watchface": true
+        }
+    },
+    "version": "1.4.0"
+}
