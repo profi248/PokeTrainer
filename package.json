@@ -16,11 +16,103 @@
         "messageKeys": [
             "Temperature",
             "Conditions",
-            "UNITS"
+            "UNITS",
+            "TRAINER",
+            "POKE"
         ],
         "projectType": "native",
         "resources": {
             "media": [
+                {
+                    "file": "images/trainerMscn.png",
+                    "name": "IMAGE_TRAINERMscn",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/trainerMrng.png",
+                    "name": "IMAGE_TRAINERMrng",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/trainerMrkt.png",
+                    "name": "IMAGE_TRAINERMrkt",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/trainerMkid.png",
+                    "name": "IMAGE_TRAINERMkid",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/trainerMgym.png",
+                    "name": "IMAGE_TRAINERMgym",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/trainerFscn.png",
+                    "name": "IMAGE_TRAINERFscn",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/trainerFrng.png",
+                    "name": "IMAGE_TRAINERFrng",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/trainerFrkt.png",
+                    "name": "IMAGE_TRAINERFrkt",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/trainerFkid.png",
+                    "name": "IMAGE_TRAINERFkid",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/trainerFgym.png",
+                    "name": "IMAGE_TRAINERFgym",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke007.png",
+                    "name": "IMAGE_POKE007",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke004.png",
+                    "name": "IMAGE_POKE004",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke001.png",
+                    "name": "IMAGE_POKE001",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/trainerF.png",
+                    "name": "IMAGE_TRAINERF",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke025.png",
+                    "name": "IMAGE_POKE025",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
                 {
                     "file": "images/backgroundPTR.png",
                     "name": "IMAGE_BACKGROUND",
@@ -86,5 +178,5 @@
             "watchface": true
         }
     },
-    "version": "1.4.0"
+    "version": "2.0.0"
 }

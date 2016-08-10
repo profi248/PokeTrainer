@@ -7,6 +7,10 @@ module.exports = [
     "type": "text", 
     "defaultValue": "Here you can configure your watchface." 
   },
+	
+
+	
+	
   {
     "type": "section",
     "items": [
@@ -17,23 +21,27 @@ module.exports = [
      {
         "type": "select",
         "messageKey": "UNITS",
-        "defaultValue": "1",
+        "defaultValue": "0",
         "label": "Celsius (C) or Fahrenheit (F)?",
+			 "description": "After changing this setting, please refresh the weather info by pressing a button while the watchface is open (example: view timeline).",
         "options": [
           { 
             "label": "Celsius",
-            "value": "1" 
+            "value": "0" 
           },
           { 
             "label": "Fahrenheit",
-            "value": "0" 
+            "value": "1" 
           }
         ]
       }
     ]
   },
-  
-  /*
+	
+	
+
+	
+	
   {
     "type": "section",
     "items": [
@@ -43,7 +51,7 @@ module.exports = [
       },
       {
         "type": "select",
-        "messageKey": "trainer",
+        "messageKey": "TRAINER",
         "defaultValue": "0",
         "label": "Are you a Boy or a Girl?",
         "options": [
@@ -59,6 +67,8 @@ module.exports = [
       }
     ]
   },
+    
+  
   {
     "type": "section",
     "items": [
@@ -67,25 +77,33 @@ module.exports = [
         "defaultValue": "Pokémon Settings"
       },
       {
-        "type": "select",
-        "messageKey": "pokemon",
-        "defaultValue": "pikachu",
+        "type": "radiogroup",
+        "messageKey": "POKE",
+        "defaultValue": "25",
         "label": "Choose your Starter!",
         "options": [
           { 
             "label": "Pikachu",
-            "value": "025" 
+            "value": "25" 
           },
           { 
             "label": "Bulbasaur",
-            "value": "001" 
+            "value": "1" 
+          },
+          { 
+            "label": "Charmander",
+            "value": "4" 
+          },
+          { 
+            "label": "Squirtle",
+            "value": "7" 
           }
         ]
       }
     ]
   },
   
-  */ 
+
   {
     "type": "submit",
     "defaultValue": "Save"

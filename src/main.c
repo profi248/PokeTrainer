@@ -1,6 +1,8 @@
 #include <pebble.h>
 
 uint32_t NUM_TRAINER_PKEY = 1;
+uint32_t NUM_POKE_PKEY = 2;
+uint32_t NUM_UNITS_PKEY = 3;
 
 static Window *s_main_window;
 static TextLayer *s_time_layer;
@@ -27,8 +29,17 @@ static GBitmap *s_trainerM_bitmap;
 static BitmapLayer *s_trainerF_layer;
 static GBitmap *s_trainerF_bitmap;
 
-static BitmapLayer *s_poke_layer;
-static GBitmap *s_poke_bitmap;
+static BitmapLayer *s_poke025_layer;
+static GBitmap *s_poke025_bitmap;
+
+static BitmapLayer *s_poke001_layer;
+static GBitmap *s_poke001_bitmap;
+
+static BitmapLayer *s_poke004_layer;
+static GBitmap *s_poke004_bitmap;
+
+static BitmapLayer *s_poke007_layer;
+static GBitmap *s_poke007_bitmap;
 
 static GFont s_time_font;
 static GFont s_weather_font;
@@ -38,7 +49,7 @@ static GFont s_step_font;
 //START STEP INFO ==================
 
 static char s_current_steps_buffer[16];
-static int s_step_count = 0, s_step_goal = 0, s_step_average = 0;
+static int s_step_count = 0, s_step_goal = 0; // s_step_average = 0;
 
 // Is step data available?
 bool step_data_is_available() {
@@ -60,6 +71,7 @@ static void get_step_count() {
   s_step_count = (int)health_service_sum_today(HealthMetricStepCount);
 }
 
+/*
 // Average daily step count for this time of day
 static void get_step_average() {
   const time_t start = time_start_of_today();
@@ -67,6 +79,7 @@ static void get_step_average() {
   s_step_average = (int)health_service_sum_averaged(HealthMetricStepCount,
     start, end, HealthServiceTimeScopeDaily);
 }
+*/
 
 static void display_step_count() {
   int thousands = s_step_count / 1000;
@@ -96,13 +109,34 @@ static void health_handler(HealthEventType event, void *context) {
 
 //end step info =============================================
 
-//Clay?
+//POKEMON FUNCTIONS
 
-int option=1;
-int* ptoption = &option;
+	static void hideAllTrainers(){
+		layer_set_hidden(bitmap_layer_get_layer(s_trainerM_layer), true);
+		layer_set_hidden(bitmap_layer_get_layer(s_trainerF_layer), true);
+	}
 
-static void prv_inbox_received_handler(DictionaryIterator *iter, void *context) {
-  Tuple *trainer_tuple = dict_find(iter, MESSAGE_KEY_TRAINER);
+	static void hideAllPoke(){
+		layer_set_hidden(bitmap_layer_get_layer(s_poke025_layer), true);
+		layer_set_hidden(bitmap_layer_get_layer(s_poke001_layer), true);
+		layer_set_hidden(bitmap_layer_get_layer(s_poke004_layer), true);
+		layer_set_hidden(bitmap_layer_get_layer(s_poke007_layer), true);
+	}
+
+
+//APPMESSAGE THINGIES
+
+int tempe;
+int faren;
+
+static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
+  // Store incoming information
+  static char temperature_buffer[8];
+  static char conditions_buffer[32];
+  static char weather_layer_buffer[32];
+	
+			//TRAINER SETTINGS
+	  Tuple *trainer_tuple = dict_find(iterator, MESSAGE_KEY_TRAINER);
     if (trainer_tuple) {                                          
       if(strcmp(trainer_tuple->value->cstring, "0") == 1) {        
    			layer_set_hidden(bitmap_layer_get_layer(s_trainerM_layer), true);
@@ -117,28 +151,41 @@ static void prv_inbox_received_handler(DictionaryIterator *iter, void *context) 
 				persist_write_int(NUM_TRAINER_PKEY, nummale); //case male
       } 
     }
-}
-
-void prv_init(void) {
-  // ...
-
-  // Open AppMessage connection
-  app_message_register_inbox_received(prv_inbox_received_handler);
-  app_message_open(128, 128);
-
-  // ...
-}
-
-//Weather thingies
-
-int tempe;
-int faren;
-
-static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
-  // Store incoming information
-  static char temperature_buffer[8];
-  static char conditions_buffer[32];
-  static char weather_layer_buffer[32];
+			//END TRAINER SETTINGS
+	
+			//POKEMON SETTINGS
+	  Tuple *poke_tuple = dict_find(iterator, MESSAGE_KEY_POKE);
+    if (poke_tuple) {                                          
+      if(strcmp(poke_tuple->value->cstring, "25") == 0) {
+				hideAllPoke();
+   			layer_set_hidden(bitmap_layer_get_layer(s_poke025_layer), false);
+				persist_write_int(NUM_POKE_PKEY, 25); //pikachu
+				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+      }    
+      else if(strcmp(poke_tuple->value->cstring, "1") == 0) {        
+   			hideAllPoke();
+				layer_set_hidden(bitmap_layer_get_layer(s_poke001_layer), false);
+				persist_write_int(NUM_POKE_PKEY, 1); //bulbasaur
+				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+      }   
+      else if(strcmp(poke_tuple->value->cstring, "4") == 0) {        
+   			hideAllPoke();
+				layer_set_hidden(bitmap_layer_get_layer(s_poke004_layer), false);
+				persist_write_int(NUM_POKE_PKEY, 4); //charmander
+				APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+      } 
+      else if(strcmp(poke_tuple->value->cstring, "7") == 0) {        
+   			hideAllPoke();
+				layer_set_hidden(bitmap_layer_get_layer(s_poke007_layer), false);
+				persist_write_int(NUM_POKE_PKEY, 7); //squirtle
+				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+      }
+				//APP_LOG(APP_LOG_LEVEL_DEBUG, "AFTER IF NUM_POKE_PKEY IS %d", (int)persist_read_int(NUM_POKE_PKEY));
+    }
+			//END POKEMON SETTINGS
+	
+	
+		
 
   // Read tuples for data
   Tuple *temp_tuple = dict_find(iterator, MESSAGE_KEY_Temperature);
@@ -146,21 +193,35 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 
   // If all data is available, use it
   if(temp_tuple && conditions_tuple) {
-    if(option){                                                          //ADD
+		if(!(persist_exists(NUM_UNITS_PKEY)) || (persist_read_int(NUM_UNITS_PKEY) == 10)){
       snprintf(temperature_buffer, sizeof(temperature_buffer), "%d°", (int)temp_tuple->value->int32);
-    }                                                                    //ADD
-    else{                                                                 //ADD
+    }                                                                  
+    else if ((persist_read_int(NUM_UNITS_PKEY) == 11)){                                                         
       tempe = (int)temp_tuple->value->int32;
       faren = tempe * 9/5 + 32;
       snprintf(temperature_buffer, sizeof(temperature_buffer), "%d°", faren);
     }
-    //snprintf(conditions_buffer, sizeof(conditions_buffer), "%s", conditions_tuple->value->cstring);
-    snprintf(conditions_buffer, sizeof(conditions_buffer), "%d", option);
+		//int stampa = (int)(persist_read_int(NUM_UNITS_PKEY));
+    //snprintf(conditions_buffer, sizeof(conditions_buffer), "%d", stampa); //I'm printing to see if it's changing
+		snprintf(conditions_buffer, sizeof(conditions_buffer), "%s", conditions_tuple->value->cstring);
 
     // Assemble full string and display
     snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s, %s", temperature_buffer, conditions_buffer);
     text_layer_set_text(s_weather_layer, weather_layer_buffer);
   }
+	
+	 Tuple *weather_units_tuple = dict_find(iterator, MESSAGE_KEY_UNITS);
+    if (weather_units_tuple) {                                  
+      if(strcmp(weather_units_tuple->value->cstring, "0") == 0) {        
+			 int numcelsius= 10;
+			 persist_write_int(NUM_UNITS_PKEY, numcelsius); //case celsius
+      }    
+      else{          
+			int numfaren= 11;
+			 persist_write_int(NUM_UNITS_PKEY, numfaren); //case faren
+       //APP_LOG(APP_LOG_LEVEL_INFO, "option: %d", (persist_read_int(NUM_UNITS_PKEY));
+      } 
+    }
 }
 
 static void inbox_dropped_callback(AppMessageResult reason, void *context) {
@@ -376,36 +437,90 @@ static void main_window_load(Window *window) {
 	
 	 // Trainer Female Layer!
   s_trainerF_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERF);
-  s_trainerF_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(86,67), PBL_IF_ROUND_ELSE(51,45), 40, 50));
+  s_trainerF_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(80,61), PBL_IF_ROUND_ELSE(51,45), 45, 50));
   bitmap_layer_set_bitmap(s_trainerF_layer, s_trainerF_bitmap);
   bitmap_layer_set_background_color(s_trainerF_layer, GColorClear);
   bitmap_layer_set_compositing_mode(s_trainerF_layer, GCompOpSet);
   layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_trainerF_layer));
 	
   
-  // Pokemon Layer!
-  s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE025);
-  s_poke_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(47,28), PBL_IF_ROUND_ELSE(49,43), 40, 50));
-  bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
-  bitmap_layer_set_background_color(s_poke_layer, GColorClear);
-  bitmap_layer_set_compositing_mode(s_poke_layer, GCompOpSet);
-  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_poke_layer));
+ 		// Pikachu Layer!
+  s_poke025_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE025);
+  s_poke025_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(47,28), PBL_IF_ROUND_ELSE(49,43), 40, 50));
+  bitmap_layer_set_bitmap(s_poke025_layer, s_poke025_bitmap);
+  bitmap_layer_set_background_color(s_poke025_layer, GColorClear);
+  bitmap_layer_set_compositing_mode(s_poke025_layer, GCompOpSet);
+  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_poke025_layer));
+	
+	 // Bulbasaur Layer!
+  s_poke001_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE001);
+  s_poke001_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(47,28), PBL_IF_ROUND_ELSE(49,43), 40, 50));
+  bitmap_layer_set_bitmap(s_poke001_layer, s_poke001_bitmap);
+  bitmap_layer_set_background_color(s_poke001_layer, GColorClear);
+  bitmap_layer_set_compositing_mode(s_poke001_layer, GCompOpSet);
+  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_poke001_layer));
+	
+	 // Charmander Layer!
+  s_poke004_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE004);
+  s_poke004_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(47,28), PBL_IF_ROUND_ELSE(49,43), 40, 50));
+  bitmap_layer_set_bitmap(s_poke004_layer, s_poke004_bitmap);
+  bitmap_layer_set_background_color(s_poke004_layer, GColorClear);
+  bitmap_layer_set_compositing_mode(s_poke004_layer, GCompOpSet);
+  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_poke004_layer));
+	
+	 // Squirtle Layer!
+  s_poke007_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE007);
+  s_poke007_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(47,28), PBL_IF_ROUND_ELSE(49,43), 40, 50));
+  bitmap_layer_set_bitmap(s_poke007_layer, s_poke007_bitmap);
+  bitmap_layer_set_background_color(s_poke007_layer, GColorClear);
+  bitmap_layer_set_compositing_mode(s_poke007_layer, GCompOpSet);
+  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_poke007_layer));
+	
+	
+	//trainer setting
 	
 	if(persist_exists(NUM_TRAINER_PKEY)){
 			if(persist_read_int(NUM_TRAINER_PKEY) == 33) {        
-   			layer_set_hidden(bitmap_layer_get_layer(s_trainerM_layer), true);
+				hideAllTrainers();
 				layer_set_hidden(bitmap_layer_get_layer(s_trainerF_layer), false);
       }    
       else if(persist_read_int(NUM_TRAINER_PKEY) == 22){        
-         layer_set_hidden(bitmap_layer_get_layer(s_trainerF_layer), true); 
+  			hideAllTrainers();
 				layer_set_hidden(bitmap_layer_get_layer(s_trainerM_layer), false);
       }
 	}
 	else{
+			hideAllTrainers();
 			layer_set_hidden(bitmap_layer_get_layer(s_trainerM_layer), false);
-			layer_set_hidden(bitmap_layer_get_layer(s_trainerF_layer), true);
 	}
 
+	//pokemon setting
+	
+	if(!(persist_exists(NUM_POKE_PKEY)) || (((int)persist_read_int(NUM_POKE_PKEY)) == 25)) {        
+		hideAllPoke();
+		layer_set_hidden(bitmap_layer_get_layer(s_poke025_layer), false);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED PIKACHU BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+	}    
+	else if(((int)persist_read_int(NUM_POKE_PKEY)) == 1) { 
+		hideAllPoke();
+		layer_set_hidden(bitmap_layer_get_layer(s_poke001_layer), false);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED BULBASAUR BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+	}
+	else if(((int)persist_read_int(NUM_POKE_PKEY)) == 4) {        
+		hideAllPoke();
+		layer_set_hidden(bitmap_layer_get_layer(s_poke004_layer), false);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED CHARMANDER BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+	}
+	else if(((int)persist_read_int(NUM_POKE_PKEY)) == 7) {        
+		hideAllPoke();
+		layer_set_hidden(bitmap_layer_get_layer(s_poke007_layer), false);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SQUIRTLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+	}
+	else{
+		hideAllPoke();
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED NOTHING BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_TRAINER PKEY IS %d", (int)persist_read_int(NUM_TRAINER_PKEY));
+	}
 
   
 }
@@ -443,12 +558,23 @@ static void main_window_unload(Window *window) {
   gbitmap_destroy(s_trainerM_bitmap);
   bitmap_layer_destroy(s_trainerM_layer);
 	
-	 gbitmap_destroy(s_trainerF_bitmap);
-  bitmap_layer_destroy(s_trainerF_layer);
+	gbitmap_destroy(s_trainerF_bitmap);
+	bitmap_layer_destroy(s_trainerF_layer);
   
-    // Destroy Pokemon icon
-  gbitmap_destroy(s_poke_bitmap);
-  bitmap_layer_destroy(s_poke_layer);
+	// Destroy Pokemon icons
+	gbitmap_destroy(s_poke025_bitmap);
+	bitmap_layer_destroy(s_poke025_layer);
+
+	gbitmap_destroy(s_poke001_bitmap);
+	bitmap_layer_destroy(s_poke001_layer);
+
+	gbitmap_destroy(s_poke004_bitmap);
+	bitmap_layer_destroy(s_poke004_layer);
+
+	gbitmap_destroy(s_poke007_bitmap);
+	bitmap_layer_destroy(s_poke007_layer);
+	
+	
   
   //Unload Step Font
   fonts_unload_custom_font(s_step_font);
@@ -514,7 +640,6 @@ static void deinit() {
 
 int main(void) {
   init();
-	prv_init();
   app_event_loop();
   deinit();
 }
