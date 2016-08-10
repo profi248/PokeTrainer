@@ -18,7 +18,8 @@
             "Conditions",
             "UNITS",
             "TRAINER",
-            "POKE"
+            "POKE",
+            "OCCUPATION"
         ],
         "projectType": "native",
         "resources": {
@@ -173,10 +174,10 @@
             "basalt",
             "chalk"
         ],
-        "uuid": "4757df8f-bef9-459e-884b-b0442098a079",
+        "uuid": "c5940b83-6c09-4184-8b38-5304f3e3557f",
         "watchapp": {
             "watchface": true
         }
     },
-    "version": "2.0.0"
+    "version": "2.5.0"
 }

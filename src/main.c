@@ -3,6 +3,7 @@
 uint32_t NUM_TRAINER_PKEY = 1;
 uint32_t NUM_POKE_PKEY = 2;
 uint32_t NUM_UNITS_PKEY = 3;
+uint32_t NUM_OCCUPATION_PKEY = 4;
 
 static Window *s_main_window;
 static TextLayer *s_time_layer;
@@ -11,7 +12,6 @@ static TextLayer *s_time_layer, *s_date_layer;
 static int s_battery_level;
 static Layer *s_battery_layer;
 
-//steps
 static TextLayer *s_step_layer;
 
 static BitmapLayer *s_background_layer;
@@ -23,11 +23,21 @@ static GBitmap *s_background_bitmap, *s_bt_icon_bitmap;
 static BitmapLayer *s_step_icon_layer;
 static GBitmap *s_step_icon_bitmap;
 
+//TRAINERS
+
 static BitmapLayer *s_trainerM_layer;
 static GBitmap *s_trainerM_bitmap;
 
 static BitmapLayer *s_trainerF_layer;
 static GBitmap *s_trainerF_bitmap;
+
+static BitmapLayer *s_trainerFrng_layer;
+static GBitmap *s_trainerFrng_bitmap;
+
+static BitmapLayer *s_trainerMrng_layer;
+static GBitmap *s_trainerMrng_bitmap;
+
+//POKEMONS
 
 static BitmapLayer *s_poke025_layer;
 static GBitmap *s_poke025_bitmap;
@@ -45,6 +55,10 @@ static GFont s_time_font;
 static GFont s_weather_font;
 static GFont s_time_font, s_date_font;
 static GFont s_step_font;
+
+
+//========================== FUNCTIONS ==================================================================
+
 
 //START STEP INFO ==================
 
@@ -114,6 +128,8 @@ static void health_handler(HealthEventType event, void *context) {
 	static void hideAllTrainers(){
 		layer_set_hidden(bitmap_layer_get_layer(s_trainerM_layer), true);
 		layer_set_hidden(bitmap_layer_get_layer(s_trainerF_layer), true);
+		layer_set_hidden(bitmap_layer_get_layer(s_trainerMrng_layer), true);
+		layer_set_hidden(bitmap_layer_get_layer(s_trainerFrng_layer), true);
 	}
 
 	static void hideAllPoke(){
@@ -124,7 +140,7 @@ static void health_handler(HealthEventType event, void *context) {
 	}
 
 
-//APPMESSAGE THINGIES
+// ========================================== APPMESSAGE THINGIES =======================================================
 
 int tempe;
 int faren;
@@ -137,18 +153,36 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 	
 			//TRAINER SETTINGS
 	  Tuple *trainer_tuple = dict_find(iterator, MESSAGE_KEY_TRAINER);
+		Tuple *occup_tuple = dict_find(iterator, MESSAGE_KEY_OCCUPATION);
+	
     if (trainer_tuple) {                                          
-      if(strcmp(trainer_tuple->value->cstring, "0") == 1) {        
-   			layer_set_hidden(bitmap_layer_get_layer(s_trainerM_layer), true);
-				layer_set_hidden(bitmap_layer_get_layer(s_trainerF_layer), false);
-				int numfemale= 33;
-				persist_write_int(NUM_TRAINER_PKEY, numfemale); //case female
+      if(strcmp(trainer_tuple->value->cstring, "0") == 1) { 					 //case female
+				hideAllTrainers();
+				persist_write_int(NUM_TRAINER_PKEY, 33);
+   			if(occup_tuple){
+					if(strcmp(occup_tuple->value->cstring, "0") == 0){ 								//trainer
+						layer_set_hidden(bitmap_layer_get_layer(s_trainerF_layer), false);
+						persist_write_int(NUM_OCCUPATION_PKEY, 0);
+					}
+					else if(strcmp(occup_tuple->value->cstring, "1") == 0){ 					//ranger
+						layer_set_hidden(bitmap_layer_get_layer(s_trainerFrng_layer), false);
+						persist_write_int(NUM_OCCUPATION_PKEY, 1);
+					}
+				}
       }    
-      else{        
-         layer_set_hidden(bitmap_layer_get_layer(s_trainerF_layer), true); 
-				layer_set_hidden(bitmap_layer_get_layer(s_trainerM_layer), false);
-				int nummale = 22;
-				persist_write_int(NUM_TRAINER_PKEY, nummale); //case male
+      else{        																										 //case male
+				hideAllTrainers();
+				persist_write_int(NUM_TRAINER_PKEY, 22);
+				if(occup_tuple){
+					if(strcmp(occup_tuple->value->cstring, "0") == 0){ 								//trainer
+						layer_set_hidden(bitmap_layer_get_layer(s_trainerM_layer), false);
+						persist_write_int(NUM_OCCUPATION_PKEY, 0);
+					}
+					else if(strcmp(occup_tuple->value->cstring, "1") == 0){ 					//ranger
+						layer_set_hidden(bitmap_layer_get_layer(s_trainerMrng_layer), false);
+						persist_write_int(NUM_OCCUPATION_PKEY, 1);
+					}
+				}
       } 
     }
 			//END TRAINER SETTINGS
@@ -309,6 +343,9 @@ static void bluetooth_callback(bool connected) {
 }
 
 
+//====================================== MAIN WINDOW LOAD ==================================================================
+
+
 static void main_window_load(Window *window) {
   // Get information about the Window
   Layer *window_layer = window_get_root_layer(window);
@@ -426,7 +463,8 @@ static void main_window_load(Window *window) {
     health_service_events_subscribe(health_handler, NULL);
   }
   
-  
+  // ======================================== TRAINER LAYERS ==============================================================
+	
   // Trainer Male Layer!
   s_trainerM_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERM);
   s_trainerM_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(86,67), PBL_IF_ROUND_ELSE(51,45), 40, 50));
@@ -443,7 +481,26 @@ static void main_window_load(Window *window) {
   bitmap_layer_set_compositing_mode(s_trainerF_layer, GCompOpSet);
   layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_trainerF_layer));
 	
-  
+	// Trainer Male Ranger!
+	s_trainerMrng_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERMrng);
+  s_trainerMrng_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(86,67), PBL_IF_ROUND_ELSE(51,45), 45, 50));
+  bitmap_layer_set_bitmap(s_trainerMrng_layer, s_trainerMrng_bitmap);
+  bitmap_layer_set_background_color(s_trainerMrng_layer, GColorClear);
+  bitmap_layer_set_compositing_mode(s_trainerMrng_layer, GCompOpSet);
+	layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_trainerMrng_layer));
+	
+	// Trainer Female Ranger!
+  s_trainerFrng_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERFrng);
+  s_trainerFrng_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(86,67), PBL_IF_ROUND_ELSE(51,45), 45, 50));
+  bitmap_layer_set_bitmap(s_trainerFrng_layer, s_trainerFrng_bitmap);
+  bitmap_layer_set_background_color(s_trainerFrng_layer, GColorClear);
+  bitmap_layer_set_compositing_mode(s_trainerFrng_layer, GCompOpSet);
+	layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_trainerFrng_layer));
+	
+	
+	
+	// ======================================== POKEMON LAYERS ==============================================================
+	
  		// Pikachu Layer!
   s_poke025_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE025);
   s_poke025_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(47,28), PBL_IF_ROUND_ELSE(49,43), 40, 50));

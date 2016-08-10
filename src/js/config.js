@@ -64,7 +64,23 @@ module.exports = [
             "value": "1" 
           }
         ]
-      }
+      },
+      {
+        "type": "radiogroup",
+        "messageKey": "OCCUPATION",
+        "defaultValue": "0",
+        "label": "What do you do for a living?",
+        "options": [
+          { 
+            "label": "Trainer!",
+            "value": "0" 
+          },
+					{ 
+            "label": "Pokémon Ranger!",
+            "value": "1" 
+          }
+				]
+			}
     ]
   },
     
