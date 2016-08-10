@@ -665,13 +665,58 @@ static void main_window_load(Window *window) {
 	//trainer setting
 	
 	if(persist_exists(NUM_TRAINER_PKEY)){
-			if(persist_read_int(NUM_TRAINER_PKEY) == 33) {        
+		int occupation = persist_read_int(NUM_OCCUPATION_PKEY);
+			if(persist_read_int(NUM_TRAINER_PKEY) == 33) {  	//female      
 				hideAllTrainers();
-				layer_set_hidden(bitmap_layer_get_layer(s_trainerF_layer), false);
+				switch (occupation) {
+					case 0:
+					layer_set_hidden(bitmap_layer_get_layer(s_trainerF_layer), false);
+						break;
+					case 1:
+					layer_set_hidden(bitmap_layer_get_layer(s_trainerFrng_layer), false);
+						break;
+					case 2:
+					layer_set_hidden(bitmap_layer_get_layer(s_trainerFkid_layer), false);
+						break;
+					case 3:
+					layer_set_hidden(bitmap_layer_get_layer(s_trainerFscn_layer), false);
+						break;
+					case 4:
+					layer_set_hidden(bitmap_layer_get_layer(s_trainerFgym_layer), false);
+						break;
+					case 5:
+					layer_set_hidden(bitmap_layer_get_layer(s_trainerFrkt_layer), false);
+						break;
+					default:
+					layer_set_hidden(bitmap_layer_get_layer(s_trainerF_layer), false);
+						break;
+				}
       }    
-      else if(persist_read_int(NUM_TRAINER_PKEY) == 22){        
+      else if(persist_read_int(NUM_TRAINER_PKEY) == 22){   //male      
   			hideAllTrainers();
-				layer_set_hidden(bitmap_layer_get_layer(s_trainerM_layer), false);
+				switch (occupation) {
+					case 0:
+					layer_set_hidden(bitmap_layer_get_layer(s_trainerM_layer), false);
+						break;
+					case 1:
+					layer_set_hidden(bitmap_layer_get_layer(s_trainerMrng_layer), false);
+						break;
+					case 2:
+					layer_set_hidden(bitmap_layer_get_layer(s_trainerMkid_layer), false);
+						break;
+					case 3:
+					layer_set_hidden(bitmap_layer_get_layer(s_trainerMscn_layer), false);
+						break;
+					case 4:
+					layer_set_hidden(bitmap_layer_get_layer(s_trainerMgym_layer), false);
+						break;
+					case 5:
+					layer_set_hidden(bitmap_layer_get_layer(s_trainerMrkt_layer), false);
+						break;
+					default:
+					layer_set_hidden(bitmap_layer_get_layer(s_trainerM_layer), false);
+						break;
+				}
       }
 	}
 	else{
@@ -681,22 +726,22 @@ static void main_window_load(Window *window) {
 
 	//pokemon setting
 	
-	if(!(persist_exists(NUM_POKE_PKEY)) || (((int)persist_read_int(NUM_POKE_PKEY)) == 25)) {        
+	if(!(persist_exists(NUM_POKE_PKEY)) || (persist_read_int(NUM_POKE_PKEY) == 25)) {        
 		hideAllPoke();
 		layer_set_hidden(bitmap_layer_get_layer(s_poke025_layer), false);
 		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED PIKACHU BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
 	}    
-	else if(((int)persist_read_int(NUM_POKE_PKEY)) == 1) { 
+	else if(persist_read_int(NUM_POKE_PKEY) == 1) { 
 		hideAllPoke();
 		layer_set_hidden(bitmap_layer_get_layer(s_poke001_layer), false);
 		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED BULBASAUR BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
 	}
-	else if(((int)persist_read_int(NUM_POKE_PKEY)) == 4) {        
+	else if(persist_read_int(NUM_POKE_PKEY) == 4) {        
 		hideAllPoke();
 		layer_set_hidden(bitmap_layer_get_layer(s_poke004_layer), false);
 		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED CHARMANDER BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
 	}
-	else if(((int)persist_read_int(NUM_POKE_PKEY)) == 7) {        
+	else if(persist_read_int(NUM_POKE_PKEY) == 7) {        
 		hideAllPoke();
 		layer_set_hidden(bitmap_layer_get_layer(s_poke007_layer), false);
 		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SQUIRTLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
