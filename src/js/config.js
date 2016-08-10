@@ -78,6 +78,22 @@ module.exports = [
 					{ 
             "label": "Pokémon Ranger!",
             "value": "1" 
+          },
+          { 
+            "label": "Kid!",
+            "value": "2" 
+          },
+          { 
+            "label": "Scientist!",
+            "value": "3" 
+          },
+          { 
+            "label": "Gym Leader!",
+            "value": "4" 
+          },
+          { 
+            "label": "Team Rocket Grunt!",
+            "value": "5" 
           }
 				]
 			}
