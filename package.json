@@ -25,6 +25,48 @@
         "resources": {
             "media": [
                 {
+                    "file": "images/poke137.png",
+                    "name": "IMAGE_POKE137",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke133.png",
+                    "name": "IMAGE_POKE133",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke120.png",
+                    "name": "IMAGE_POKE120",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke095.png",
+                    "name": "IMAGE_POKE095",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke019.png",
+                    "name": "IMAGE_POKE019",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke016.png",
+                    "name": "IMAGE_POKE016",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke041.png",
+                    "name": "IMAGE_POKE041",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
                     "file": "images/trainerMscn.png",
                     "name": "IMAGE_TRAINERMscn",
                     "targetPlatforms": null,

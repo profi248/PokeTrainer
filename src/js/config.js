@@ -129,6 +129,34 @@ module.exports = [
           { 
             "label": "Squirtle",
             "value": "7" 
+          },
+          { 
+            "label": "Eevee",
+            "value": "133" 
+          },
+          { 
+            "label": "Pidgey",
+            "value": "16" 
+          },
+          { 
+            "label": "Rattata",
+            "value": "19" 
+          },
+          { 
+            "label": "Porygon",
+            "value": "137" 
+          },
+          { 
+            "label": "Onix",
+            "value": "95" 
+          },
+          { 
+            "label": "Staryu",
+            "value": "120" 
+          },
+          { 
+            "label": "Zubat",
+            "value": "41" 
           }
         ]
       }

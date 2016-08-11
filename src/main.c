@@ -75,6 +75,27 @@ static GBitmap *s_poke004_bitmap;
 static BitmapLayer *s_poke007_layer;
 static GBitmap *s_poke007_bitmap;
 
+static BitmapLayer *s_poke016_layer;
+static GBitmap *s_poke016_bitmap;
+
+static BitmapLayer *s_poke019_layer;
+static GBitmap *s_poke019_bitmap;
+
+static BitmapLayer *s_poke041_layer;
+static GBitmap *s_poke041_bitmap;
+
+static BitmapLayer *s_poke095_layer;
+static GBitmap *s_poke095_bitmap;
+
+static BitmapLayer *s_poke120_layer;
+static GBitmap *s_poke120_bitmap;
+
+static BitmapLayer *s_poke133_layer;
+static GBitmap *s_poke133_bitmap;
+
+static BitmapLayer *s_poke137_layer;
+static GBitmap *s_poke137_bitmap;
+
 static GFont s_time_font;
 static GFont s_weather_font;
 static GFont s_time_font, s_date_font;
@@ -169,6 +190,15 @@ static void health_handler(HealthEventType event, void *context) {
 		layer_set_hidden(bitmap_layer_get_layer(s_poke001_layer), true);
 		layer_set_hidden(bitmap_layer_get_layer(s_poke004_layer), true);
 		layer_set_hidden(bitmap_layer_get_layer(s_poke007_layer), true);
+		layer_set_hidden(bitmap_layer_get_layer(s_poke016_layer), true);
+		layer_set_hidden(bitmap_layer_get_layer(s_poke019_layer), true);
+		layer_set_hidden(bitmap_layer_get_layer(s_poke041_layer), true);
+		/*
+		layer_set_hidden(bitmap_layer_get_layer(s_poke095_layer), true);
+		layer_set_hidden(bitmap_layer_get_layer(s_poke120_layer), true);
+		layer_set_hidden(bitmap_layer_get_layer(s_poke133_layer), true);
+		layer_set_hidden(bitmap_layer_get_layer(s_poke137_layer), true);
+		*/
 	}
 
 
@@ -257,27 +287,78 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
       if(strcmp(poke_tuple->value->cstring, "25") == 0) {
 				hideAllPoke();
    			layer_set_hidden(bitmap_layer_get_layer(s_poke025_layer), false);
-				persist_write_int(NUM_POKE_PKEY, 25); //pikachu
+				persist_write_int(NUM_POKE_PKEY, 25);																													 //pikachu
 				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
       }    
       else if(strcmp(poke_tuple->value->cstring, "1") == 0) {        
    			hideAllPoke();
 				layer_set_hidden(bitmap_layer_get_layer(s_poke001_layer), false);
-				persist_write_int(NUM_POKE_PKEY, 1); //bulbasaur
+				persist_write_int(NUM_POKE_PKEY, 1); 																														//bulbasaur
 				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
       }   
       else if(strcmp(poke_tuple->value->cstring, "4") == 0) {        
    			hideAllPoke();
 				layer_set_hidden(bitmap_layer_get_layer(s_poke004_layer), false);
-				persist_write_int(NUM_POKE_PKEY, 4); //charmander
-				APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+				persist_write_int(NUM_POKE_PKEY, 4); 																														//charmander
+				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
       } 
       else if(strcmp(poke_tuple->value->cstring, "7") == 0) {        
    			hideAllPoke();
 				layer_set_hidden(bitmap_layer_get_layer(s_poke007_layer), false);
-				persist_write_int(NUM_POKE_PKEY, 7); //squirtle
+				persist_write_int(NUM_POKE_PKEY, 7);																														 //squirtle
+				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+      } 
+      else if(strcmp(poke_tuple->value->cstring, "16") == 0) {        
+   			hideAllPoke();
+				layer_set_hidden(bitmap_layer_get_layer(s_poke016_layer), false);
+				persist_write_int(NUM_POKE_PKEY, 16); 																														//pidgey
 				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
       }
+			else if(strcmp(poke_tuple->value->cstring, "19") == 0) {        
+   			hideAllPoke();
+				layer_set_hidden(bitmap_layer_get_layer(s_poke019_layer), false);
+				persist_write_int(NUM_POKE_PKEY, 19); //squirtle
+				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+      } 
+      else if(strcmp(poke_tuple->value->cstring, "41") == 0) {        
+   			hideAllPoke();
+				layer_set_hidden(bitmap_layer_get_layer(s_poke041_layer), false);
+				persist_write_int(NUM_POKE_PKEY, 41); //squirtle
+				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+      }
+			
+			/*
+			
+			 
+      else if(strcmp(poke_tuple->value->cstring, "95") == 0) {        
+   			hideAllPoke();
+				layer_set_hidden(bitmap_layer_get_layer(s_poke095_layer), false);
+				persist_write_int(NUM_POKE_PKEY, 95); //squirtle
+				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+      } 
+      else if(strcmp(poke_tuple->value->cstring, "120") == 0) {        
+   			hideAllPoke();
+				layer_set_hidden(bitmap_layer_get_layer(s_poke120_layer), false);
+				persist_write_int(NUM_POKE_PKEY, 120); //squirtle
+				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+      } 
+      else if(strcmp(poke_tuple->value->cstring, "133") == 0) {        
+   			hideAllPoke();
+				layer_set_hidden(bitmap_layer_get_layer(s_poke133_layer), false);
+				persist_write_int(NUM_POKE_PKEY, 133); //squirtle
+				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+      } 
+      else if(strcmp(poke_tuple->value->cstring, "137") == 0) {        
+   			hideAllPoke();
+				layer_set_hidden(bitmap_layer_get_layer(s_poke137_layer), false);
+				persist_write_int(NUM_POKE_PKEY, 137); //squirtle
+				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+      }
+
+			
+			*/
+			
+			
 				//APP_LOG(APP_LOG_LEVEL_DEBUG, "AFTER IF NUM_POKE_PKEY IS %d", (int)persist_read_int(NUM_POKE_PKEY));
     }
 			//END POKEMON SETTINGS
@@ -662,6 +743,70 @@ static void main_window_load(Window *window) {
   layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_poke007_layer));
 	
 	
+	// Pidgey Layer!
+  s_poke016_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE016);
+  s_poke016_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(47,28), PBL_IF_ROUND_ELSE(49,43), 40, 50));
+  bitmap_layer_set_bitmap(s_poke016_layer, s_poke016_bitmap);
+  bitmap_layer_set_background_color(s_poke016_layer, GColorClear);
+  bitmap_layer_set_compositing_mode(s_poke016_layer, GCompOpSet);
+  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_poke016_layer));
+	
+	// Rattata Layer!
+  s_poke019_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE019);
+  s_poke019_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(47,28), PBL_IF_ROUND_ELSE(49,43), 40, 50));
+  bitmap_layer_set_bitmap(s_poke019_layer, s_poke019_bitmap);
+  bitmap_layer_set_background_color(s_poke019_layer, GColorClear);
+  bitmap_layer_set_compositing_mode(s_poke019_layer, GCompOpSet);
+  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_poke019_layer));
+	
+	// Zubat Layer!
+  s_poke041_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE041);
+  s_poke041_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(47,28), PBL_IF_ROUND_ELSE(49,43), 40, 50));
+  bitmap_layer_set_bitmap(s_poke041_layer, s_poke041_bitmap);
+  bitmap_layer_set_background_color(s_poke041_layer, GColorClear);
+  bitmap_layer_set_compositing_mode(s_poke041_layer, GCompOpSet);
+  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_poke041_layer));
+	
+	/*
+	
+	// Onix Layer!
+  s_poke095_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE095);
+  s_poke095_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(47,28), PBL_IF_ROUND_ELSE(49,43), 40, 50));
+  bitmap_layer_set_bitmap(s_poke095_layer, s_poke095_bitmap);
+  bitmap_layer_set_background_color(s_poke095_layer, GColorClear);
+  bitmap_layer_set_compositing_mode(s_poke095_layer, GCompOpSet);
+  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_poke095_layer));
+	
+	// Staryu Layer!
+  s_poke120_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE120);
+  s_poke120_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(47,28), PBL_IF_ROUND_ELSE(49,43), 40, 50));
+  bitmap_layer_set_bitmap(s_poke120_layer, s_poke120_bitmap);
+  bitmap_layer_set_background_color(s_poke120_layer, GColorClear);
+  bitmap_layer_set_compositing_mode(s_poke120_layer, GCompOpSet);
+  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_poke120_layer));
+	
+	// Eevee Layer!
+  s_poke133_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE133);
+  s_poke133_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(47,28), PBL_IF_ROUND_ELSE(49,43), 40, 50));
+  bitmap_layer_set_bitmap(s_poke133_layer, s_poke133_bitmap);
+  bitmap_layer_set_background_color(s_poke133_layer, GColorClear);
+  bitmap_layer_set_compositing_mode(s_poke133_layer, GCompOpSet);
+  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_poke133_layer));
+	
+	// Porygon Layer!
+  s_poke137_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE137);
+  s_poke137_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(47,28), PBL_IF_ROUND_ELSE(49,43), 40, 50));
+  bitmap_layer_set_bitmap(s_poke137_layer, s_poke137_bitmap);
+  bitmap_layer_set_background_color(s_poke137_layer, GColorClear);
+  bitmap_layer_set_compositing_mode(s_poke137_layer, GCompOpSet);
+  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_poke137_layer));
+	
+	*/
+
+	
+	
+	
+	
 	//trainer setting
 	
 	if(persist_exists(NUM_TRAINER_PKEY)){
@@ -746,6 +891,49 @@ static void main_window_load(Window *window) {
 		layer_set_hidden(bitmap_layer_get_layer(s_poke007_layer), false);
 		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SQUIRTLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
 	}
+	else if(persist_read_int(NUM_POKE_PKEY) == 16) {        
+		hideAllPoke();
+		layer_set_hidden(bitmap_layer_get_layer(s_poke016_layer), false);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED PIDGEY BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+	}
+	else if(persist_read_int(NUM_POKE_PKEY) == 19) {        
+		hideAllPoke();
+		layer_set_hidden(bitmap_layer_get_layer(s_poke019_layer), false);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SQUIRTLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+	}
+	else if(persist_read_int(NUM_POKE_PKEY) == 41) {        
+		hideAllPoke();
+		layer_set_hidden(bitmap_layer_get_layer(s_poke041_layer), false);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SQUIRTLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+	}
+	
+	
+	/*
+	
+				
+			else if(persist_read_int(NUM_POKE_PKEY) == 95) {        
+				hideAllPoke();
+				layer_set_hidden(bitmap_layer_get_layer(s_poke095_layer), false);
+				//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SQUIRTLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+			}
+			else if(persist_read_int(NUM_POKE_PKEY) == 120) {        
+				hideAllPoke();
+				layer_set_hidden(bitmap_layer_get_layer(s_poke120_layer), false);
+				//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SQUIRTLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+			}
+			else if(persist_read_int(NUM_POKE_PKEY) == 133) {        
+				hideAllPoke();
+				layer_set_hidden(bitmap_layer_get_layer(s_poke133_layer), false);
+				//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SQUIRTLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+			}
+			else if(persist_read_int(NUM_POKE_PKEY) == 137) {        
+				hideAllPoke();
+				layer_set_hidden(bitmap_layer_get_layer(s_poke137_layer), false);
+				//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SQUIRTLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+			}
+	
+	
+	*/
 	else{
 		hideAllPoke();
 		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED NOTHING BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
@@ -784,12 +972,42 @@ static void main_window_unload(Window *window) {
   gbitmap_destroy(s_step_icon_bitmap);
   bitmap_layer_destroy(s_step_icon_layer);
   
-  // Destroy Trainer icon
+  // Destroy Trainer icons
   gbitmap_destroy(s_trainerM_bitmap);
   bitmap_layer_destroy(s_trainerM_layer);
 	
 	gbitmap_destroy(s_trainerF_bitmap);
 	bitmap_layer_destroy(s_trainerF_layer);
+	
+	gbitmap_destroy(s_trainerFgym_bitmap);
+	bitmap_layer_destroy(s_trainerFgym_layer);
+	
+	gbitmap_destroy(s_trainerFkid_bitmap);
+	bitmap_layer_destroy(s_trainerFkid_layer);
+	
+	gbitmap_destroy(s_trainerFrkt_bitmap);
+	bitmap_layer_destroy(s_trainerFrkt_layer);
+	
+	gbitmap_destroy(s_trainerFrng_bitmap);
+	bitmap_layer_destroy(s_trainerFrng_layer);
+	
+	gbitmap_destroy(s_trainerFscn_bitmap);
+	bitmap_layer_destroy(s_trainerFscn_layer);
+	
+  gbitmap_destroy(s_trainerMgym_bitmap);
+  bitmap_layer_destroy(s_trainerMgym_layer);
+	
+  gbitmap_destroy(s_trainerMkid_bitmap);
+  bitmap_layer_destroy(s_trainerMkid_layer);
+	
+  gbitmap_destroy(s_trainerMrkt_bitmap);
+  bitmap_layer_destroy(s_trainerMrkt_layer);
+	
+  gbitmap_destroy(s_trainerMrng_bitmap);
+  bitmap_layer_destroy(s_trainerMrng_layer);
+	
+  gbitmap_destroy(s_trainerMscn_bitmap);
+  bitmap_layer_destroy(s_trainerMscn_layer);
   
 	// Destroy Pokemon icons
 	gbitmap_destroy(s_poke025_bitmap);
@@ -804,6 +1022,33 @@ static void main_window_unload(Window *window) {
 	gbitmap_destroy(s_poke007_bitmap);
 	bitmap_layer_destroy(s_poke007_layer);
 	
+	gbitmap_destroy(s_poke016_bitmap);
+	bitmap_layer_destroy(s_poke016_layer);
+
+	gbitmap_destroy(s_poke019_bitmap);
+	bitmap_layer_destroy(s_poke019_layer);
+
+	gbitmap_destroy(s_poke041_bitmap);
+	bitmap_layer_destroy(s_poke041_layer);
+	
+	
+	
+	/*
+
+	
+	gbitmap_destroy(s_poke095_bitmap);
+	bitmap_layer_destroy(s_poke095_layer);
+
+	gbitmap_destroy(s_poke120_bitmap);
+	bitmap_layer_destroy(s_poke120_layer);
+
+	gbitmap_destroy(s_poke133_bitmap);
+	bitmap_layer_destroy(s_poke133_layer);
+
+	gbitmap_destroy(s_poke137_bitmap);
+	bitmap_layer_destroy(s_poke137_layer);
+	
+	*/
 	
   
   //Unload Step Font
