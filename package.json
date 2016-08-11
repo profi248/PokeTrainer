@@ -25,48 +25,6 @@
         "resources": {
             "media": [
                 {
-                    "file": "images/poke137.png",
-                    "name": "IMAGE_POKE137",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/poke133.png",
-                    "name": "IMAGE_POKE133",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/poke120.png",
-                    "name": "IMAGE_POKE120",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/poke095.png",
-                    "name": "IMAGE_POKE095",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/poke019.png",
-                    "name": "IMAGE_POKE019",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/poke016.png",
-                    "name": "IMAGE_POKE016",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/poke041.png",
-                    "name": "IMAGE_POKE041",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
                     "file": "images/trainerMscn.png",
                     "name": "IMAGE_TRAINERMscn",
                     "targetPlatforms": null,
@@ -93,6 +51,12 @@
                 {
                     "file": "images/trainerMgym.png",
                     "name": "IMAGE_TRAINERMgym",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/trainerM.png",
+                    "name": "IMAGE_TRAINERM",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
@@ -127,6 +91,66 @@
                     "type": "bitmap"
                 },
                 {
+                    "file": "images/trainerF.png",
+                    "name": "IMAGE_TRAINERF",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/shoe.png",
+                    "name": "IMAGE_STEP",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke137.png",
+                    "name": "IMAGE_POKE137",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke133.png",
+                    "name": "IMAGE_POKE133",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke120.png",
+                    "name": "IMAGE_POKE120",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke095.png",
+                    "name": "IMAGE_POKE095",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke041.png",
+                    "name": "IMAGE_POKE041",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke025.png",
+                    "name": "IMAGE_POKE025",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke019.png",
+                    "name": "IMAGE_POKE019",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke016.png",
+                    "name": "IMAGE_POKE016",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
                     "file": "images/poke007.png",
                     "name": "IMAGE_POKE007",
                     "targetPlatforms": null,
@@ -145,14 +169,15 @@
                     "type": "bitmap"
                 },
                 {
-                    "file": "images/trainerF.png",
-                    "name": "IMAGE_TRAINERF",
+                    "file": "images/menuicon.png",
+                    "menuIcon": true,
+                    "name": "IMAGE_MENUICON",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
                 {
-                    "file": "images/poke025.png",
-                    "name": "IMAGE_POKE025",
+                    "file": "images/bluetooth.png",
+                    "name": "IMAGE_BT_ICON",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },
@@ -173,41 +198,16 @@
                     "type": "bitmap"
                 },
                 {
-                    "file": "images/trainerM.png",
-                    "name": "IMAGE_TRAINERM",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/menuicon.png",
-                    "menuIcon": true,
-                    "name": "IMAGE_MENUICON",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/shoe.png",
-                    "name": "IMAGE_STEP",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "fonts/pokemonGB.ttf",
-                    "name": "FONT_PERFECT_DOS_22",
-                    "targetPlatforms": null,
-                    "type": "font"
-                },
-                {
                     "file": "fonts/pokemontext.ttf",
                     "name": "FONT_PERFECT_DOS_12",
                     "targetPlatforms": null,
                     "type": "font"
                 },
                 {
-                    "file": "images/bluetooth.png",
-                    "name": "IMAGE_BT_ICON",
+                    "file": "fonts/pokemonGB.ttf",
+                    "name": "FONT_PERFECT_DOS_22",
                     "targetPlatforms": null,
-                    "type": "bitmap"
+                    "type": "font"
                 }
             ]
         },
