@@ -769,6 +769,7 @@ static void main_window_load(Window *window) {
 	
 	/*
 	
+	
 	// Onix Layer!
   s_poke095_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE095);
   s_poke095_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(47,28), PBL_IF_ROUND_ELSE(49,43), 40, 50));
@@ -931,7 +932,7 @@ static void main_window_load(Window *window) {
 				layer_set_hidden(bitmap_layer_get_layer(s_poke137_layer), false);
 				//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SQUIRTLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
 			}
-	
+
 	
 	*/
 	else{
