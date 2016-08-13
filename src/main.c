@@ -341,7 +341,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 		snprintf(conditions_buffer, sizeof(conditions_buffer), "%s", conditions_tuple->value->cstring);
 
     // Assemble full string and display
-    snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s, %s", temperature_buffer, conditions_buffer);
+    snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s, %s", conditions_buffer, temperature_buffer);
     text_layer_set_text(s_weather_layer, weather_layer_buffer);
   }
 	
@@ -499,7 +499,7 @@ static void main_window_load(Window *window) {
   
   // Create temperature Layer
   s_weather_layer = text_layer_create(
-      GRect(PBL_IF_ROUND_ELSE(20, 10), PBL_IF_ROUND_ELSE(109, 145), bounds.size.w, 25));
+      GRect(PBL_IF_ROUND_ELSE(20, 10), PBL_IF_ROUND_ELSE(110, 145), bounds.size.w, 25));
 
   // Style the text
   text_layer_set_background_color(s_weather_layer, GColorClear);
@@ -541,7 +541,7 @@ static void main_window_load(Window *window) {
   s_step_icon_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_STEP);
   
   // Create the BitmapLayer to display the GBitmap (Step)
-  s_step_icon_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(110, 90), PBL_IF_ROUND_ELSE(110, 147), 12, 12));
+  s_step_icon_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(111, 90), PBL_IF_ROUND_ELSE(110, 147), 12, 12));
   bitmap_layer_set_bitmap(s_step_icon_layer, s_step_icon_bitmap);
   bitmap_layer_set_background_color(s_step_icon_layer, GColorClear);
   bitmap_layer_set_compositing_mode(s_step_icon_layer, GCompOpSet);
@@ -549,7 +549,7 @@ static void main_window_load(Window *window) {
   
    // Create a layer to hold the current step count
   s_step_layer = text_layer_create(
-      GRect(PBL_IF_ROUND_ELSE(127, 105), PBL_IF_ROUND_ELSE(109, 145), bounds.size.w, 25));
+      GRect(PBL_IF_ROUND_ELSE(127, 105), PBL_IF_ROUND_ELSE(110, 145), bounds.size.w, 25));
   text_layer_set_background_color(s_step_layer, GColorClear);
   
   // Create and set Step font

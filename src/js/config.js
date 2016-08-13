@@ -167,5 +167,13 @@ module.exports = [
   {
     "type": "submit",
     "defaultValue": "Save"
+  },
+	{
+		"type": "text",
+		"defaultValue": "<br><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=3LKRSW9JZP8LL'>Buy Me A Coffee</a><br>Or tea. Or Vodka, who knows.<br>"
+	},
+  {
+    "type": "text",
+		"defaultValue": "Thanks to:<br> <font size='2'>Northeastpaw, twaider, TheRedHairedHero for the help;<br>Dragoon, Dazz for the sprites;<br>Nintendo, Game Freak for Pokémon!</font><br><br>© rentsmdi 2016"
   }
 ];
