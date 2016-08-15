@@ -25,6 +25,42 @@
         "resources": {
             "media": [
                 {
+                    "file": "images/poke258.png",
+                    "name": "IMAGE_POKE258",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke255.png",
+                    "name": "IMAGE_POKE255",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke252.png",
+                    "name": "IMAGE_POKE252",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke158.png",
+                    "name": "IMAGE_POKE158",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke155.png",
+                    "name": "IMAGE_POKE155",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke152.png",
+                    "name": "IMAGE_POKE152",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
                     "file": "images/trainerMhoenn.png",
                     "name": "IMAGE_TRAINERMHoenn",
                     "targetPlatforms": null,

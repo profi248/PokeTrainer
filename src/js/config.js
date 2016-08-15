@@ -72,8 +72,16 @@ module.exports = [
         "label": "What do you do for a living?",
         "options": [
           { 
-            "label": "Trainer!",
+            "label": "Kanto Trainer!",
             "value": "0" 
+          },
+					{ 
+            "label": "Johto Trainer!",
+            "value": "6" 
+          },
+					{ 
+            "label": "Hoenn Trainer!",
+            "value": "7" 
           },
 					{ 
             "label": "Pokémon Ranger!",
@@ -129,6 +137,30 @@ module.exports = [
           { 
             "label": "Squirtle",
             "value": "7" 
+          },
+          { 
+            "label": "Chikorita",
+            "value": "152" 
+          },
+          { 
+            "label": "Cyndaquil",
+            "value": "155" 
+          },
+          { 
+            "label": "Totodile",
+            "value": "158" 
+          },
+          { 
+            "label": "Treecko",
+            "value": "252" 
+          },
+          { 
+            "label": "Torchic",
+            "value": "255" 
+          },
+          { 
+            "label": "Mudkip",
+            "value": "258" 
           },
           { 
             "label": "Eevee",

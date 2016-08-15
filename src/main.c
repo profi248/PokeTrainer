@@ -168,8 +168,18 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 						s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERFrkt);
 						persist_write_int(NUM_OCCUPATION_PKEY, 5);
 					}
+					else if(strcmp(occup_tuple->value->cstring, "6") == 0){ 					//Johto
+						destroyAllTrainers();
+						s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERFJohto);
+						persist_write_int(NUM_OCCUPATION_PKEY, 6);
+					}
+					else if(strcmp(occup_tuple->value->cstring, "7") == 0){ 					//Hoenn
+						destroyAllTrainers();
+						s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERFHoenn);
+						persist_write_int(NUM_OCCUPATION_PKEY, 7);
+					}
 				}
-				s_trainer_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(80,61), PBL_IF_ROUND_ELSE(51,45), 45, 50));
+				s_trainer_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(78,59), PBL_IF_ROUND_ELSE(49,43), 45, 52));
 				bitmap_layer_set_bitmap(s_trainer_layer, s_trainer_bitmap);
 				bitmap_layer_set_background_color(s_trainer_layer, GColorClear);
 				bitmap_layer_set_compositing_mode(s_trainer_layer, GCompOpSet);
@@ -208,8 +218,18 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 						s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERMrkt);
 						persist_write_int(NUM_OCCUPATION_PKEY, 5);
 					}
+					else if(strcmp(occup_tuple->value->cstring, "6") == 0){ 					//Johto
+						destroyAllTrainers();
+						s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERMJohto);
+						persist_write_int(NUM_OCCUPATION_PKEY, 6);
+					}
+					else if(strcmp(occup_tuple->value->cstring, "7") == 0){ 					//Hoenn
+						destroyAllTrainers();
+						s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERMHoenn);
+						persist_write_int(NUM_OCCUPATION_PKEY, 7);
+					}
 				}
-				s_trainer_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(80,61), PBL_IF_ROUND_ELSE(51,45), 45, 50));
+				s_trainer_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(78,59), PBL_IF_ROUND_ELSE(49,43), 45, 52));
 				bitmap_layer_set_bitmap(s_trainer_layer, s_trainer_bitmap);
 				bitmap_layer_set_background_color(s_trainer_layer, GColorClear);
 				bitmap_layer_set_compositing_mode(s_trainer_layer, GCompOpSet);
@@ -287,7 +307,43 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 				persist_write_int(NUM_POKE_PKEY, 137); //porygon
 				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
       }
-			s_poke_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(46,27), PBL_IF_ROUND_ELSE(46,40), 46, 58));
+      else if(strcmp(poke_tuple->value->cstring, "152") == 0) {        
+   			destroyAllPoke();
+				s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE152);
+				persist_write_int(NUM_POKE_PKEY, 152); //porygon
+				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+      }
+      else if(strcmp(poke_tuple->value->cstring, "155") == 0) {        
+   			destroyAllPoke();
+				s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE155);
+				persist_write_int(NUM_POKE_PKEY, 155); //porygon
+				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+      }
+      else if(strcmp(poke_tuple->value->cstring, "158") == 0) {        
+   			destroyAllPoke();
+				s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE158);
+				persist_write_int(NUM_POKE_PKEY, 158); //porygon
+				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+      }
+      else if(strcmp(poke_tuple->value->cstring, "252") == 0) {        
+   			destroyAllPoke();
+				s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE252);
+				persist_write_int(NUM_POKE_PKEY, 252); //porygon
+				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+      }
+      else if(strcmp(poke_tuple->value->cstring, "255") == 0) {        
+   			destroyAllPoke();
+				s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE255);
+				persist_write_int(NUM_POKE_PKEY, 255); //porygon
+				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+      }
+      else if(strcmp(poke_tuple->value->cstring, "258") == 0) {        
+   			destroyAllPoke();
+				s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE258);
+				persist_write_int(NUM_POKE_PKEY, 258); //porygon
+				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+      }
+			s_poke_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(44,25), PBL_IF_ROUND_ELSE(46,40), 46, 58));
 			bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
 			bitmap_layer_set_background_color(s_poke_layer, GColorClear);
 			bitmap_layer_set_compositing_mode(s_poke_layer, GCompOpSet);
@@ -567,11 +623,17 @@ static void main_window_load(Window *window) {
 					case 5:
 					s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERFrkt);
 						break;
+					case 6:
+					s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERFJohto);
+						break;
+					case 7:
+					s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERFHoenn);
+						break;
 					default:
 					s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERF);
 						break;
 				}
-				s_trainer_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(80,61), PBL_IF_ROUND_ELSE(51,45), 45, 50));
+				s_trainer_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(78,59), PBL_IF_ROUND_ELSE(49,43), 45, 52));
 				bitmap_layer_set_bitmap(s_trainer_layer, s_trainer_bitmap);
 				bitmap_layer_set_background_color(s_trainer_layer, GColorClear);
 				bitmap_layer_set_compositing_mode(s_trainer_layer, GCompOpSet);
@@ -598,11 +660,17 @@ static void main_window_load(Window *window) {
 					case 5:
 					s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERMrkt);
 						break;
+					case 6:
+					s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERMJohto);
+						break;
+					case 7:
+					s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERMHoenn);
+						break;
 					default:
 					s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERM);
 						break;
 				}
-				s_trainer_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(80,61), PBL_IF_ROUND_ELSE(51,45), 45, 50));
+				s_trainer_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(78,59), PBL_IF_ROUND_ELSE(49,43), 45, 52));
 				bitmap_layer_set_bitmap(s_trainer_layer, s_trainer_bitmap);
 				bitmap_layer_set_background_color(s_trainer_layer, GColorClear);
 				bitmap_layer_set_compositing_mode(s_trainer_layer, GCompOpSet);
@@ -612,7 +680,7 @@ static void main_window_load(Window *window) {
 	else{
 			destroyAllTrainers();
 			s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERM);
-			s_trainer_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(80,61), PBL_IF_ROUND_ELSE(51,45), 45, 50));
+			s_trainer_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(78,59), PBL_IF_ROUND_ELSE(49,43), 45, 52));
 			bitmap_layer_set_bitmap(s_trainer_layer, s_trainer_bitmap);
 			bitmap_layer_set_background_color(s_trainer_layer, GColorClear);
 			bitmap_layer_set_compositing_mode(s_trainer_layer, GCompOpSet);
@@ -676,12 +744,42 @@ static void main_window_load(Window *window) {
 		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE137);
 		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SQUIRTLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
 	}
+	else if(persist_read_int(NUM_POKE_PKEY) == 152) {        
+		destroyAllPoke();
+		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE152);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SQUIRTLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+	}
+	else if(persist_read_int(NUM_POKE_PKEY) == 155) {        
+		destroyAllPoke();
+		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE155);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SQUIRTLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+	}
+	else if(persist_read_int(NUM_POKE_PKEY) == 158) {        
+		destroyAllPoke();
+		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE158);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SQUIRTLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+	}
+	else if(persist_read_int(NUM_POKE_PKEY) == 252) {        
+		destroyAllPoke();
+		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE252);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SQUIRTLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+	}
+	else if(persist_read_int(NUM_POKE_PKEY) == 255) {        
+		destroyAllPoke();
+		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE255);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SQUIRTLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+	}
+	else if(persist_read_int(NUM_POKE_PKEY) == 258) {        
+		destroyAllPoke();
+		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE258);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SQUIRTLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+	}
 	else{
 		destroyAllPoke();
 		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED NOTHING BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
 		//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_TRAINER PKEY IS %d", (int)persist_read_int(NUM_TRAINER_PKEY));
 	}
-    s_poke_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(47,28), PBL_IF_ROUND_ELSE(49,43), 40, 50));
+    s_poke_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(44,25), PBL_IF_ROUND_ELSE(49,43), 40, 50));
     bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
     bitmap_layer_set_background_color(s_poke_layer, GColorClear);
     bitmap_layer_set_compositing_mode(s_poke_layer, GCompOpSet);
