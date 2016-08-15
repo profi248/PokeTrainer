@@ -25,6 +25,30 @@
         "resources": {
             "media": [
                 {
+                    "file": "images/trainerMhoenn.png",
+                    "name": "IMAGE_TRAINERMHoenn",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/trainerFhoenn.png",
+                    "name": "IMAGE_TRAINERFHoenn",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/trainerMJohto.png",
+                    "name": "IMAGE_TRAINERMJohto",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/trainerFJohto.png",
+                    "name": "IMAGE_TRAINERFJohto",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
                     "file": "images/trainerMscn.png",
                     "name": "IMAGE_TRAINERMscn",
                     "targetPlatforms": null,
@@ -216,7 +240,7 @@
             "basalt",
             "chalk"
         ],
-        "uuid": "c5940b83-6c09-4184-8b38-5304f3e3557f",
+        "uuid": "4757df8f-bef9-459e-884b-b0442098a079",
         "watchapp": {
             "watchface": true
         }

@@ -608,7 +608,7 @@ static void main_window_load(Window *window) {
 	
 	// Trainer Female Kid!
   s_trainerFkid_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERFkid);
-  s_trainerFkid_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(86,67), PBL_IF_ROUND_ELSE(54,48), 45, 50));
+  s_trainerFkid_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(80,61), PBL_IF_ROUND_ELSE(51,45), 45, 50));
   bitmap_layer_set_bitmap(s_trainerFkid_layer, s_trainerFkid_bitmap);
   bitmap_layer_set_background_color(s_trainerFkid_layer, GColorClear);
   bitmap_layer_set_compositing_mode(s_trainerFkid_layer, GCompOpSet);
@@ -616,7 +616,7 @@ static void main_window_load(Window *window) {
 		
 	// Trainer Male Scientist!
 	s_trainerMscn_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERMscn);
-  s_trainerMscn_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(86,67), PBL_IF_ROUND_ELSE(51,45), 45, 50));
+  s_trainerMscn_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(80,61), PBL_IF_ROUND_ELSE(51,45), 45, 50));
   bitmap_layer_set_bitmap(s_trainerMscn_layer, s_trainerMscn_bitmap);
   bitmap_layer_set_background_color(s_trainerMscn_layer, GColorClear);
   bitmap_layer_set_compositing_mode(s_trainerMscn_layer, GCompOpSet);
