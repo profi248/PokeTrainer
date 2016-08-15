@@ -25,41 +25,8 @@ static GBitmap *s_step_icon_bitmap;
 
 //TRAINERS
 
-static BitmapLayer *s_trainerM_layer;
-static GBitmap *s_trainerM_bitmap;
-
-static BitmapLayer *s_trainerF_layer;
-static GBitmap *s_trainerF_bitmap;
-
-static BitmapLayer *s_trainerFrng_layer;
-static GBitmap *s_trainerFrng_bitmap;
-
-static BitmapLayer *s_trainerMrng_layer;
-static GBitmap *s_trainerMrng_bitmap;
-
-static BitmapLayer *s_trainerFkid_layer;
-static GBitmap *s_trainerFkid_bitmap;
-
-static BitmapLayer *s_trainerMkid_layer;
-static GBitmap *s_trainerMkid_bitmap;
-
-static BitmapLayer *s_trainerFscn_layer;
-static GBitmap *s_trainerFscn_bitmap;
-
-static BitmapLayer *s_trainerMscn_layer;
-static GBitmap *s_trainerMscn_bitmap;
-
-static BitmapLayer *s_trainerFgym_layer;
-static GBitmap *s_trainerFgym_bitmap;
-
-static BitmapLayer *s_trainerMgym_layer;
-static GBitmap *s_trainerMgym_bitmap;
-
-static BitmapLayer *s_trainerFrkt_layer;
-static GBitmap *s_trainerFrkt_bitmap;
-
-static BitmapLayer *s_trainerMrkt_layer;
-static GBitmap *s_trainerMrkt_bitmap;
+static BitmapLayer *s_trainer_layer;
+static GBitmap *s_trainer_bitmap;
 
 //POKEMON
 
@@ -138,26 +105,17 @@ static void health_handler(HealthEventType event, void *context) {
 
 //end step info =============================================
 
-//POKEMON FUNCTIONS
+//TRAINER & POKEMON FUNCTIONS
 
-	static void hideAllTrainers(){
-		layer_set_hidden(bitmap_layer_get_layer(s_trainerM_layer), true);
-		layer_set_hidden(bitmap_layer_get_layer(s_trainerF_layer), true);
-		layer_set_hidden(bitmap_layer_get_layer(s_trainerMrng_layer), true);
-		layer_set_hidden(bitmap_layer_get_layer(s_trainerFrng_layer), true);
-		layer_set_hidden(bitmap_layer_get_layer(s_trainerMkid_layer), true);
-		layer_set_hidden(bitmap_layer_get_layer(s_trainerFkid_layer), true);
-		layer_set_hidden(bitmap_layer_get_layer(s_trainerMscn_layer), true);
-		layer_set_hidden(bitmap_layer_get_layer(s_trainerFscn_layer), true);
-		layer_set_hidden(bitmap_layer_get_layer(s_trainerMgym_layer), true);
-		layer_set_hidden(bitmap_layer_get_layer(s_trainerFgym_layer), true);
-		layer_set_hidden(bitmap_layer_get_layer(s_trainerMrkt_layer), true);
-		layer_set_hidden(bitmap_layer_get_layer(s_trainerFrkt_layer), true);
+
+	static void destroyAllTrainers(){
+		gbitmap_destroy(s_trainer_bitmap);
+		bitmap_layer_destroy(s_trainer_layer);
 	}
 
 	static void destroyAllPoke(){
 		gbitmap_destroy(s_poke_bitmap);
-	    bitmap_layer_destroy(s_poke_layer);
+		bitmap_layer_destroy(s_poke_layer);
 	}
 
 
@@ -178,64 +136,84 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 	
     if (trainer_tuple) {                                          
       if(strcmp(trainer_tuple->value->cstring, "0") == 1) { 					 //case female
-				hideAllTrainers();
 				persist_write_int(NUM_TRAINER_PKEY, 33);
    			if(occup_tuple){
 					if(strcmp(occup_tuple->value->cstring, "0") == 0){ 								//trainer
-						layer_set_hidden(bitmap_layer_get_layer(s_trainerF_layer), false);
+						destroyAllTrainers();
+						s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERF);
 						persist_write_int(NUM_OCCUPATION_PKEY, 0);
 					}
 					else if(strcmp(occup_tuple->value->cstring, "1") == 0){ 					//ranger
-						layer_set_hidden(bitmap_layer_get_layer(s_trainerFrng_layer), false);
+						destroyAllTrainers();
+						s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERFrng);
 						persist_write_int(NUM_OCCUPATION_PKEY, 1);
 					}
 					else if(strcmp(occup_tuple->value->cstring, "2") == 0){ 					//kid
-						layer_set_hidden(bitmap_layer_get_layer(s_trainerFkid_layer), false);
+						destroyAllTrainers();
+						s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERFkid);
 						persist_write_int(NUM_OCCUPATION_PKEY, 2);
 					}
 					else if(strcmp(occup_tuple->value->cstring, "3") == 0){ 					//scientist
-						layer_set_hidden(bitmap_layer_get_layer(s_trainerFscn_layer), false);
+						destroyAllTrainers();
+						s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERFscn);
 						persist_write_int(NUM_OCCUPATION_PKEY, 3);
 					}
 					else if(strcmp(occup_tuple->value->cstring, "4") == 0){ 					//gym leader
-						layer_set_hidden(bitmap_layer_get_layer(s_trainerFgym_layer), false);
+						destroyAllTrainers();
+						s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERFgym);
 						persist_write_int(NUM_OCCUPATION_PKEY, 4);
 					}
 					else if(strcmp(occup_tuple->value->cstring, "5") == 0){ 					//rocket
-						layer_set_hidden(bitmap_layer_get_layer(s_trainerFrkt_layer), false);
+						destroyAllTrainers();
+						s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERFrkt);
 						persist_write_int(NUM_OCCUPATION_PKEY, 5);
 					}
 				}
+				s_trainer_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(80,61), PBL_IF_ROUND_ELSE(51,45), 45, 50));
+				bitmap_layer_set_bitmap(s_trainer_layer, s_trainer_bitmap);
+				bitmap_layer_set_background_color(s_trainer_layer, GColorClear);
+				bitmap_layer_set_compositing_mode(s_trainer_layer, GCompOpSet);
+				layer_add_child(window_get_root_layer(s_main_window), bitmap_layer_get_layer(s_trainer_layer));
       }    
       else{        																										 //case male
-				hideAllTrainers();
 				persist_write_int(NUM_TRAINER_PKEY, 22);
 				if(occup_tuple){
 					if(strcmp(occup_tuple->value->cstring, "0") == 0){ 								//trainer
-						layer_set_hidden(bitmap_layer_get_layer(s_trainerM_layer), false);
+						destroyAllTrainers();
+						s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERM);
 						persist_write_int(NUM_OCCUPATION_PKEY, 0);
 					}
 					else if(strcmp(occup_tuple->value->cstring, "1") == 0){ 					//ranger
-						layer_set_hidden(bitmap_layer_get_layer(s_trainerMrng_layer), false);
+						destroyAllTrainers();
+						s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERMrng);
 						persist_write_int(NUM_OCCUPATION_PKEY, 1);
 					}
 					else if(strcmp(occup_tuple->value->cstring, "2") == 0){ 					//kid
-						layer_set_hidden(bitmap_layer_get_layer(s_trainerMkid_layer), false);
+						destroyAllTrainers();
+						s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERMkid);
 						persist_write_int(NUM_OCCUPATION_PKEY, 2);
 					}
 					else if(strcmp(occup_tuple->value->cstring, "3") == 0){ 					//scientist
-						layer_set_hidden(bitmap_layer_get_layer(s_trainerMscn_layer), false);
+						destroyAllTrainers();
+						s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERMscn);
 						persist_write_int(NUM_OCCUPATION_PKEY, 3);
 					}
 					else if(strcmp(occup_tuple->value->cstring, "4") == 0){ 					//gym leader
-						layer_set_hidden(bitmap_layer_get_layer(s_trainerMgym_layer), false);
+						destroyAllTrainers();
+						s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERMgym);
 						persist_write_int(NUM_OCCUPATION_PKEY, 4);
 					}
 					else if(strcmp(occup_tuple->value->cstring, "5") == 0){ 					//rocket
-						layer_set_hidden(bitmap_layer_get_layer(s_trainerMrkt_layer), false);
+						destroyAllTrainers();
+						s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERMrkt);
 						persist_write_int(NUM_OCCUPATION_PKEY, 5);
 					}
 				}
+				s_trainer_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(80,61), PBL_IF_ROUND_ELSE(51,45), 45, 50));
+				bitmap_layer_set_bitmap(s_trainer_layer, s_trainer_bitmap);
+				bitmap_layer_set_background_color(s_trainer_layer, GColorClear);
+				bitmap_layer_set_compositing_mode(s_trainer_layer, GCompOpSet);
+				layer_add_child(window_get_root_layer(s_main_window), bitmap_layer_get_layer(s_trainer_layer));
       } 
     }
 			//END TRAINER SETTINGS
@@ -563,170 +541,85 @@ static void main_window_load(Window *window) {
   if(step_data_is_available()) {
     health_service_events_subscribe(health_handler, NULL);
   }
-  
-  // ======================================== TRAINER LAYERS ==============================================================
 	
-  // Trainer Male Layer!
-  s_trainerM_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERM);
-  s_trainerM_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(86,67), PBL_IF_ROUND_ELSE(51,45), 40, 50));
-  bitmap_layer_set_bitmap(s_trainerM_layer, s_trainerM_bitmap);
-  bitmap_layer_set_background_color(s_trainerM_layer, GColorClear);
-  bitmap_layer_set_compositing_mode(s_trainerM_layer, GCompOpSet);
-  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_trainerM_layer));
-	
-	 // Trainer Female Layer!
-  s_trainerF_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERF);
-  s_trainerF_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(80,61), PBL_IF_ROUND_ELSE(51,45), 45, 50));
-  bitmap_layer_set_bitmap(s_trainerF_layer, s_trainerF_bitmap);
-  bitmap_layer_set_background_color(s_trainerF_layer, GColorClear);
-  bitmap_layer_set_compositing_mode(s_trainerF_layer, GCompOpSet);
-  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_trainerF_layer));
-	
-	// Trainer Male Ranger!
-	s_trainerMrng_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERMrng);
-  s_trainerMrng_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(86,67), PBL_IF_ROUND_ELSE(51,45), 45, 50));
-  bitmap_layer_set_bitmap(s_trainerMrng_layer, s_trainerMrng_bitmap);
-  bitmap_layer_set_background_color(s_trainerMrng_layer, GColorClear);
-  bitmap_layer_set_compositing_mode(s_trainerMrng_layer, GCompOpSet);
-	layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_trainerMrng_layer));
-	
-	// Trainer Female Ranger!
-  s_trainerFrng_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERFrng);
-  s_trainerFrng_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(86,67), PBL_IF_ROUND_ELSE(51,45), 45, 50));
-  bitmap_layer_set_bitmap(s_trainerFrng_layer, s_trainerFrng_bitmap);
-  bitmap_layer_set_background_color(s_trainerFrng_layer, GColorClear);
-  bitmap_layer_set_compositing_mode(s_trainerFrng_layer, GCompOpSet);
-	layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_trainerFrng_layer));
-		
-	// Trainer Male Kid!
-	s_trainerMkid_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERMkid);
-  s_trainerMkid_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(86,67), PBL_IF_ROUND_ELSE(54,48), 45, 50));
-  bitmap_layer_set_bitmap(s_trainerMkid_layer, s_trainerMkid_bitmap);
-  bitmap_layer_set_background_color(s_trainerMkid_layer, GColorClear);
-  bitmap_layer_set_compositing_mode(s_trainerMkid_layer, GCompOpSet);
-	layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_trainerMkid_layer));
-	
-	// Trainer Female Kid!
-  s_trainerFkid_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERFkid);
-  s_trainerFkid_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(80,61), PBL_IF_ROUND_ELSE(51,45), 45, 50));
-  bitmap_layer_set_bitmap(s_trainerFkid_layer, s_trainerFkid_bitmap);
-  bitmap_layer_set_background_color(s_trainerFkid_layer, GColorClear);
-  bitmap_layer_set_compositing_mode(s_trainerFkid_layer, GCompOpSet);
-	layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_trainerFkid_layer));
-		
-	// Trainer Male Scientist!
-	s_trainerMscn_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERMscn);
-  s_trainerMscn_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(80,61), PBL_IF_ROUND_ELSE(51,45), 45, 50));
-  bitmap_layer_set_bitmap(s_trainerMscn_layer, s_trainerMscn_bitmap);
-  bitmap_layer_set_background_color(s_trainerMscn_layer, GColorClear);
-  bitmap_layer_set_compositing_mode(s_trainerMscn_layer, GCompOpSet);
-	layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_trainerMscn_layer));
-	
-	// Trainer Female Scientist!
-  s_trainerFscn_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERFscn);
-  s_trainerFscn_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(86,67), PBL_IF_ROUND_ELSE(51,45), 45, 50));
-  bitmap_layer_set_bitmap(s_trainerFscn_layer, s_trainerFscn_bitmap);
-  bitmap_layer_set_background_color(s_trainerFscn_layer, GColorClear);
-  bitmap_layer_set_compositing_mode(s_trainerFscn_layer, GCompOpSet);
-	layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_trainerFscn_layer));
-	
-	// Trainer Male Gym Leader!
-	s_trainerMgym_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERMgym);
-  s_trainerMgym_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(86,67), PBL_IF_ROUND_ELSE(46,40), 45, 53));
-  bitmap_layer_set_bitmap(s_trainerMgym_layer, s_trainerMgym_bitmap);
-  bitmap_layer_set_background_color(s_trainerMgym_layer, GColorClear);
-  bitmap_layer_set_compositing_mode(s_trainerMgym_layer, GCompOpSet);
-	layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_trainerMgym_layer));
-	
-	// Trainer Female Gym Leader!
-  s_trainerFgym_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERFgym);
-  s_trainerFgym_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(86,67), PBL_IF_ROUND_ELSE(47,41), 45, 52));
-  bitmap_layer_set_bitmap(s_trainerFgym_layer, s_trainerFgym_bitmap);
-  bitmap_layer_set_background_color(s_trainerFgym_layer, GColorClear);
-  bitmap_layer_set_compositing_mode(s_trainerFgym_layer, GCompOpSet);
-	layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_trainerFgym_layer));
-	
-	// Trainer Male Rocket Grunt!
-	s_trainerMrkt_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERMrkt);
-  s_trainerMrkt_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(86,67), PBL_IF_ROUND_ELSE(51,45), 45, 50));
-  bitmap_layer_set_bitmap(s_trainerMrkt_layer, s_trainerMrkt_bitmap);
-  bitmap_layer_set_background_color(s_trainerMrkt_layer, GColorClear);
-  bitmap_layer_set_compositing_mode(s_trainerMrkt_layer, GCompOpSet);
-	layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_trainerMrkt_layer));
-	
-	// Trainer Female Rocket Grunt!
-  s_trainerFrkt_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERFrkt);
-  s_trainerFrkt_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(86,67), PBL_IF_ROUND_ELSE(51,45), 45, 50));
-  bitmap_layer_set_bitmap(s_trainerFrkt_layer, s_trainerFrkt_bitmap);
-  bitmap_layer_set_background_color(s_trainerFrkt_layer, GColorClear);
-  bitmap_layer_set_compositing_mode(s_trainerFrkt_layer, GCompOpSet);
-	layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_trainerFrkt_layer));
-	
-	
-	
-	//trainer setting
+  // ======================================== trainer setting
 	
 	if(persist_exists(NUM_TRAINER_PKEY)){
 		int occupation = persist_read_int(NUM_OCCUPATION_PKEY);
 			if(persist_read_int(NUM_TRAINER_PKEY) == 33) {  	//female      
-				hideAllTrainers();
+				destroyAllTrainers();
 				switch (occupation) {
 					case 0:
-					layer_set_hidden(bitmap_layer_get_layer(s_trainerF_layer), false);
+					s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERF);
 						break;
 					case 1:
-					layer_set_hidden(bitmap_layer_get_layer(s_trainerFrng_layer), false);
+					s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERFrng);
 						break;
 					case 2:
-					layer_set_hidden(bitmap_layer_get_layer(s_trainerFkid_layer), false);
+					s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERFkid);
 						break;
 					case 3:
-					layer_set_hidden(bitmap_layer_get_layer(s_trainerFscn_layer), false);
+					s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERFscn);
 						break;
 					case 4:
-					layer_set_hidden(bitmap_layer_get_layer(s_trainerFgym_layer), false);
+					s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERFgym);
 						break;
 					case 5:
-					layer_set_hidden(bitmap_layer_get_layer(s_trainerFrkt_layer), false);
+					s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERFrkt);
 						break;
 					default:
-					layer_set_hidden(bitmap_layer_get_layer(s_trainerF_layer), false);
+					s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERF);
 						break;
 				}
+				s_trainer_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(80,61), PBL_IF_ROUND_ELSE(51,45), 45, 50));
+				bitmap_layer_set_bitmap(s_trainer_layer, s_trainer_bitmap);
+				bitmap_layer_set_background_color(s_trainer_layer, GColorClear);
+				bitmap_layer_set_compositing_mode(s_trainer_layer, GCompOpSet);
+				layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_trainer_layer));
       }    
       else if(persist_read_int(NUM_TRAINER_PKEY) == 22){   //male      
-  			hideAllTrainers();
+  			destroyAllTrainers();
 				switch (occupation) {
 					case 0:
-					layer_set_hidden(bitmap_layer_get_layer(s_trainerM_layer), false);
+					s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERM);
 						break;
 					case 1:
-					layer_set_hidden(bitmap_layer_get_layer(s_trainerMrng_layer), false);
+					s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERMrng);
 						break;
 					case 2:
-					layer_set_hidden(bitmap_layer_get_layer(s_trainerMkid_layer), false);
+					s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERMkid);
 						break;
 					case 3:
-					layer_set_hidden(bitmap_layer_get_layer(s_trainerMscn_layer), false);
+					s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERMscn);
 						break;
 					case 4:
-					layer_set_hidden(bitmap_layer_get_layer(s_trainerMgym_layer), false);
+					s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERMgym);
 						break;
 					case 5:
-					layer_set_hidden(bitmap_layer_get_layer(s_trainerMrkt_layer), false);
+					s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERMrkt);
 						break;
 					default:
-					layer_set_hidden(bitmap_layer_get_layer(s_trainerM_layer), false);
+					s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERM);
 						break;
 				}
+				s_trainer_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(80,61), PBL_IF_ROUND_ELSE(51,45), 45, 50));
+				bitmap_layer_set_bitmap(s_trainer_layer, s_trainer_bitmap);
+				bitmap_layer_set_background_color(s_trainer_layer, GColorClear);
+				bitmap_layer_set_compositing_mode(s_trainer_layer, GCompOpSet);
+				layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_trainer_layer));
       }
 	}
 	else{
-			hideAllTrainers();
-			layer_set_hidden(bitmap_layer_get_layer(s_trainerM_layer), false);
+			destroyAllTrainers();
+			s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERM);
+			s_trainer_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(80,61), PBL_IF_ROUND_ELSE(51,45), 45, 50));
+			bitmap_layer_set_bitmap(s_trainer_layer, s_trainer_bitmap);
+			bitmap_layer_set_background_color(s_trainer_layer, GColorClear);
+			bitmap_layer_set_compositing_mode(s_trainer_layer, GCompOpSet);
+			layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_trainer_layer));
 	}
 
-	//pokemon setting
+  // ======================================== pokemon setting
 	
 	if(!(persist_exists(NUM_POKE_PKEY)) || (persist_read_int(NUM_POKE_PKEY) == 25)) {        
 		destroyAllPoke();
@@ -827,65 +720,12 @@ static void main_window_unload(Window *window) {
   bitmap_layer_destroy(s_step_icon_layer);
   
   // Destroy Trainer icons
-  gbitmap_destroy(s_trainerM_bitmap);
-  bitmap_layer_destroy(s_trainerM_layer);
-	
-	gbitmap_destroy(s_trainerF_bitmap);
-	bitmap_layer_destroy(s_trainerF_layer);
-	
-	gbitmap_destroy(s_trainerFgym_bitmap);
-	bitmap_layer_destroy(s_trainerFgym_layer);
-	
-	gbitmap_destroy(s_trainerFkid_bitmap);
-	bitmap_layer_destroy(s_trainerFkid_layer);
-	
-	gbitmap_destroy(s_trainerFrkt_bitmap);
-	bitmap_layer_destroy(s_trainerFrkt_layer);
-	
-	gbitmap_destroy(s_trainerFrng_bitmap);
-	bitmap_layer_destroy(s_trainerFrng_layer);
-	
-	gbitmap_destroy(s_trainerFscn_bitmap);
-	bitmap_layer_destroy(s_trainerFscn_layer);
-	
-  gbitmap_destroy(s_trainerMgym_bitmap);
-  bitmap_layer_destroy(s_trainerMgym_layer);
-	
-  gbitmap_destroy(s_trainerMkid_bitmap);
-  bitmap_layer_destroy(s_trainerMkid_layer);
-	
-  gbitmap_destroy(s_trainerMrkt_bitmap);
-  bitmap_layer_destroy(s_trainerMrkt_layer);
-	
-  gbitmap_destroy(s_trainerMrng_bitmap);
-  bitmap_layer_destroy(s_trainerMrng_layer);
-	
-  gbitmap_destroy(s_trainerMscn_bitmap);
-  bitmap_layer_destroy(s_trainerMscn_layer);
+		gbitmap_destroy(s_trainer_bitmap);
+		bitmap_layer_destroy(s_trainer_layer);
   
 	// Destroy Pokemon icons
 	gbitmap_destroy(s_poke_bitmap);
 	bitmap_layer_destroy(s_poke_layer);
-	
-	
-	
-	/*
-
-	
-	gbitmap_destroy(s_poke095_bitmap);
-	bitmap_layer_destroy(s_poke095_layer);
-
-	gbitmap_destroy(s_poke120_bitmap);
-	bitmap_layer_destroy(s_poke120_layer);
-
-	gbitmap_destroy(s_poke133_bitmap);
-	bitmap_layer_destroy(s_poke133_layer);
-
-	gbitmap_destroy(s_poke137_bitmap);
-	bitmap_layer_destroy(s_poke137_layer);
-	
-	*/
-	
   
   //Unload Step Font
   fonts_unload_custom_font(s_step_font);
@@ -943,7 +783,7 @@ static void init() {
 
 static void deinit() {
   // Destroy Window
-  window_destroy(s_main_window);
+  //window_destroy(s_main_window);
   
   //destroy Battery
   layer_destroy(s_battery_layer);
