@@ -4,6 +4,7 @@ uint32_t NUM_TRAINER_PKEY = 1;
 uint32_t NUM_POKE_PKEY = 2;
 uint32_t NUM_UNITS_PKEY = 3;
 uint32_t NUM_OCCUPATION_PKEY = 4;
+uint32_t NUM_NIGHTMODE_PKEY = 5;
 
 static Window *s_main_window;
 static TextLayer *s_time_layer;
@@ -80,7 +81,12 @@ static void get_step_average() {
 static void display_step_count() {
   int thousands = s_step_count / 1000;
   int hundreds = s_step_count % 1000;
-  text_layer_set_text_color(s_step_layer, GColorBlack);
+	if(persist_read_int(NUM_NIGHTMODE_PKEY) == 1){  																// =============================== NIGHT MODE
+  	text_layer_set_text_color(s_step_layer, GColorWhite);
+	}
+	else{
+		text_layer_set_text_color(s_step_layer, GColorBlack);
+	}
 
   if(thousands > 0) {
     snprintf(s_current_steps_buffer, sizeof(s_current_steps_buffer),
@@ -425,11 +431,32 @@ static void update_time() {
   text_layer_set_text(s_time_layer, s_buffer);
   
   // Copy date into buffer from tm structure
-static char date_buffer[24];
-strftime(date_buffer, sizeof(date_buffer), "%A %d %B", tick_time);
+	static char date_buffer[24];
+	strftime(date_buffer, sizeof(date_buffer), "%A %d %B", tick_time);
 
-// Show the date
-text_layer_set_text(s_date_layer, date_buffer);
+	// Show the date
+	text_layer_set_text(s_date_layer, date_buffer);
+	
+	//change background based on NIGHT MODE
+	if(tick_time->tm_hour >= 19 && (persist_read_int(NUM_NIGHTMODE_PKEY) != 1) ){
+			persist_write_int(NUM_NIGHTMODE_PKEY, 1);
+			s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUNDNIGHT);
+			bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
+			text_layer_set_text_color(s_step_layer, GColorWhite);
+			text_layer_set_text_color(s_time_layer, GColorWhite);
+			text_layer_set_text_color(s_date_layer, GColorWhite);
+			text_layer_set_text_color(s_weather_layer, GColorWhite);
+	}
+	else if(tick_time->tm_hour < 19 && (persist_read_int(NUM_NIGHTMODE_PKEY) != 0) ){
+			persist_write_int(NUM_NIGHTMODE_PKEY, 0);
+			s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUND);
+			bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
+			text_layer_set_text_color(s_step_layer, GColorBlack);
+			text_layer_set_text_color(s_time_layer, GColorBlack);
+			text_layer_set_text_color(s_date_layer, GColorBlack);
+			text_layer_set_text_color(s_weather_layer, GColorBlack);
+	}
+	
 }
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
@@ -486,8 +513,15 @@ static void main_window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
 
-  // Create GBitmap
-  s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUND);
+  // Create GBitmap BASED ON NIGHT MODE
+	if(persist_read_int(NUM_NIGHTMODE_PKEY) == 0){
+  	s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUND);
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "DAY BACKGROUND BECAUSE NUM_POKE_PKEY IS %d", (int)persist_read_int(NUM_NIGHTMODE_PKEY));
+	}
+	else{
+		s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUNDNIGHT);
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "NIGHT BACKGROUND BECAUSE NUM_POKE_PKEY IS  %d", (int)persist_read_int(NUM_NIGHTMODE_PKEY));
+	}
 
   // Create BitmapLayer to display the GBitmap
   s_background_layer = bitmap_layer_create(bounds);
@@ -502,7 +536,12 @@ static void main_window_load(Window *window) {
 
   // Improve the layout to be more like a watchface
   text_layer_set_background_color(s_time_layer, GColorClear);
-  text_layer_set_text_color(s_time_layer, GColorBlack);
+	if(persist_read_int(NUM_NIGHTMODE_PKEY) == 1){														// =========================              NIGHT MODE
+		text_layer_set_text_color(s_time_layer, GColorWhite);
+	}
+	else{
+  	text_layer_set_text_color(s_time_layer, GColorBlack);
+	}
   text_layer_set_text(s_time_layer, "00:00");
   text_layer_set_text_alignment(s_time_layer, GTextAlignmentCenter);
 
@@ -518,7 +557,12 @@ static void main_window_load(Window *window) {
   // Create date TextLayer
   s_date_layer = text_layer_create(
       GRect(PBL_IF_ROUND_ELSE(10, 0), PBL_IF_ROUND_ELSE(123, 130), 144, 30));
-  text_layer_set_text_color(s_date_layer, GColorBlack);
+	if(persist_read_int(NUM_NIGHTMODE_PKEY) == 1){  												// ===============================					 NIGHT MODE
+  	text_layer_set_text_color(s_date_layer, GColorWhite);
+	}
+	else{
+		text_layer_set_text_color(s_date_layer, GColorBlack);
+	}
   text_layer_set_background_color(s_date_layer, GColorClear);
   text_layer_set_text_alignment(s_date_layer, PBL_IF_ROUND_ELSE(GTextAlignmentCenter, GTextAlignmentCenter));
   
@@ -537,7 +581,12 @@ static void main_window_load(Window *window) {
 
   // Style the text
   text_layer_set_background_color(s_weather_layer, GColorClear);
-  text_layer_set_text_color(s_weather_layer, GColorBlack);
+	if(persist_read_int(NUM_NIGHTMODE_PKEY) == 1){  											// =============================== 							NIGHT MODE
+  	text_layer_set_text_color(s_weather_layer, GColorWhite);
+	}
+	else{
+		text_layer_set_text_color(s_weather_layer, GColorBlack);
+	}
   text_layer_set_text_alignment(s_weather_layer, PBL_IF_ROUND_ELSE(GTextAlignmentLeft, GTextAlignmentLeft));
   text_layer_set_text(s_weather_layer, "N/D"); //loading era qui
 

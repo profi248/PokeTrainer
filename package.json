@@ -25,6 +25,22 @@
         "resources": {
             "media": [
                 {
+                    "file": "images/backgroundPTRNIGHT.png",
+                    "name": "IMAGE_BACKGROUNDNIGHT",
+                    "targetPlatforms": [
+                        "chalk"
+                    ],
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/backgroundNIGHT.png",
+                    "name": "IMAGE_BACKGROUNDNIGHT",
+                    "targetPlatforms": [
+                        "basalt"
+                    ],
+                    "type": "bitmap"
+                },
+                {
                     "file": "images/poke258.png",
                     "name": "IMAGE_POKE258",
                     "targetPlatforms": null,
@@ -281,5 +297,5 @@
             "watchface": true
         }
     },
-    "version": "2.5.0"
+    "version": "2.6.0"
 }
