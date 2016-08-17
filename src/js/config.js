@@ -17,24 +17,24 @@ module.exports = [
       {
         "type": "heading",
         "defaultValue": "Watch Settings"
-      },
-     {
-        "type": "select",
-        "messageKey": "UNITS",
-        "defaultValue": "0",
-        "label": "Celsius (C) or Fahrenheit (F)?",
-			 "description": "After changing this setting, please refresh the weather info by pressing a button while the watchface is open (example: view timeline).",
-        "options": [
-          { 
-            "label": "Celsius",
-            "value": "0" 
-          },
-          { 
-            "label": "Fahrenheit",
-            "value": "1" 
-          }
-        ]
-      }
+			},
+			{
+					"type": "select",
+					"messageKey": "UNITS",
+					"defaultValue": "0",
+					"label": "Celsius (C) or Fahrenheit (F)?",
+				 "description": "After changing this setting, please refresh the weather info by pressing a button while the watchface is open (example: view timeline).",
+					"options": [
+						{ 
+							"label": "Celsius",
+							"value": "0" 
+						},
+						{ 
+							"label": "Fahrenheit",
+							"value": "1" 
+						}
+					]
+			}
     ]
   },
 	

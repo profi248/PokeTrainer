@@ -19,7 +19,8 @@
             "UNITS",
             "TRAINER",
             "POKE",
-            "OCCUPATION"
+            "OCCUPATION",
+            "DISABNIGHT"
         ],
         "projectType": "native",
         "resources": {
