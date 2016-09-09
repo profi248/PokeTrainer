@@ -16,10 +16,10 @@ static Layer *s_battery_layer;
 static TextLayer *s_step_layer;
 
 static BitmapLayer *s_background_layer;
-static GBitmap *s_background_bitmap;
+static GBitmap *s_background_bitmap, *s_backgroundNight_bitmap;
 
 static BitmapLayer *s_background_layer, *s_bt_icon_layer;
-static GBitmap *s_background_bitmap, *s_bt_icon_bitmap, *s_backgroundDIS_bitmap, *s_backgroundNIG_bitmap;
+static GBitmap *s_background_bitmap, *s_bt_icon_bitmap;
 
 static BitmapLayer *s_step_icon_layer;
 static GBitmap *s_step_icon_bitmap;
@@ -38,6 +38,7 @@ static GFont s_time_font;
 static GFont s_weather_font;
 static GFont s_time_font, s_date_font;
 static GFont s_step_font;
+
 
 
 //========================== FUNCTIONS ==================================================================
@@ -230,7 +231,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 						persist_write_int(NUM_OCCUPATION_PKEY, 7);
 					}
 				}
-				s_trainer_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(78,59), PBL_IF_ROUND_ELSE(49,43), 45, 52));
+				s_trainer_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(78,59), PBL_IF_ROUND_ELSE(49,43), 45, 54));
 				bitmap_layer_set_bitmap(s_trainer_layer, s_trainer_bitmap);
 				bitmap_layer_set_background_color(s_trainer_layer, GColorClear);
 				bitmap_layer_set_compositing_mode(s_trainer_layer, GCompOpSet);
@@ -249,9 +250,12 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
       }    
       else if(strcmp(poke_tuple->value->cstring, "1") == 0) {        
-   			destroyAllPoke();
-				s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE001);
-				persist_write_int(NUM_POKE_PKEY, 1); 																														//bulbasaur
+   			//destroyAllPoke();
+				//s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE001);
+				persist_write_int(NUM_POKE_PKEY, 1); 	
+				destroyAllPoke();
+				//QUI!!!!!
+				layer_mark_dirty(bitmap_layer_get_layer(s_poke_layer));		//bulbasaur
 				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
       }   
       else if(strcmp(poke_tuple->value->cstring, "4") == 0) {        
@@ -434,17 +438,18 @@ static void update_time() {
 	// Show the date
 	text_layer_set_text(s_date_layer, date_buffer);
 	
-	/*change background based on NIGHT MODE
-	if( (tick_time->tm_hour >= 19 || tick_time->tm_hour <= 7) && (persist_read_int(NUM_NIGHTMODE_PKEY) != 1) ){
-				persist_write_int(NUM_NIGHTMODE_PKEY, 1);
-				bitmap_layer_set_bitmap(s_background_layer, s_backgroundDIS_bitmap);
+	// change background based on NIGHT MODE
+	if( (tick_time->tm_hour >= 18 || tick_time->tm_hour <= 4) && (persist_read_int(NUM_NIGHTMODE_PKEY) != 1) ){
+		persist_write_int(NUM_NIGHTMODE_PKEY, 1);
+		//layer_mark_dirty(bitmap_layer_get_layer(s_background_layer));
+		bitmap_layer_set_bitmap(s_background_layer, s_backgroundNight_bitmap);
 	}
-	else if( (tick_time->tm_hour < 19 && tick_time->tm_hour > 7) && (persist_read_int(NUM_NIGHTMODE_PKEY) != 0) ){
-			persist_write_int(NUM_NIGHTMODE_PKEY, 0);
-			bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
+	else if( (tick_time->tm_hour < 18 && tick_time->tm_hour > 4) && (persist_read_int(NUM_NIGHTMODE_PKEY) != 0) ){
+		persist_write_int(NUM_NIGHTMODE_PKEY, 0);
+		//layer_mark_dirty(bitmap_layer_get_layer(s_background_layer));
+		bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
 	}
 	
-	*/
 	
 }
 
@@ -493,19 +498,74 @@ static void bluetooth_callback(bool connected) {
   }
 }
 
+//NEW SDK
+uint8_t relative_pixel(int16_t percent, int16_t max) {
+  return (max * percent) / 100;
+}
 
 //====================================== MAIN WINDOW LOAD ==================================================================
 
+//NEW SDK (DA SISTEMARE)
+
+static void prv_unobstructed_change(AnimationProgress progress, void *context) {
+  // Get the total available screen real-estate
+	Layer *window_layer = window_get_root_layer(s_main_window);
+	GRect bounds = layer_get_bounds(window_layer);
+  GRect un_bounds = layer_get_unobstructed_bounds(window_layer);
+	int bounds_int = bounds.size.h;
+	int un_bounds_int = un_bounds.size.h;
+	int res_bounds =  un_bounds_int - bounds_int;
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "I PRINT BOUNDS: %d, UNBOUNDS : %d, RESBOUNDS: %d", bounds_int, un_bounds_int, res_bounds);
+  // Get the current position of the needed layers
+  GRect frame = layer_get_frame(bitmap_layer_get_layer(s_background_layer));
+	GRect frame2 = layer_get_frame(bitmap_layer_get_layer(s_trainer_layer));
+	GRect frame3 = layer_get_frame(bitmap_layer_get_layer(s_poke_layer));
+	GRect frame4 = layer_get_frame(text_layer_get_layer(s_time_layer));
+	GRect frame5 = layer_get_frame(text_layer_get_layer(s_date_layer));
+	GRect frame6 = layer_get_frame(text_layer_get_layer(s_weather_layer));
+	GRect frame7 = layer_get_frame(s_battery_layer);
+	GRect frame8 = layer_get_frame(bitmap_layer_get_layer(s_bt_icon_layer));
+	GRect frame9 = layer_get_frame(text_layer_get_layer(s_step_layer));
+	GRect frame10 = layer_get_frame(bitmap_layer_get_layer(s_step_icon_layer));
+  // Shift the Y coordinate
+  frame.origin.y = res_bounds;
+	frame2.origin.y = frame2.origin.y + res_bounds;
+	frame3.origin.y = frame3.origin.y + res_bounds;
+	frame4.origin.y = frame4.origin.y + res_bounds;
+	frame5.origin.y = frame6.origin.y + res_bounds;
+	frame6.origin.y = frame6.origin.y + res_bounds;
+	frame7.origin.y = frame7.origin.y + res_bounds;
+	frame8.origin.y = frame8.origin.y + res_bounds;
+	frame9.origin.y = frame9.origin.y + res_bounds;
+	frame10.origin.y = frame10.origin.y + res_bounds;
+  // Apply the new location
+  layer_set_frame(bitmap_layer_get_layer(s_background_layer), frame);
+	layer_set_frame(bitmap_layer_get_layer(s_trainer_layer), frame2);
+	layer_set_frame(bitmap_layer_get_layer(s_poke_layer), frame3);
+	layer_set_frame(text_layer_get_layer(s_time_layer), frame4);
+	layer_set_frame(text_layer_get_layer(s_date_layer), frame5);
+	layer_set_frame(text_layer_get_layer(s_date_layer), frame6);
+	layer_set_frame(s_battery_layer, frame7);
+	layer_set_frame(bitmap_layer_get_layer(s_bt_icon_layer), frame8);
+	layer_set_frame(text_layer_get_layer(s_step_layer), frame9);
+	layer_set_frame(bitmap_layer_get_layer(s_step_icon_layer), frame10);
+}
 
 static void main_window_load(Window *window) {
   // Get information about the Window
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
+	
+	//NEW SDK
+	UnobstructedAreaHandlers handler = {
+    .change = prv_unobstructed_change
+  };
+  unobstructed_area_service_subscribe(handler, NULL);
 
   // Create GBitmap BASED ON NIGHT MODE
 	
 	s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUND);
-	
+	s_backgroundNight_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUNDNIGHT);
 	/*
 	if(persist_read_int(NUM_NIGHTMODE_PKEY) == 0){
   	s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUND);
@@ -522,7 +582,16 @@ static void main_window_load(Window *window) {
   s_background_layer = bitmap_layer_create(bounds);
 
   // Set the bitmap onto the layer and add to the window
-  bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
+		if(persist_read_int(NUM_NIGHTMODE_PKEY) == 0){
+  	bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "DAY BACKGROUND BECAUSE NUM_POKE_PKEY IS %d", (int)persist_read_int(NUM_NIGHTMODE_PKEY));
+	}
+	else{
+		bitmap_layer_set_bitmap(s_background_layer, s_backgroundNight_bitmap);
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "NORMAL NIGHT BACKGROUND BECAUSE NUM_NIGHTMODE_PKEY IS  %d", (int)persist_read_int(NUM_NIGHTMODE_PKEY));
+	}
+	
+  // bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
   layer_add_child(window_layer, bitmap_layer_get_layer(s_background_layer));
 
   // Create the TextLayer with specific bounds
@@ -662,7 +731,7 @@ static void main_window_load(Window *window) {
 					s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERF);
 						break;
 				}
-				s_trainer_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(78,59), PBL_IF_ROUND_ELSE(49,43), 45, 52));
+				s_trainer_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(78,59), PBL_IF_ROUND_ELSE(49,43), 45, 54));
 				bitmap_layer_set_bitmap(s_trainer_layer, s_trainer_bitmap);
 				bitmap_layer_set_background_color(s_trainer_layer, GColorClear);
 				bitmap_layer_set_compositing_mode(s_trainer_layer, GCompOpSet);
@@ -860,6 +929,7 @@ static void main_window_unload(Window *window) {
   // Destroy Step info
    text_layer_destroy(s_step_layer);
 }
+
 
 
 
