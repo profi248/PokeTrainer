@@ -102,6 +102,18 @@ module.exports = [
           { 
             "label": "Team Rocket Grunt!",
             "value": "5" 
+          },
+          { 
+            "label": "Beauty!",
+            "value": "8" 
+          },
+          { 
+            "label": "Police Officer!",
+            "value": "9" 
+          },
+          { 
+            "label": "Medium!",
+            "value": "10" 
           }
 				]
 			}
@@ -189,6 +201,22 @@ module.exports = [
           { 
             "label": "Zubat",
             "value": "41" 
+          },
+          { 
+            "label": "Jigglypuff",
+            "value": "39" 
+          },
+          { 
+            "label": "Clefairy",
+            "value": "35" 
+          },
+          { 
+            "label": "Growlithe",
+            "value": "58" 
+          },
+          { 
+            "label": "Gastly",
+            "value": "92" 
           }
         ]
       }

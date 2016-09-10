@@ -26,6 +26,66 @@
         "resources": {
             "media": [
                 {
+                    "file": "images/trainerMpolice.png",
+                    "name": "IMAGE_TRAINERMpolice",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/trainerMmedium.png",
+                    "name": "IMAGE_TRAINERMmedium",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/trainerMbeauty.png",
+                    "name": "IMAGE_TRAINERMbeauty",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/trainerFpolice.png",
+                    "name": "IMAGE_TRAINERFpolice",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/trainerFmedium.png",
+                    "name": "IMAGE_TRAINERFmedium",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/trainerFbeauty.png",
+                    "name": "IMAGE_TRAINERFbeauty",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke092.png",
+                    "name": "IMAGE_POKE092",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke058.png",
+                    "name": "IMAGE_POKE058",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke039.png",
+                    "name": "IMAGE_POKE039",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke035.png",
+                    "name": "IMAGE_POKE035",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
                     "file": "images/backgroundPTRNIGHT.png",
                     "name": "IMAGE_BACKGROUNDNIGHT",
                     "targetPlatforms": [
