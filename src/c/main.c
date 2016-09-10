@@ -515,7 +515,7 @@ static void prv_unobstructed_change(AnimationProgress progress, void *context) {
 	int bounds_int = bounds.size.h;
 	int un_bounds_int = un_bounds.size.h;
 	int res_bounds =  un_bounds_int - bounds_int;
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "I PRINT BOUNDS: %d, UNBOUNDS : %d, RESBOUNDS: %d", bounds_int, un_bounds_int, res_bounds);
+	//APP_LOG(APP_LOG_LEVEL_DEBUG, "I PRINT BOUNDS: %d, UNBOUNDS : %d, RESBOUNDS: %d", bounds_int, un_bounds_int, res_bounds);
   // Get the current position of the needed layers
   GRect frame = layer_get_frame(bitmap_layer_get_layer(s_background_layer));
 	GRect frame2 = layer_get_frame(bitmap_layer_get_layer(s_trainer_layer));
@@ -529,22 +529,23 @@ static void prv_unobstructed_change(AnimationProgress progress, void *context) {
 	GRect frame10 = layer_get_frame(bitmap_layer_get_layer(s_step_icon_layer));
   // Shift the Y coordinate
   frame.origin.y = res_bounds;
-	frame2.origin.y = frame2.origin.y + res_bounds;
-	frame3.origin.y = frame3.origin.y + res_bounds;
-	frame4.origin.y = frame4.origin.y + res_bounds;
-	frame5.origin.y = frame6.origin.y + res_bounds;
-	frame6.origin.y = frame6.origin.y + res_bounds;
-	frame7.origin.y = frame7.origin.y + res_bounds;
-	frame8.origin.y = frame8.origin.y + res_bounds;
-	frame9.origin.y = frame9.origin.y + res_bounds;
-	frame10.origin.y = frame10.origin.y + res_bounds;
+	// Declare initial positions
+	frame2.origin.y = 43 + res_bounds; // 43 is trainer y position on basalt
+	frame3.origin.y = 43 + res_bounds;
+	frame4.origin.y = 105 + res_bounds;
+	frame5.origin.y = 130 + res_bounds;
+	frame6.origin.y = 145 + res_bounds;
+	frame7.origin.y = 100 + res_bounds;
+	frame8.origin.y = 12 + res_bounds;
+	frame9.origin.y = 145 + res_bounds;
+	frame10.origin.y = 147 + res_bounds;
   // Apply the new location
   layer_set_frame(bitmap_layer_get_layer(s_background_layer), frame);
 	layer_set_frame(bitmap_layer_get_layer(s_trainer_layer), frame2);
 	layer_set_frame(bitmap_layer_get_layer(s_poke_layer), frame3);
 	layer_set_frame(text_layer_get_layer(s_time_layer), frame4);
 	layer_set_frame(text_layer_get_layer(s_date_layer), frame5);
-	layer_set_frame(text_layer_get_layer(s_date_layer), frame6);
+	layer_set_frame(text_layer_get_layer(s_weather_layer), frame6);
 	layer_set_frame(s_battery_layer, frame7);
 	layer_set_frame(bitmap_layer_get_layer(s_bt_icon_layer), frame8);
 	layer_set_frame(text_layer_get_layer(s_step_layer), frame9);
@@ -584,11 +585,11 @@ static void main_window_load(Window *window) {
   // Set the bitmap onto the layer and add to the window
 		if(persist_read_int(NUM_NIGHTMODE_PKEY) == 0){
   	bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "DAY BACKGROUND BECAUSE NUM_POKE_PKEY IS %d", (int)persist_read_int(NUM_NIGHTMODE_PKEY));
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "Day Background applied, because NUM_NIGHTMODE_PKEY is %d", (int)persist_read_int(NUM_NIGHTMODE_PKEY));
 	}
 	else{
 		bitmap_layer_set_bitmap(s_background_layer, s_backgroundNight_bitmap);
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "NORMAL NIGHT BACKGROUND BECAUSE NUM_NIGHTMODE_PKEY IS  %d", (int)persist_read_int(NUM_NIGHTMODE_PKEY));
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "Night Background applied, because NUM_NIGHTMODE_PKEY is %d", (int)persist_read_int(NUM_NIGHTMODE_PKEY));
 	}
 	
   // bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
@@ -883,7 +884,6 @@ static void main_window_load(Window *window) {
     bitmap_layer_set_compositing_mode(s_poke_layer, GCompOpSet);
     layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_poke_layer));
 
-  
 }
 
 static void main_window_unload(Window *window) {
