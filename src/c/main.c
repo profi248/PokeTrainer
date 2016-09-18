@@ -280,12 +280,9 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
       }    
       else if(strcmp(poke_tuple->value->cstring, "1") == 0) {        
-   			//destroyAllPoke();
-				//s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE001);
-				persist_write_int(NUM_POKE_PKEY, 1); 	
 				destroyAllPoke();
-				//QUI!!!!!
-				layer_mark_dirty(bitmap_layer_get_layer(s_poke_layer));		//bulbasaur
+				s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE001);
+				persist_write_int(NUM_POKE_PKEY, 1);
 				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
       }   
       else if(strcmp(poke_tuple->value->cstring, "4") == 0) {        
