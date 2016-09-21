@@ -26,6 +26,18 @@
         "resources": {
             "media": [
                 {
+                    "file": "images/poke003.png",
+                    "name": "IMAGE_POKE003",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke002.png",
+                    "name": "IMAGE_POKE002",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
                     "file": "images/trainerMpolice.png",
                     "name": "IMAGE_TRAINERMpolice",
                     "targetPlatforms": null,
@@ -358,5 +370,5 @@
             "watchface": true
         }
     },
-    "version": "3.0.0"
+    "version": "3.1.0"
 }

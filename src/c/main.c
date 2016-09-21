@@ -92,7 +92,39 @@ static void display_step_count() {
       "%d", hundreds);
   }
 
+	
+	// =========================================================================== STEP PART =====================================================================
+	
   text_layer_set_text(s_step_layer, s_current_steps_buffer);
+	if(s_step_count<2500){
+		if((persist_read_int(NUM_POKE_PKEY) == 2) ||(persist_read_int(NUM_POKE_PKEY) == 3)){
+			persist_write_int(NUM_POKE_PKEY, 1);
+			gbitmap_destroy(s_poke_bitmap);  																															// ==== COPIA QUI
+			s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE001);
+			bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
+		}
+	}
+	else if(s_step_count>2500){
+		if(persist_read_int(NUM_POKE_PKEY) == 1){
+			persist_write_int(NUM_POKE_PKEY, 2);
+			gbitmap_destroy(s_poke_bitmap);  																															// ==== COPIA QUI
+			s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE002);
+			bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
+		}
+	}
+	else if(s_step_count>5000){
+	}
+	else if(s_step_count>7500){
+		
+	}
+	else if(s_step_count>10000){
+		if(persist_read_int(NUM_POKE_PKEY) == 2){
+			persist_write_int(NUM_POKE_PKEY, 3);
+			gbitmap_destroy(s_poke_bitmap);  																															// ==== COPIA QUI
+			s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE003);
+			bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
+		}
+	}
 }
 
 static void health_handler(HealthEventType event, void *context) {
@@ -281,8 +313,21 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
       }    
       else if(strcmp(poke_tuple->value->cstring, "1") == 0) {        
 				destroyAllPoke();
-				s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE001);
-				persist_write_int(NUM_POKE_PKEY, 1);
+				if(s_step_count<2500){
+					s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE001);
+					persist_write_int(NUM_POKE_PKEY, 1);																													//bulbasaur
+					APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
+				}
+				else if(s_step_count <10000){
+					s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE002);
+					persist_write_int(NUM_POKE_PKEY, 2);																													//ivysaur
+					APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
+				}
+				else if(s_step_count>=10000){
+					s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE003);
+					persist_write_int(NUM_POKE_PKEY, 3);																													//venusaur
+					APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
+				}
 				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
       }   
       else if(strcmp(poke_tuple->value->cstring, "4") == 0) {        
@@ -399,7 +444,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 				persist_write_int(NUM_POKE_PKEY, 92); //porygon
 				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
       }
-			s_poke_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(44,25), PBL_IF_ROUND_ELSE(46,40), 46, 58));
+			s_poke_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(29,10), PBL_IF_ROUND_ELSE(44,38), 55, 55)); //era 46, 58
 			bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
 			bitmap_layer_set_background_color(s_poke_layer, GColorClear);
 			bitmap_layer_set_compositing_mode(s_poke_layer, GCompOpSet);
@@ -867,6 +912,16 @@ static void main_window_load(Window *window) {
 		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE001);
 		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED BULBASAUR BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
 	}
+	else if(persist_read_int(NUM_POKE_PKEY) == 2) { 
+		destroyAllPoke();
+		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE002);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED IVYSAUR BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+	}
+	else if(persist_read_int(NUM_POKE_PKEY) == 3) { 
+		destroyAllPoke();
+		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE003);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED VENUSAUR BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+	}
 	else if(persist_read_int(NUM_POKE_PKEY) == 4) {        
 		destroyAllPoke();
 		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE004);
@@ -967,7 +1022,7 @@ static void main_window_load(Window *window) {
 		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED NOTHING BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
 		//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_TRAINER PKEY IS %d", (int)persist_read_int(NUM_TRAINER_PKEY));
 	}
-    s_poke_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(44,25), PBL_IF_ROUND_ELSE(49,43), 40, 50));
+    s_poke_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(29,10), PBL_IF_ROUND_ELSE(44,38), 55, 55)); //era 40 50
     bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
     bitmap_layer_set_background_color(s_poke_layer, GColorClear);
     bitmap_layer_set_compositing_mode(s_poke_layer, GCompOpSet);
@@ -1064,7 +1119,7 @@ static void init() {
   
   
   // Open AppMessage
-  app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
+  app_message_open(128, app_message_outbox_size_maximum());
 }
 
 static void deinit() {
