@@ -124,7 +124,7 @@ static void display_step_count() {
 			bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
 		}
 	}
-	else if(s_step_count>2500){			//>2500, first ev
+	else if(s_step_count>2500 && s_step_count<5000){			//>2500, first ev
 		if(persist_read_int(NUM_POKE_PKEY) == 1){ 																													// case Ivysaur
 			persist_write_int(NUM_POKE_PKEY, 2);
 			gbitmap_destroy(s_poke_bitmap);  															
@@ -147,7 +147,7 @@ static void display_step_count() {
 			vibes_long_pulse();
 		}
 	}
-	else if(s_step_count>5000){			//>5000, only ev
+	else if(s_step_count>5000 && s_step_count<10000){			//>5000, only ev
 		if(persist_read_int(NUM_POKE_PKEY) == 133){ 																												// case Eeveelution
 			int eeveelution[8] = {134, 135, 136, 196, 197, 470, 471, 700};
 			int n = rand()%8;
@@ -403,7 +403,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 					persist_write_int(NUM_POKE_PKEY, 1);																													//bulbasaur
 					APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
 				}
-				else if(s_step_count>2500){
+				else if(s_step_count>=2500 && s_step_count<10000){
 					s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE002);
 					persist_write_int(NUM_POKE_PKEY, 2);																													//ivysaur
 					APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
@@ -422,7 +422,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 					persist_write_int(NUM_POKE_PKEY, 4);																													//charmander
 					APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
 				}
-				else if(s_step_count>=2500){
+				else if(s_step_count>=2500 && s_step_count<10000){
 					s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE005);
 					persist_write_int(NUM_POKE_PKEY, 5);																													//charmeleon
 					APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
@@ -441,7 +441,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 					persist_write_int(NUM_POKE_PKEY, 7);																													//squirtle
 					APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
 				}
-				else if(s_step_count>=2500){
+				else if(s_step_count>=2500 && s_step_count<10000){
 					s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE008);
 					persist_write_int(NUM_POKE_PKEY, 8);																													//wartortle
 					APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
@@ -486,10 +486,10 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
       else if(strcmp(poke_tuple->value->cstring, "133") == 0) {        
    			destroyAllPoke();
 				if(s_step_count>5000){
-					int eeveelution = persist_read_int(NUM_POKE_PKEY);
-					persist_read_int(NUM_POKE_PKEY);
-					APP_LOG(APP_LOG_LEVEL_DEBUG, "the eeveelution number is %d, so NUM_POKE_KEY IS %d", eeveelution, (int)persist_read_int(NUM_POKE_PKEY));
-					switch (eeveelution) {
+					int eeveelution[8] = {134, 135, 136, 196, 197, 470, 471, 700};
+					int n = rand()%8;
+					APP_LOG(APP_LOG_LEVEL_DEBUG, "the eeveelution number is %d, so NUM_POKE_KEY IS %d", eeveelution[n], (int)persist_read_int(NUM_POKE_PKEY));
+					switch (eeveelution[n]) {
 					case 134:
 						 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE134);
 						 break;
@@ -518,7 +518,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 						 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE133);
 						 break;
 					}
-					persist_write_int(NUM_POKE_PKEY, eeveelution); 																								//eeveelution
+					persist_write_int(NUM_POKE_PKEY, eeveelution[n]); 																								//eeveelution
 				}
 				else{
 				s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE133);
