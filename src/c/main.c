@@ -96,33 +96,118 @@ static void display_step_count() {
 	// =========================================================================== STEP PART =====================================================================
 	
   text_layer_set_text(s_step_layer, s_current_steps_buffer);
-	if(s_step_count<2500){
-		if((persist_read_int(NUM_POKE_PKEY) == 2) ||(persist_read_int(NUM_POKE_PKEY) == 3)){
+	if(s_step_count<2500){					//<2500, basic
+		if((persist_read_int(NUM_POKE_PKEY) == 2) ||(persist_read_int(NUM_POKE_PKEY) == 3)){ 								// case Bulbasaur
 			persist_write_int(NUM_POKE_PKEY, 1);
-			gbitmap_destroy(s_poke_bitmap);  																															// ==== COPIA QUI
+			gbitmap_destroy(s_poke_bitmap);  																															
 			s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE001);
 			bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
 		}
-	}
-	else if(s_step_count>2500){
-		if(persist_read_int(NUM_POKE_PKEY) == 1){
-			persist_write_int(NUM_POKE_PKEY, 2);
-			gbitmap_destroy(s_poke_bitmap);  																															// ==== COPIA QUI
-			s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE002);
+		else if((persist_read_int(NUM_POKE_PKEY) == 5) ||(persist_read_int(NUM_POKE_PKEY) == 6)){ 					// case Charmander
+			persist_write_int(NUM_POKE_PKEY, 4);
+			gbitmap_destroy(s_poke_bitmap);  																															
+			s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE004);
+			bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
+		}
+		else if((persist_read_int(NUM_POKE_PKEY) == 8) ||(persist_read_int(NUM_POKE_PKEY) == 9)){ 					// case Squirtle
+			persist_write_int(NUM_POKE_PKEY, 7);
+			gbitmap_destroy(s_poke_bitmap);  																															
+			s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE007);
+			bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
+		}
+		else if((persist_read_int(NUM_POKE_PKEY) == 134) ||(persist_read_int(NUM_POKE_PKEY) == 135)||(persist_read_int(NUM_POKE_PKEY) == 136)||
+						(persist_read_int(NUM_POKE_PKEY) == 196)||(persist_read_int(NUM_POKE_PKEY) == 197)||(persist_read_int(NUM_POKE_PKEY) == 470)||
+						(persist_read_int(NUM_POKE_PKEY) == 471)||(persist_read_int(NUM_POKE_PKEY) == 700)){ 				// case Eevee
+			persist_write_int(NUM_POKE_PKEY, 133);
+			gbitmap_destroy(s_poke_bitmap);  																															
+			s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE133);
 			bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
 		}
 	}
-	else if(s_step_count>5000){
+	else if(s_step_count>2500){			//>2500, first ev
+		if(persist_read_int(NUM_POKE_PKEY) == 1){ 																													// case Ivysaur
+			persist_write_int(NUM_POKE_PKEY, 2);
+			gbitmap_destroy(s_poke_bitmap);  															
+			s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE002);
+			bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
+			vibes_long_pulse();
+		}
+		else if(persist_read_int(NUM_POKE_PKEY) == 4){ 																											// case Charmeleon
+			persist_write_int(NUM_POKE_PKEY, 5);
+			gbitmap_destroy(s_poke_bitmap);  															
+			s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE005);
+			bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
+			vibes_long_pulse();
+		}
+		else if(persist_read_int(NUM_POKE_PKEY) == 7){ 																											// case Wartortle
+			persist_write_int(NUM_POKE_PKEY, 8);
+			gbitmap_destroy(s_poke_bitmap);  															
+			s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE008);
+			bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
+			vibes_long_pulse();
+		}
 	}
-	else if(s_step_count>7500){
-		
+	else if(s_step_count>5000){			//>5000, only ev
+		if(persist_read_int(NUM_POKE_PKEY) == 133){ 																												// case Eeveelution
+			int eeveelution[8] = {134, 135, 136, 196, 197, 470, 471, 700};
+			int n = rand()%8;
+			persist_write_int(NUM_POKE_PKEY, eeveelution[n]);
+			APP_LOG(APP_LOG_LEVEL_DEBUG, "the eeveelution number is %d, so NUM_POKE_KEY IS %d", eeveelution[n], (int)persist_read_int(NUM_POKE_PKEY));
+			gbitmap_destroy(s_poke_bitmap);  	
+			switch (eeveelution[n]) {
+			case 134:
+				 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE134);
+				 break;
+			case 135:
+				 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE135);
+				 break;
+			case 136:
+				 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE136);
+				 break;
+			case 196:
+				 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE196);
+				 break;
+			case 197:
+				 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE197);
+				 break;
+			case 470:
+				 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE470);
+				 break;
+			case 471:
+				 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE471);
+				 break;
+			case 700:
+			   s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE700);
+				 break;
+			default:
+				 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE133);
+				 break;
+			}										
+			bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
+			vibes_long_pulse();
+		}
 	}
 	else if(s_step_count>10000){
-		if(persist_read_int(NUM_POKE_PKEY) == 2){
+		if(persist_read_int(NUM_POKE_PKEY) == 2){																														// case Venusaur
 			persist_write_int(NUM_POKE_PKEY, 3);
-			gbitmap_destroy(s_poke_bitmap);  																															// ==== COPIA QUI
+			gbitmap_destroy(s_poke_bitmap);  																										
 			s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE003);
 			bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
+			vibes_long_pulse();
+		}
+		else if(persist_read_int(NUM_POKE_PKEY) == 5){																											// case Charizard
+			persist_write_int(NUM_POKE_PKEY, 6);
+			gbitmap_destroy(s_poke_bitmap);  																										
+			s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE006);
+			bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
+			vibes_long_pulse();
+		}
+		else if(persist_read_int(NUM_POKE_PKEY) == 8){																											// case Blastoise
+			persist_write_int(NUM_POKE_PKEY, 9);
+			gbitmap_destroy(s_poke_bitmap);  																										
+			s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE009);
+			bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
+			vibes_long_pulse();
 		}
 	}
 }
@@ -318,7 +403,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 					persist_write_int(NUM_POKE_PKEY, 1);																													//bulbasaur
 					APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
 				}
-				else if(s_step_count <10000){
+				else if(s_step_count>2500){
 					s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE002);
 					persist_write_int(NUM_POKE_PKEY, 2);																													//ivysaur
 					APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
@@ -332,14 +417,40 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
       }   
       else if(strcmp(poke_tuple->value->cstring, "4") == 0) {        
    			destroyAllPoke();
-				s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE004);
-				persist_write_int(NUM_POKE_PKEY, 4); 																														//charmander
+				if(s_step_count<2500){
+					s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE004);
+					persist_write_int(NUM_POKE_PKEY, 4);																													//charmander
+					APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
+				}
+				else if(s_step_count>=2500){
+					s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE005);
+					persist_write_int(NUM_POKE_PKEY, 5);																													//charmeleon
+					APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
+				}
+				else if(s_step_count>=10000){
+					s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE006);
+					persist_write_int(NUM_POKE_PKEY, 6);																													//charizard
+					APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
+				} 																														//charmander
 				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
       } 
       else if(strcmp(poke_tuple->value->cstring, "7") == 0) {        
    			destroyAllPoke();
-				s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE007);
-				persist_write_int(NUM_POKE_PKEY, 7);																														 //squirtle
+				if(s_step_count<2500){
+					s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE007);
+					persist_write_int(NUM_POKE_PKEY, 7);																													//squirtle
+					APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
+				}
+				else if(s_step_count>=2500){
+					s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE008);
+					persist_write_int(NUM_POKE_PKEY, 8);																													//wartortle
+					APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
+				}
+				else if(s_step_count>=10000){
+					s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE009);
+					persist_write_int(NUM_POKE_PKEY, 9);																													//blastoise
+					APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
+				}																													 //squirtle
 				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
       } 
       else if(strcmp(poke_tuple->value->cstring, "16") == 0) {        
@@ -357,26 +468,63 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
       else if(strcmp(poke_tuple->value->cstring, "41") == 0) {        
    			destroyAllPoke();
 				s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE041);
-				persist_write_int(NUM_POKE_PKEY, 41); //zubat
+				persist_write_int(NUM_POKE_PKEY, 41); 																														//zubat
 				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
       }
 			else if(strcmp(poke_tuple->value->cstring, "95") == 0) {        
    			destroyAllPoke();
 				s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE095);
-				persist_write_int(NUM_POKE_PKEY, 95); //onix
+				persist_write_int(NUM_POKE_PKEY, 95); 																														//onix
 				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
       } 
       else if(strcmp(poke_tuple->value->cstring, "120") == 0) {        
    			destroyAllPoke();
 				s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE120);
-				persist_write_int(NUM_POKE_PKEY, 120); //staryu
+				persist_write_int(NUM_POKE_PKEY, 120); 																													//staryu
 				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
       } 
       else if(strcmp(poke_tuple->value->cstring, "133") == 0) {        
    			destroyAllPoke();
+				if(s_step_count>5000){
+					int eeveelution = persist_read_int(NUM_POKE_PKEY);
+					persist_read_int(NUM_POKE_PKEY);
+					APP_LOG(APP_LOG_LEVEL_DEBUG, "the eeveelution number is %d, so NUM_POKE_KEY IS %d", eeveelution, (int)persist_read_int(NUM_POKE_PKEY));
+					switch (eeveelution) {
+					case 134:
+						 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE134);
+						 break;
+					case 135:
+						 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE135);
+						 break;
+					case 136:
+						 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE136);
+						 break;
+					case 196:
+						 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE196);
+						 break;
+					case 197:
+						 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE197);
+						 break;
+					case 470:
+						 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE470);
+						 break;
+					case 471:
+						 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE471);
+						 break;
+					case 700:
+						 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE700);
+						 break;
+					default:
+						 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE133);
+						 break;
+					}
+					persist_write_int(NUM_POKE_PKEY, eeveelution); 																								//eeveelution
+				}
+				else{
 				s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE133);
-				persist_write_int(NUM_POKE_PKEY, 133); //eevee
+				persist_write_int(NUM_POKE_PKEY, 133); 																													//eevee
 				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+				}
       } 
       else if(strcmp(poke_tuple->value->cstring, "137") == 0) {        
    			destroyAllPoke();
@@ -627,7 +775,7 @@ static void prv_unobstructed_change(AnimationProgress progress, void *context) {
   frame.origin.y = res_bounds;
 	// Declare initial positions
 	frame2.origin.y = 43 + res_bounds; // 43 is trainer y position on basalt
-	frame3.origin.y = 43 + res_bounds;
+	frame3.origin.y = 38 + res_bounds;
 	frame4.origin.y = 105 + res_bounds;
 	frame5.origin.y = 130 + res_bounds;
 	frame6.origin.y = 145 + res_bounds;
@@ -927,9 +1075,29 @@ static void main_window_load(Window *window) {
 		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE004);
 		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED CHARMANDER BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
 	}
+	else if(persist_read_int(NUM_POKE_PKEY) == 5) {        
+		destroyAllPoke();
+		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE005);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED CHARMELEON BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+	}
+	else if(persist_read_int(NUM_POKE_PKEY) == 6) {        
+		destroyAllPoke();
+		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE006);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED CHARIZARD BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+	}
 	else if(persist_read_int(NUM_POKE_PKEY) == 7) {        
 		destroyAllPoke();
 		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE007);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SQUIRTLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+	}
+	else if(persist_read_int(NUM_POKE_PKEY) == 8) {        
+		destroyAllPoke();
+		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE008);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SQUIRTLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+	}
+	else if(persist_read_int(NUM_POKE_PKEY) == 9) {        
+		destroyAllPoke();
+		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE009);
 		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SQUIRTLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
 	}
 	else if(persist_read_int(NUM_POKE_PKEY) == 16) {        
@@ -1015,6 +1183,46 @@ static void main_window_load(Window *window) {
 	else if(persist_read_int(NUM_POKE_PKEY) == 92) {        
 		destroyAllPoke();
 		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE092);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SQUIRTLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+	}
+	else if(persist_read_int(NUM_POKE_PKEY) == 134) {        
+		destroyAllPoke();
+		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE134);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SQUIRTLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+	}
+	else if(persist_read_int(NUM_POKE_PKEY) == 135) {        
+		destroyAllPoke();
+		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE135);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SQUIRTLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+	}
+	else if(persist_read_int(NUM_POKE_PKEY) == 136) {        
+		destroyAllPoke();
+		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE136);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SQUIRTLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+	}
+	else if(persist_read_int(NUM_POKE_PKEY) == 196) {        
+		destroyAllPoke();
+		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE196);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SQUIRTLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+	}
+	else if(persist_read_int(NUM_POKE_PKEY) == 197) {        
+		destroyAllPoke();
+		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE197);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SQUIRTLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+	}
+	else if(persist_read_int(NUM_POKE_PKEY) == 470) {        
+		destroyAllPoke();
+		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE470);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SQUIRTLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+	}
+	else if(persist_read_int(NUM_POKE_PKEY) == 471) {        
+		destroyAllPoke();
+		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE471);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SQUIRTLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+	}
+	else if(persist_read_int(NUM_POKE_PKEY) == 700) {        
+		destroyAllPoke();
+		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE700);
 		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SQUIRTLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
 	}
 	else{
