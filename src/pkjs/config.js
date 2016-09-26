@@ -114,6 +114,14 @@ module.exports = [
           { 
             "label": "Medium!",
             "value": "10" 
+          },
+          { 
+            "label": "FireBreather!",
+            "value": "11" 
+          },
+          { 
+            "label": "Skier!",
+            "value": "12" 
           }
 				]
 			}
@@ -127,6 +135,10 @@ module.exports = [
       {
         "type": "heading",
         "defaultValue": "Pokémon Settings"
+      },
+			{
+        "type": "text",
+        "defaultValue": "<font size='2'>Bulbasaur, Charmander & Squirtle will evolve at 2500 steps, then at 10000 steps. <br>Eevee will evolve *randomly* at 5000 steps!</font>"
       },
       {
         "type": "radiogroup",
@@ -217,6 +229,14 @@ module.exports = [
           { 
             "label": "Gastly",
             "value": "92" 
+          },
+          { 
+            "label": "Vulpix",
+            "value": "37" 
+          },
+          { 
+            "label": "Seel",
+            "value": "86" 
           }
         ]
       }

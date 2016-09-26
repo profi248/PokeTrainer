@@ -26,6 +26,42 @@
         "resources": {
             "media": [
                 {
+                    "file": "images/trainerFski.png",
+                    "name": "IMAGE_TRAINERFski",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/trainerMski.png",
+                    "name": "IMAGE_TRAINERMski",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/trainerFfire.png",
+                    "name": "IMAGE_TRAINERFfire",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/trainerMfire.png",
+                    "name": "IMAGE_TRAINERMfire",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke086.png",
+                    "name": "IMAGE_POKE086",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke037.png",
+                    "name": "IMAGE_POKE037",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
                     "file": "images/poke009.png",
                     "name": "IMAGE_POKE009",
                     "targetPlatforms": null,
