@@ -20,7 +20,10 @@
             "TRAINER",
             "POKE",
             "OCCUPATION",
-            "DISABNIGHT"
+            "DISABNIGHT",
+            "enableWeather",
+            "weatherText",
+            "weatherApiKey"
         ],
         "projectType": "native",
         "resources": {
@@ -411,7 +414,6 @@
                 },
                 {
                     "file": "images/menuicon.png",
-                    "menuIcon": true,
                     "name": "IMAGE_MENUICON",
                     "targetPlatforms": null,
                     "type": "bitmap"

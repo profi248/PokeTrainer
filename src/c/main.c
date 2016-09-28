@@ -312,6 +312,16 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 						s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERFmedium);
 						persist_write_int(NUM_OCCUPATION_PKEY, 10);
 					}
+					else if(strcmp(occup_tuple->value->cstring, "11") == 0){ 					//Fire
+						destroyAllTrainers();
+						s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERFfire);
+						persist_write_int(NUM_OCCUPATION_PKEY, 11);
+					}
+					else if(strcmp(occup_tuple->value->cstring, "12") == 0){ 					//Skier
+						destroyAllTrainers();
+						s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERFski);
+						persist_write_int(NUM_OCCUPATION_PKEY, 12);
+					}
 				}
 				s_trainer_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(78,59), PBL_IF_ROUND_ELSE(49,43), 45, 54));
 				bitmap_layer_set_bitmap(s_trainer_layer, s_trainer_bitmap);
@@ -376,6 +386,16 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 						destroyAllTrainers();
 						s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERMmedium);
 						persist_write_int(NUM_OCCUPATION_PKEY, 10);
+					}
+					else if(strcmp(occup_tuple->value->cstring, "11") == 0){ 					//Fire
+						destroyAllTrainers();
+						s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERMfire);
+						persist_write_int(NUM_OCCUPATION_PKEY, 11);
+					}
+					else if(strcmp(occup_tuple->value->cstring, "12") == 0){ 					//Skier
+						destroyAllTrainers();
+						s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERMski);
+						persist_write_int(NUM_OCCUPATION_PKEY, 12);
 					}
 				}
 				s_trainer_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(78,59), PBL_IF_ROUND_ELSE(49,43), 45, 54));
@@ -590,6 +610,18 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
    			destroyAllPoke();
 				s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE092);
 				persist_write_int(NUM_POKE_PKEY, 92); //porygon
+				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+      }
+      else if(strcmp(poke_tuple->value->cstring, "37") == 0) {        
+   			destroyAllPoke();
+				s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE037);
+				persist_write_int(NUM_POKE_PKEY, 37); 																															//vulpix
+				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+      }
+      else if(strcmp(poke_tuple->value->cstring, "86") == 0) {        
+   			destroyAllPoke();
+				s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE086);
+				persist_write_int(NUM_POKE_PKEY, 86); 																															//seel
 				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
       }
 			s_poke_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(29,10), PBL_IF_ROUND_ELSE(44,38), 55, 55)); //era 46, 58
@@ -981,6 +1013,12 @@ static void main_window_load(Window *window) {
 					case 10:
 					s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERFmedium);
 						break;
+					case 11:
+					s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERFfire);
+						break;
+					case 12:
+					s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERFski);
+						break;
 					default:
 					s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERF);
 						break;
@@ -1027,11 +1065,17 @@ static void main_window_load(Window *window) {
 					case 10:
 					s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERMmedium);
 						break;
+					case 11:
+					s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERMfire);
+						break;
+					case 12:
+					s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERMski);
+						break;
 					default:
 					s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERM);
 						break;
 				}
-				s_trainer_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(78,59), PBL_IF_ROUND_ELSE(49,43), 45, 52));
+				s_trainer_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(78,59), PBL_IF_ROUND_ELSE(49,43), 45, 54));
 				bitmap_layer_set_bitmap(s_trainer_layer, s_trainer_bitmap);
 				bitmap_layer_set_background_color(s_trainer_layer, GColorClear);
 				bitmap_layer_set_compositing_mode(s_trainer_layer, GCompOpSet);
@@ -1041,7 +1085,7 @@ static void main_window_load(Window *window) {
 	else{
 			destroyAllTrainers();
 			s_trainer_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_TRAINERM);
-			s_trainer_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(78,59), PBL_IF_ROUND_ELSE(49,43), 45, 52));
+			s_trainer_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(78,59), PBL_IF_ROUND_ELSE(49,43), 45, 54));
 			bitmap_layer_set_bitmap(s_trainer_layer, s_trainer_bitmap);
 			bitmap_layer_set_background_color(s_trainer_layer, GColorClear);
 			bitmap_layer_set_compositing_mode(s_trainer_layer, GCompOpSet);
@@ -1224,6 +1268,16 @@ static void main_window_load(Window *window) {
 		destroyAllPoke();
 		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE700);
 		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SQUIRTLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+	}
+	else if(persist_read_int(NUM_POKE_PKEY) == 37) {        
+		destroyAllPoke();
+		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE037);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED VULPIX BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+	}
+	else if(persist_read_int(NUM_POKE_PKEY) == 86) {        
+		destroyAllPoke();
+		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE086);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SEEL BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
 	}
 	else{
 		destroyAllPoke();

@@ -5,7 +5,11 @@ var clayConfig = require('./config');
 // Initialize Clay
 var clay = new Clay(clayConfig);
 
-var myAPIKey = '692bd55bdf307693e80b7246cf0bab96';
+var claySettings = clay.getSettings();
+var messageKeys = require('message_keys'); 								//   trying to get the API key from clay
+var APIKEY = claySettings[messageKeys.weatherApiKey]; 		// 		is this the right function?
+var myAPIKey = "4d9bee927cb90e201ca2ebecd322079e"; 				//mine is 692bd55bdf307693e80b7246cf0bab96 or 4d9bee927cb90e201ca2ebecd322079e
+console.log("the API key is:" + APIKEY);
 
 var xhrRequest = function (url, type, callback) {
   var xhr = new XMLHttpRequest();

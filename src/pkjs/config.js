@@ -18,6 +18,38 @@ module.exports = [
         "type": "heading",
         "defaultValue": "Watch Settings"
 			},
+			
+			{
+				"type": "toggle",
+				"messageKey": "enableWeather",
+				"label": "Enable Weather"
+			},
+			{
+				"type": "input",
+				"messageKey": "weatherApiKey",
+				"defaultValue": "",
+				"description": "If weather is turned on, you should insert your API KEY!",
+				"label": "OpenWeatherMap API Key",
+				"attributes": {
+					"placeholder": "ex: 692bd55bdf307693e80b7246cf0bab69",
+					"limit": 12,
+					"type": "text"
+				}
+			},
+			{
+				"type": "input",
+				"messageKey": "weatherText",
+				"defaultValue": "",
+				"description": "Here you can choose a text to show instead of the weather! (max 12 characters)",
+				"label": "Custom Text",
+				"attributes": {
+					"placeholder": "ex: PokeTrainer!",
+					"limit": 12,
+					"type": "text"
+				}
+			},
+			
+			
 			{
 					"type": "select",
 					"messageKey": "UNITS",
