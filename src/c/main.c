@@ -937,10 +937,16 @@ static void main_window_load(Window *window) {
   if(persist_read_int(NUM_ENABLEWEATHER_PKEY) == 1){ // check if weather is enables, if it is shows loading
 		text_layer_set_text(s_weather_layer, "loading..");
 	}
-	else{																								//if weather's not enabled shows default string or user string
-		char* textbuffer = "Poke Trainer";
-		persist_read_string(STR_TEXT_PKEY, textbuffer, sizeof(textbuffer));
-		text_layer_set_text(s_weather_layer, textbuffer);
+	else{																								// if weather's not enabled shows default string or user string
+		char* textbuffer= "Poke Trainer";
+		if(persist_exists(STR_TEXT_PKEY)){
+			persist_read_string(STR_TEXT_PKEY, textbuffer, 13);
+			APP_LOG(APP_LOG_LEVEL_DEBUG, "TEXTBUFFER IS %s", textbuffer);
+			text_layer_set_text(s_weather_layer, textbuffer);
+		}
+		else{
+			text_layer_set_text(s_weather_layer, "Poke Trainer");
+		}
 	}
 
 

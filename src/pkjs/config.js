@@ -23,8 +23,11 @@ module.exports = [
 				"type": "toggle",
 				"messageKey": "enableWeather",
 				"label": "Enable Weather",
-				"defaultValue": false
+				"defaultValue": false,
+				"description": "After changing this setting, refresh the watchface!"
 			},
+			
+			/*
 			{
 				"type": "input",
 				"messageKey": "weatherApiKey",
@@ -32,11 +35,14 @@ module.exports = [
 				"description": "If weather is turned on, you should insert your API KEY!",
 				"label": "OpenWeatherMap API Key",
 				"attributes": {
-					"placeholder": "ex: 692bd55bdf307693e80b7246cf0bab69",
+					"placeholder": "eg: 692bd55bdf307693e80b7246cf0bab69",
 					"limit": 12,
 					"type": "text"
 				}
 			},
+			
+			*/
+			
 			{
 				"type": "input",
 				"messageKey": "weatherText",
@@ -44,7 +50,7 @@ module.exports = [
 				"description": "Here you can choose a text to show instead of the weather! (max 12 characters)",
 				"label": "Custom Text",
 				"attributes": {
-					"placeholder": "ex: PokeTrainer!",
+					"placeholder": "eg: Poke Trainer!",
 					"limit": 12,
 					"type": "text"
 				}
