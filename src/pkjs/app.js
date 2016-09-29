@@ -5,11 +5,25 @@ var clayConfig = require('./config');
 // Initialize Clay
 var clay = new Clay(clayConfig);
 
-var claySettings = clay.getSettings();
-var messageKeys = require('message_keys'); 								//   trying to get the API key from clay
-var APIKEY = claySettings[messageKeys.weatherApiKey]; 		// 		is this the right function?
+//var APIKey;
 var myAPIKey = "4d9bee927cb90e201ca2ebecd322079e"; 				//mine is 692bd55bdf307693e80b7246cf0bab96 or 4d9bee927cb90e201ca2ebecd322079e
-console.log("the API key is:" + APIKEY);
+
+/*
+function savekey(par){
+	APIKey = par;
+}
+
+*/
+
+Pebble.addEventListener('webviewclosed', function(e){ if(e && !e.response) return;
+    var dict = clay.getSettings(e.response);
+
+    var messageKeys = require('message_keys');
+																										 
+    var weatherApiKey = dict[messageKeys.weatherApiKey];
+    console.log("the API key is: " + weatherApiKey);
+	}
+);
 
 var xhrRequest = function (url, type, callback) {
   var xhr = new XMLHttpRequest();
@@ -76,7 +90,7 @@ Pebble.addEventListener('ready',
     console.log("PebbleKit JS ready!");
 
     // Get the initial weather
-    getWeather();
+			getWeather();
   }
 );
 
@@ -84,6 +98,6 @@ Pebble.addEventListener('ready',
 Pebble.addEventListener('appmessage',
   function(e) {
     console.log("AppMessage received!");
-    getWeather();
+			getWeather();
   }                     
 );

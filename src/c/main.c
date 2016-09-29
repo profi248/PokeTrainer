@@ -5,6 +5,8 @@ uint32_t NUM_POKE_PKEY = 2;
 uint32_t NUM_UNITS_PKEY = 3;
 uint32_t NUM_OCCUPATION_PKEY = 4;
 uint32_t NUM_NIGHTMODE_PKEY = 5;
+uint32_t NUM_ENABLEWEATHER_PKEY = 6;
+uint32_t STR_TEXT_PKEY = 7;
 
 static Window *s_main_window;
 static TextLayer *s_time_layer;
@@ -635,45 +637,63 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 	
 	
 	
+	// ========================================== WEATHER YES OR NO ==============
 	
-		
-
-  // Read tuples for data
-  Tuple *temp_tuple = dict_find(iterator, MESSAGE_KEY_Temperature);
-  Tuple *conditions_tuple = dict_find(iterator, MESSAGE_KEY_Conditions);
-
-  // If all data is available, use it
-  if(temp_tuple && conditions_tuple) {
-		if(!(persist_exists(NUM_UNITS_PKEY)) || (persist_read_int(NUM_UNITS_PKEY) == 10)){		//case celsius
-      snprintf(temperature_buffer, sizeof(temperature_buffer), "%d°", (int)temp_tuple->value->int32);
-			//layer_mark_dirty(s_weather_layer);
-    }                                                                  
-    else if ((persist_read_int(NUM_UNITS_PKEY) == 11)){   																//case farhenheit                                                      
-      tempe = (int)temp_tuple->value->int32;
-      faren = tempe * 9/5 + 32;
-      snprintf(temperature_buffer, sizeof(temperature_buffer), "%d°", faren);
-    }
-		//int stampa = (int)(persist_read_int(NUM_UNITS_PKEY));
-    //snprintf(conditions_buffer, sizeof(conditions_buffer), "%d", stampa); //I'm printing to see if it's changing
-		snprintf(conditions_buffer, sizeof(conditions_buffer), "%s", conditions_tuple->value->cstring);
-
-    // Assemble full string and display
-    snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s, %s", conditions_buffer, temperature_buffer);
-    text_layer_set_text(s_weather_layer, weather_layer_buffer);
-  }
+	Tuple *enableWeather_tuple = dict_find(iterator, MESSAGE_KEY_enableWeather);
+	if(enableWeather_tuple){
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "WEATHER ENABLER TUPLE IS %d", (int)enableWeather_tuple->value->int32);
+		persist_write_int(NUM_ENABLEWEATHER_PKEY, (int)enableWeather_tuple->value->int32);
+	}
 	
-	 Tuple *weather_units_tuple = dict_find(iterator, MESSAGE_KEY_UNITS);
-    if (weather_units_tuple) {                                  
-      if(strcmp(weather_units_tuple->value->cstring, "0") == 0) {        
-			 int numcelsius= 10;
-			 persist_write_int(NUM_UNITS_PKEY, numcelsius); //case celsius
-      }    
-      else{          
-			int numfaren= 11;
-			 persist_write_int(NUM_UNITS_PKEY, numfaren); //case faren
-       //APP_LOG(APP_LOG_LEVEL_INFO, "option: %d", (persist_read_int(NUM_UNITS_PKEY));
-      } 
-    }
+	if(persist_read_int(NUM_ENABLEWEATHER_PKEY) == 1){
+
+		// Read tuples for data
+		Tuple *temp_tuple = dict_find(iterator, MESSAGE_KEY_Temperature);
+		Tuple *conditions_tuple = dict_find(iterator, MESSAGE_KEY_Conditions);
+
+		// If all data is available, use it
+		if(temp_tuple && conditions_tuple) {
+			if(!(persist_exists(NUM_UNITS_PKEY)) || (persist_read_int(NUM_UNITS_PKEY) == 10)){		//case celsius
+				snprintf(temperature_buffer, sizeof(temperature_buffer), "%d°", (int)temp_tuple->value->int32);
+				//layer_mark_dirty(s_weather_layer);
+			}                                                                  
+			else if ((persist_read_int(NUM_UNITS_PKEY) == 11)){   																//case farhenheit                                                      
+				tempe = (int)temp_tuple->value->int32;
+				faren = tempe * 9/5 + 32;
+				snprintf(temperature_buffer, sizeof(temperature_buffer), "%d°", faren);
+			}
+			//int stampa = (int)(persist_read_int(NUM_UNITS_PKEY));
+			//snprintf(conditions_buffer, sizeof(conditions_buffer), "%d", stampa); //I'm printing to see if it's changing
+			snprintf(conditions_buffer, sizeof(conditions_buffer), "%s", conditions_tuple->value->cstring);
+
+			// Assemble full string and display
+			snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s, %s", conditions_buffer, temperature_buffer);
+			text_layer_set_text(s_weather_layer, weather_layer_buffer);
+		}
+
+		 Tuple *weather_units_tuple = dict_find(iterator, MESSAGE_KEY_UNITS);
+			if (weather_units_tuple) {                                  
+				if(strcmp(weather_units_tuple->value->cstring, "0") == 0) {        
+				 int numcelsius= 10;
+				 persist_write_int(NUM_UNITS_PKEY, numcelsius); //case celsius
+				}    
+				else{          
+				int numfaren= 11;
+				 persist_write_int(NUM_UNITS_PKEY, numfaren); //case faren
+				 //APP_LOG(APP_LOG_LEVEL_INFO, "option: %d", (persist_read_int(NUM_UNITS_PKEY));
+				} 
+			}
+	} //  end of if for weather enabler key
+	
+	else{  // =======================  WEATHER IS DISABLED  ==================================
+			Tuple *custom_text_tuple = dict_find(iterator, MESSAGE_KEY_weatherText);
+			if (custom_text_tuple) {         
+				snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s", custom_text_tuple->value->cstring);
+				persist_write_string(STR_TEXT_PKEY, weather_layer_buffer);
+				APP_LOG(APP_LOG_LEVEL_DEBUG, "weather buffer is %s, the tuple is %s", weather_layer_buffer, custom_text_tuple->value->cstring);
+				text_layer_set_text(s_weather_layer, weather_layer_buffer);
+			}
+		}
 }
 
 static void inbox_dropped_callback(AppMessageResult reason, void *context) {
@@ -914,7 +934,14 @@ static void main_window_load(Window *window) {
   text_layer_set_background_color(s_weather_layer, GColorClear);
 	text_layer_set_text_color(s_weather_layer, GColorBlack);
   text_layer_set_text_alignment(s_weather_layer, PBL_IF_ROUND_ELSE(GTextAlignmentLeft, GTextAlignmentLeft));
-  text_layer_set_text(s_weather_layer, "N/D"); //loading era qui
+  if(persist_read_int(NUM_ENABLEWEATHER_PKEY) == 1){ // check if weather is enables, if it is shows loading
+		text_layer_set_text(s_weather_layer, "loading..");
+	}
+	else{																								//if weather's not enabled shows default string or user string
+		char* textbuffer = "Poke Trainer";
+		persist_read_string(STR_TEXT_PKEY, textbuffer, sizeof(textbuffer));
+		text_layer_set_text(s_weather_layer, textbuffer);
+	}
 
 
   // Create second custom font, apply it and add to Window

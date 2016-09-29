@@ -1,7 +1,7 @@
 {
     "author": "rentsmdi",
     "dependencies": {
-        "pebble-clay": "1.0.0"
+        "pebble-clay": "^1.0.0"
     },
     "keywords": [],
     "name": "poketrainer",
@@ -480,5 +480,5 @@
             "watchface": true
         }
     },
-    "version": "3.5.0"
+    "version": "3.8.0"
 }

@@ -22,7 +22,8 @@ module.exports = [
 			{
 				"type": "toggle",
 				"messageKey": "enableWeather",
-				"label": "Enable Weather"
+				"label": "Enable Weather",
+				"defaultValue": false
 			},
 			{
 				"type": "input",
