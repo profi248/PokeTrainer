@@ -5,23 +5,19 @@ var clayConfig = require('./config');
 // Initialize Clay
 var clay = new Clay(clayConfig);
 
-//var APIKey;
-var myAPIKey = "4d9bee927cb90e201ca2ebecd322079e"; 				//mine is 692bd55bdf307693e80b7246cf0bab96 or 4d9bee927cb90e201ca2ebecd322079e
+//var myAPIKey = "4d9bee927cb90e201ca2ebecd322079e"; 				//mine is 692bd55bdf307693e80b7246cf0bab96 or 4d9bee927cb90e201ca2ebecd322079e
 
-/*
-function savekey(par){
-	APIKey = par;
-}
-
-*/
 
 Pebble.addEventListener('webviewclosed', function(e){ if(e && !e.response) return;
     var dict = clay.getSettings(e.response);
 
     var messageKeys = require('message_keys');
 																										 
-    var weatherApiKey = dict[messageKeys.weatherApiKey];
-    console.log("the API key is: " + weatherApiKey);
+    var gotAPIKey = dict[messageKeys.weatherApiKey];
+		localStorage.setItem('APIKey', gotAPIKey);																								 
+    console.log("the API key is: " + gotAPIKey);
+		console.log("the persistent API key is: " + localStorage.getItem("APIKey"));																								 
+																										 
 	}
 );
 
@@ -37,7 +33,7 @@ var xhrRequest = function (url, type, callback) {
 function locationSuccess(pos) {
   // Construct URL
   var url = "http://api.openweathermap.org/data/2.5/weather?lat=" +
-      pos.coords.latitude + "&lon=" + pos.coords.longitude + '&appid=' + myAPIKey;
+      pos.coords.latitude + "&lon=" + pos.coords.longitude + '&appid=' + localStorage.getItem("APIKey");
 
   // Send request to OpenWeatherMap
   xhrRequest(url, 'GET', 
@@ -90,7 +86,13 @@ Pebble.addEventListener('ready',
     console.log("PebbleKit JS ready!");
 
     // Get the initial weather
+		if(localStorage.getItem("APIKey") === ''){
+			console.log("(ready)No API key set");
+		}
+		else{
+			console.log("(ready)The API key is: " + localStorage.getItem("APIKey"));
 			getWeather();
+		}
   }
 );
 
@@ -98,6 +100,26 @@ Pebble.addEventListener('ready',
 Pebble.addEventListener('appmessage',
   function(e) {
     console.log("AppMessage received!");
+		if(localStorage.getItem("APIKey") === ''){
+			console.log("(appmessage) No API key set");
+		}
+		else{
+			console.log("(appmessage)The API key is: " + localStorage.getItem("APIKey"));
 			getWeather();
+		}
+  }                     
+);
+
+// Listen for when settings are closed
+Pebble.addEventListener('webviewclosed',
+  function(e) {
+    console.log("AppMessage received!");
+		if(localStorage.getItem("APIKey") === ''){
+			console.log("(webviewclosed) No API key set");
+		}
+		else{
+			console.log("(webviewclosed)The API key is: " + localStorage.getItem("APIKey"));
+			getWeather();
+		}
   }                     
 );

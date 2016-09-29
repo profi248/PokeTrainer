@@ -27,7 +27,6 @@ module.exports = [
 				"description": "After changing this setting, refresh the watchface!"
 			},
 			
-			/*
 			{
 				"type": "input",
 				"messageKey": "weatherApiKey",
@@ -41,7 +40,6 @@ module.exports = [
 				}
 			},
 			
-			*/
 			
 			{
 				"type": "input",
