@@ -24,23 +24,38 @@ module.exports = [
 				"messageKey": "enableWeather",
 				"label": "Enable Weather",
 				"defaultValue": false,
-				"description": "After changing this setting, refresh the watchface!"
+				"description": "If you turn it on you have to add your OpenWeatherMap API Key, else you can set a custom text!"
 			},
 			
 			{
 				"type": "input",
 				"messageKey": "weatherApiKey",
 				"defaultValue": "",
-				"description": "If weather is turned on, you should insert your API KEY!",
+				"description": "Get it here once, and for free: <a href='http://openweathermap.org/appid'>OpenWeatherMap</a>",
 				"label": "OpenWeatherMap API Key",
 				"attributes": {
 					"placeholder": "eg: 692bd55bdf307693e80b7246cf0bab69",
-					"limit": 12,
+					"limit": 35,
 					"type": "text"
 				}
 			},
-			
-			
+			{
+					"type": "select",
+					"messageKey": "UNITS",
+					"defaultValue": "0",
+					"label": "Celsius (C) or Fahrenheit (F)?",
+				 "description": "Choose the unit for the temperature!",
+					"options": [
+						{ 
+							"label": "Celsius",
+							"value": "0" 
+						},
+						{ 
+							"label": "Fahrenheit",
+							"value": "1" 
+						}
+					]
+			},
 			{
 				"type": "input",
 				"messageKey": "weatherText",
@@ -52,25 +67,6 @@ module.exports = [
 					"limit": 12,
 					"type": "text"
 				}
-			},
-			
-			
-			{
-					"type": "select",
-					"messageKey": "UNITS",
-					"defaultValue": "0",
-					"label": "Celsius (C) or Fahrenheit (F)?",
-				 "description": "After changing this setting, please refresh the weather info by pressing a button while the watchface is open (example: view timeline).",
-					"options": [
-						{ 
-							"label": "Celsius",
-							"value": "0" 
-						},
-						{ 
-							"label": "Fahrenheit",
-							"value": "1" 
-						}
-					]
 			}
     ]
   },

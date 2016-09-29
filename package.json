@@ -29,6 +29,18 @@
         "resources": {
             "media": [
                 {
+                    "file": "images/poke042.png",
+                    "name": "IMAGE_POKE042",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke087.png",
+                    "name": "IMAGE_POKE087",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
                     "file": "images/trainerFski.png",
                     "name": "IMAGE_TRAINERFski",
                     "targetPlatforms": null,
