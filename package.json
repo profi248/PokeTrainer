@@ -29,6 +29,60 @@
         "resources": {
             "media": [
                 {
+                    "file": "images/poke094.png",
+                    "name": "IMAGE_POKE094",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke093.png",
+                    "name": "IMAGE_POKE093",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke059.png",
+                    "name": "IMAGE_POKE059",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke040.png",
+                    "name": "IMAGE_POKE040",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke038.png",
+                    "name": "IMAGE_POKE038",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke036.png",
+                    "name": "IMAGE_POKE036",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke020.png",
+                    "name": "IMAGE_POKE020",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke018.png",
+                    "name": "IMAGE_POKE018",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke017.png",
+                    "name": "IMAGE_POKE017",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
                     "file": "images/poke042.png",
                     "name": "IMAGE_POKE042",
                     "targetPlatforms": null,
