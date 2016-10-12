@@ -275,6 +275,33 @@ module.exports = [
       }
     ]
   },
+	
+	
+	  {
+    "type": "section",
+    "items": [
+      {
+        "type": "heading",
+        "defaultValue": "Location Settings"
+      },
+      {
+        "type": "radiogroup",
+        "messageKey": "LOCATION",
+        "defaultValue": "0",
+        "label": "Where are you?",
+        "options": [
+          { 
+            "label": "Woods",
+            "value": "0" 
+          },
+					{ 
+            "label": "Ice Cave",
+            "value": "1" 
+          }
+				]
+			}
+    ]
+  },
   
 
   {

@@ -23,11 +23,50 @@
             "DISABNIGHT",
             "enableWeather",
             "weatherText",
-            "weatherApiKey"
+            "weatherApiKey",
+            "LOCATION"
         ],
         "projectType": "native",
         "resources": {
             "media": [
+                {
+                    "file": "images/backgroundIcePTR.png",
+                    "name": "IMAGE_BACKGROUNDICE",
+                    "targetPlatforms": [
+                        "chalk"
+                    ],
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/backgroundIce.png",
+                    "name": "IMAGE_BACKGROUNDICE",
+                    "targetPlatforms": [
+                        "basalt"
+                    ],
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/backgroundIcePTRNIGHT.png",
+                    "name": "IMAGE_BACKGROUNDICENIGHT",
+                    "targetPlatforms": [
+                        "chalk"
+                    ],
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/backgroundIceNIGHT.png",
+                    "name": "IMAGE_BACKGROUNDICENIGHT",
+                    "targetPlatforms": [
+                        "basalt"
+                    ],
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/poke026.png",
+                    "name": "IMAGE_POKE026",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
                 {
                     "file": "images/trainerMski.png",
                     "name": "IMAGE_TRAINERMski",

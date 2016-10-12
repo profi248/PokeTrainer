@@ -7,6 +7,7 @@ uint32_t NUM_OCCUPATION_PKEY = 4;
 uint32_t NUM_NIGHTMODE_PKEY = 5;
 uint32_t NUM_ENABLEWEATHER_PKEY = 6;
 uint32_t STR_TEXT_PKEY = 7;
+uint32_t NUM_LOCATION_PKEY = 8;
 
 static Window *s_main_window;
 static TextLayer *s_time_layer;
@@ -19,6 +20,7 @@ static TextLayer *s_step_layer;
 
 static BitmapLayer *s_background_layer;
 static GBitmap *s_background_bitmap, *s_backgroundNight_bitmap;
+static GBitmap *s_backgroundIce_bitmap, *s_backgroundIceNight_bitmap;
 
 static BitmapLayer *s_bt_icon_layer;
 static GBitmap *s_bt_icon_bitmap;
@@ -113,6 +115,13 @@ static void display_step_count() {
 			s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE004);
 			bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
 		}
+		else if((persist_read_int(NUM_POKE_PKEY) == 8) ||(persist_read_int(NUM_POKE_PKEY) == 9)){ 					// case Squirtle
+			persist_write_int(NUM_POKE_PKEY, 7);
+			gbitmap_destroy(s_poke_bitmap);  																															
+			s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE007);
+			bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
+			
+		}
 		else if((persist_read_int(NUM_POKE_PKEY) == 17) ||(persist_read_int(NUM_POKE_PKEY) == 18)){ 				// case Pidgey
 			persist_write_int(NUM_POKE_PKEY, 16);
 			gbitmap_destroy(s_poke_bitmap);  																															
@@ -125,10 +134,22 @@ static void display_step_count() {
 			s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE007);
 			bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
 		}
-		else if((persist_read_int(NUM_POKE_PKEY) == 8) ||(persist_read_int(NUM_POKE_PKEY) == 9)){ 					// case Squirtle
-			persist_write_int(NUM_POKE_PKEY, 7);
+		else if(persist_read_int(NUM_POKE_PKEY) == 26){ 																										// case Pikachu
+			persist_write_int(NUM_POKE_PKEY, 25);
 			gbitmap_destroy(s_poke_bitmap);  																															
-			s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE007);
+			s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE025);
+			bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
+		}
+		else if(persist_read_int(NUM_POKE_PKEY) == 36){ 																										// case Clefairy
+			persist_write_int(NUM_POKE_PKEY, 35);
+			gbitmap_destroy(s_poke_bitmap);  																															
+			s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE035);
+			bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
+		}
+		else if(persist_read_int(NUM_POKE_PKEY) == 38){ 																										// case Vulpix
+			persist_write_int(NUM_POKE_PKEY, 37);
+			gbitmap_destroy(s_poke_bitmap);  																															
+			s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE037);
 			bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
 		}
 		else if((persist_read_int(NUM_POKE_PKEY) == 134) ||(persist_read_int(NUM_POKE_PKEY) == 135)||(persist_read_int(NUM_POKE_PKEY) == 136)||
@@ -229,6 +250,29 @@ static void display_step_count() {
 			persist_write_int(NUM_POKE_PKEY, 20);
 			gbitmap_destroy(s_poke_bitmap);  																										
 			s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE020);
+			bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
+			vibes_long_pulse();
+		}
+		else if(persist_read_int(NUM_POKE_PKEY) == 25){																											// case Raichu
+			if(persist_read_int(NUM_OCCUPATION_PKEY) != 0){
+				persist_write_int(NUM_POKE_PKEY, 26);
+				gbitmap_destroy(s_poke_bitmap);  																										
+				s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE026);
+				bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
+				vibes_long_pulse();
+			}
+		}
+		else if(persist_read_int(NUM_POKE_PKEY) == 35){																											// case Clefable
+			persist_write_int(NUM_POKE_PKEY, 36);
+			gbitmap_destroy(s_poke_bitmap);  																										
+			s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE036);
+			bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
+			vibes_long_pulse();
+		}
+		else if(persist_read_int(NUM_POKE_PKEY) == 37){																											// case Ninetales
+			persist_write_int(NUM_POKE_PKEY, 38);
+			gbitmap_destroy(s_poke_bitmap);  																										
+			s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE038);
 			bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
 			vibes_long_pulse();
 		}
@@ -396,11 +440,6 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 						persist_write_int(NUM_OCCUPATION_PKEY, 12);
 					}
 				}
-				s_trainer_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(78,59), PBL_IF_ROUND_ELSE(49,43), 45, 54));
-				bitmap_layer_set_bitmap(s_trainer_layer, s_trainer_bitmap);
-				bitmap_layer_set_background_color(s_trainer_layer, GColorClear);
-				bitmap_layer_set_compositing_mode(s_trainer_layer, GCompOpSet);
-				layer_add_child(window_get_root_layer(s_main_window), bitmap_layer_get_layer(s_trainer_layer));
       }    
       else{        																										 //case male
 				persist_write_int(NUM_TRAINER_PKEY, 22);
@@ -471,12 +510,12 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 						persist_write_int(NUM_OCCUPATION_PKEY, 12);
 					}
 				}
-				s_trainer_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(78,59), PBL_IF_ROUND_ELSE(49,43), 45, 54));
+			} 
+			s_trainer_layer = bitmap_layer_create(GRect(PBL_IF_ROUND_ELSE(78,59), PBL_IF_ROUND_ELSE(49,43), 45, 54));
 				bitmap_layer_set_bitmap(s_trainer_layer, s_trainer_bitmap);
 				bitmap_layer_set_background_color(s_trainer_layer, GColorClear);
 				bitmap_layer_set_compositing_mode(s_trainer_layer, GCompOpSet);
 				layer_add_child(window_get_root_layer(s_main_window), bitmap_layer_get_layer(s_trainer_layer));
-      } 
     }
 			//END TRAINER SETTINGS
 	
@@ -485,8 +524,16 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     if (poke_tuple) {                                          
       if(strcmp(poke_tuple->value->cstring, "25") == 0) {
 				destroyAllPoke();
-				s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE025);
-				persist_write_int(NUM_POKE_PKEY, 25);																													 //pikachu
+				if(s_step_count<5000 || (persist_read_int(NUM_OCCUPATION_PKEY) != 0)){
+					s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE025);
+					persist_write_int(NUM_POKE_PKEY, 25);																													//pikachu
+					APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
+				}
+				else{
+					s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE026);
+					persist_write_int(NUM_POKE_PKEY, 26);																													//raichu
+					APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
+				}
 				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
       }    
       else if(strcmp(poke_tuple->value->cstring, "1") == 0) {        
@@ -692,8 +739,16 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
       }
       else if(strcmp(poke_tuple->value->cstring, "35") == 0) {        
    			destroyAllPoke();
-				s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE035);
-				persist_write_int(NUM_POKE_PKEY, 35); //porygon
+				if(s_step_count<5000){
+					s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE035);									
+					persist_write_int(NUM_POKE_PKEY, 35);																													//clefairy
+					APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
+				} 	
+				else{
+					s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE036);									
+					persist_write_int(NUM_POKE_PKEY, 36);																												  //clefable
+					APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
+				}	
 				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
       }
       else if(strcmp(poke_tuple->value->cstring, "39") == 0) {        
@@ -716,8 +771,16 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
       }
       else if(strcmp(poke_tuple->value->cstring, "37") == 0) {        
    			destroyAllPoke();
-				s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE037);
-				persist_write_int(NUM_POKE_PKEY, 37); 																															//vulpix
+				if(s_step_count<5000){
+					s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE037);									
+					persist_write_int(NUM_POKE_PKEY, 37);																													//vulpix
+					APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
+				} 	
+				else{
+					s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE038);									
+					persist_write_int(NUM_POKE_PKEY, 38);																												  //ninetales
+					APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
+				}																														//vulpix
 				//APP_LOG(APP_LOG_LEVEL_DEBUG, "NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
       }
       else if(strcmp(poke_tuple->value->cstring, "86") == 0) {     
@@ -802,6 +865,32 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 				text_layer_set_text(s_weather_layer, weather_layer_buffer);
 			}
 		}
+	
+	
+	// ==============================    CHANGE location   ===========================================
+	Tuple *location_tuple = dict_find(iterator, MESSAGE_KEY_LOCATION);
+	if(location_tuple){
+		int location = (int)enableWeather_tuple->value->int32;
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "LOCATION ENABLER TUPLE IS %d", location);
+		persist_write_int(NUM_ENABLEWEATHER_PKEY, location);
+		if(location == 0){ 				//woods
+				if(persist_read_int(NUM_NIGHTMODE_PKEY) == 1){
+					bitmap_layer_set_bitmap(s_background_layer, s_backgroundNight_bitmap);
+				}
+				else if(persist_read_int(NUM_NIGHTMODE_PKEY) == 0){
+					bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
+				}
+		}
+		else if (location == 1){		//Ice Cave
+				if(persist_read_int(NUM_NIGHTMODE_PKEY) == 1){
+					bitmap_layer_set_bitmap(s_background_layer, s_backgroundIceNight_bitmap);
+				}
+				else if(persist_read_int(NUM_NIGHTMODE_PKEY) == 0){
+					bitmap_layer_set_bitmap(s_background_layer, s_backgroundIce_bitmap);
+				}
+		}
+	}
+	
 }
 
 static void inbox_dropped_callback(AppMessageResult reason, void *context) {
@@ -846,12 +935,22 @@ static void update_time() {
 	if( (tick_time->tm_hour >= 18 || tick_time->tm_hour <= 4) && (persist_read_int(NUM_NIGHTMODE_PKEY) != 1) ){
 		persist_write_int(NUM_NIGHTMODE_PKEY, 1);
 		//layer_mark_dirty(bitmap_layer_get_layer(s_background_layer));
-		bitmap_layer_set_bitmap(s_background_layer, s_backgroundNight_bitmap);
+		if(persist_read_int(NUM_LOCATION_PKEY) == 0){ 										//case woods
+			bitmap_layer_set_bitmap(s_background_layer, s_backgroundNight_bitmap);
+		}
+		else if(persist_read_int(NUM_LOCATION_PKEY) == 1){								//case Ice
+			bitmap_layer_set_bitmap(s_background_layer, s_backgroundIceNight_bitmap);
+		}
 	}
 	else if( (tick_time->tm_hour < 18 && tick_time->tm_hour > 4) && (persist_read_int(NUM_NIGHTMODE_PKEY) != 0) ){
 		persist_write_int(NUM_NIGHTMODE_PKEY, 0);
 		//layer_mark_dirty(bitmap_layer_get_layer(s_background_layer));
-		bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
+		if(persist_read_int(NUM_LOCATION_PKEY) == 0){ 										//case woods
+			bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
+		}
+		else if(persist_read_int(NUM_LOCATION_PKEY) == 1){								//case Ice
+			bitmap_layer_set_bitmap(s_background_layer, s_backgroundIce_bitmap);
+		}
 	}
 	
 	
@@ -971,18 +1070,38 @@ static void main_window_load(Window *window) {
 	
 	s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUND);
 	s_backgroundNight_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUNDNIGHT);
+	//s_backgroundIce_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUNDICE);
+	//s_backgroundIceNight_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUNDICENIGHT);
 
   // Create BitmapLayer to display the GBitmap
   s_background_layer = bitmap_layer_create(bounds);
 
   // Set the bitmap onto the layer and add to the window
 		if(persist_read_int(NUM_NIGHTMODE_PKEY) == 0){
-  	bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "Day Background applied, because NUM_NIGHTMODE_PKEY is %d", (int)persist_read_int(NUM_NIGHTMODE_PKEY));
+			if(persist_read_int(NUM_LOCATION_PKEY) == 0){ 										//case woods
+				bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
+				APP_LOG(APP_LOG_LEVEL_DEBUG, "Woods Day Background applied, because NUM_NIGHTMODE_PKEY is %d", (int)persist_read_int(NUM_NIGHTMODE_PKEY));
+			}
+			/*
+			else if(persist_read_int(NUM_LOCATION_PKEY) == 1){								//case Ice
+				bitmap_layer_set_bitmap(s_background_layer, s_backgroundIce_bitmap);
+				APP_LOG(APP_LOG_LEVEL_DEBUG, "Ice Day Background applied, because NUM_NIGHTMODE_PKEY is %d", (int)persist_read_int(NUM_NIGHTMODE_PKEY));
+			}
+			*/
 	}
-	else{
-		bitmap_layer_set_bitmap(s_background_layer, s_backgroundNight_bitmap);
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "Night Background applied, because NUM_NIGHTMODE_PKEY is %d", (int)persist_read_int(NUM_NIGHTMODE_PKEY));
+	
+	
+		else{
+			if(persist_read_int(NUM_LOCATION_PKEY) == 0){ 										//case woods
+				bitmap_layer_set_bitmap(s_background_layer, s_backgroundNight_bitmap);
+				APP_LOG(APP_LOG_LEVEL_DEBUG, "Woods Night Background applied, because NUM_NIGHTMODE_PKEY is %d", (int)persist_read_int(NUM_NIGHTMODE_PKEY));
+			}
+			/*
+			else if(persist_read_int(NUM_LOCATION_PKEY) == 1){								//case Ice
+				bitmap_layer_set_bitmap(s_background_layer, s_backgroundIceNight_bitmap);
+				APP_LOG(APP_LOG_LEVEL_DEBUG, "IceNight Background applied, because NUM_NIGHTMODE_PKEY is %d", (int)persist_read_int(NUM_NIGHTMODE_PKEY));
+			}
+			*/
 	}
 	
   // bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
@@ -1038,11 +1157,18 @@ static void main_window_load(Window *window) {
 		char* textbuffer= "Poke Trainer";
 		if(persist_exists(STR_TEXT_PKEY)){
 			persist_read_string(STR_TEXT_PKEY, textbuffer, 15);
-			APP_LOG(APP_LOG_LEVEL_DEBUG, "TEXTBUFFER IS %s", textbuffer);
-			text_layer_set_text(s_weather_layer, textbuffer);
+			if(!(strcmp(textbuffer, ""))){ 												//strcomp = 0 => sono uguali => è vuota
+				text_layer_set_text(s_weather_layer, "Poke Trainer");
+				APP_LOG(APP_LOG_LEVEL_DEBUG, "TEXTBUFFER EMPTY");
+			}
+			else{
+				APP_LOG(APP_LOG_LEVEL_DEBUG, "TEXTBUFFER IS %s", textbuffer);
+				text_layer_set_text(s_weather_layer, textbuffer);
+			}
 		}
 		else{
 			text_layer_set_text(s_weather_layer, "Poke Trainer");
+			APP_LOG(APP_LOG_LEVEL_DEBUG, "TEXTBUFFER EMPTY");
 		}
 	}
 
@@ -1284,8 +1410,12 @@ static void main_window_load(Window *window) {
 		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED RATTATA BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
             break;
         case 20:       
-		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE019);
+		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE020);
 		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED RATICATE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+            break;
+        case 26:       
+		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE026);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED RAICHU BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
             break;
         case 41:       
 		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE041);
@@ -1333,7 +1463,11 @@ static void main_window_load(Window *window) {
             break;
         case 35:       
 		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE035);
-		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED SQUIRTLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED CLEFAIRY BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+            break;
+        case 36:       
+		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE036);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED CLEFABLE BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
             break;
         case 39:       
 		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE039);
@@ -1382,6 +1516,10 @@ static void main_window_load(Window *window) {
         case 37:       
 		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE037);
 		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED VULPIX BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
+            break;
+        case 38:       
+		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE038);
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "I ADDED NINETALES BECAUSE NUM_POKE_PKEY IS NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
             break;
         case 86:       
 		s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE086);
@@ -1499,7 +1637,7 @@ static void init() {
   
   
   // Open AppMessage
-  app_message_open(128, app_message_outbox_size_maximum());
+  app_message_open(500, app_message_outbox_size_maximum());
 }
 
 static void deinit() {
