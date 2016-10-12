@@ -1637,7 +1637,7 @@ static void init() {
   
   
   // Open AppMessage
-  app_message_open(500, app_message_outbox_size_maximum());
+  app_message_open(500, 500);
 }
 
 static void deinit() {
