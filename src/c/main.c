@@ -19,8 +19,7 @@ static Layer *s_battery_layer;
 static TextLayer *s_step_layer;
 
 static BitmapLayer *s_background_layer;
-static GBitmap *s_background_bitmap, *s_backgroundNight_bitmap;
-static GBitmap *s_backgroundIce_bitmap, *s_backgroundIceNight_bitmap;
+static GBitmap *s_background_bitmap;
 
 static BitmapLayer *s_bt_icon_layer;
 static GBitmap *s_bt_icon_bitmap;
@@ -861,8 +860,14 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 			if (custom_text_tuple) {         
 				snprintf(weather_layer_buffer, 15, "%s", custom_text_tuple->value->cstring);
 				persist_write_string(STR_TEXT_PKEY, weather_layer_buffer);
-				APP_LOG(APP_LOG_LEVEL_DEBUG, "weather buffer is %s, the tuple is %s", weather_layer_buffer, custom_text_tuple->value->cstring);
-				text_layer_set_text(s_weather_layer, weather_layer_buffer);
+				if(((strcmp(weather_layer_buffer, "\0")) == 0) || (weather_layer_buffer == NULL)){ 			
+					text_layer_set_text(s_weather_layer, "Poke Trainer");
+					APP_LOG(APP_LOG_LEVEL_DEBUG, "WEBVIEW TEXTBUFFER EMPTY");
+				}
+				else{
+					APP_LOG(APP_LOG_LEVEL_DEBUG, "weather buffer is %s, the tuple is %s", weather_layer_buffer, custom_text_tuple->value->cstring);
+					text_layer_set_text(s_weather_layer, weather_layer_buffer);
+				}
 			}
 		}
 	
@@ -870,24 +875,34 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 	// ==============================    CHANGE location   ===========================================
 	Tuple *location_tuple = dict_find(iterator, MESSAGE_KEY_LOCATION);
 	if(location_tuple){
-		int location = (int)enableWeather_tuple->value->int32;
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "LOCATION ENABLER TUPLE IS %d", location);
-		persist_write_int(NUM_ENABLEWEATHER_PKEY, location);
+		int location = 0;
+		if(strcmp(location_tuple->value->cstring, "0") == 0){
+			location = 0;
+		}
+		else if(strcmp(location_tuple->value->cstring, "1") == 0){
+			location = 1;
+		}
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "LOCATION VARIABLE IS %d", location);
+		persist_write_int(NUM_LOCATION_PKEY, location);
 		if(location == 0){ 				//woods
+				gbitmap_destroy(s_background_bitmap);
 				if(persist_read_int(NUM_NIGHTMODE_PKEY) == 1){
-					bitmap_layer_set_bitmap(s_background_layer, s_backgroundNight_bitmap);
+					s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUNDNIGHT);
 				}
 				else if(persist_read_int(NUM_NIGHTMODE_PKEY) == 0){
-					bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
+					s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUND);
 				}
+				bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
 		}
 		else if (location == 1){		//Ice Cave
+				gbitmap_destroy(s_background_bitmap);
 				if(persist_read_int(NUM_NIGHTMODE_PKEY) == 1){
-					bitmap_layer_set_bitmap(s_background_layer, s_backgroundIceNight_bitmap);
+					s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUNDICENIGHT);
 				}
 				else if(persist_read_int(NUM_NIGHTMODE_PKEY) == 0){
-					bitmap_layer_set_bitmap(s_background_layer, s_backgroundIce_bitmap);
+					s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUNDICE);
 				}
+				bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
 		}
 	}
 	
@@ -934,23 +949,27 @@ static void update_time() {
 	// change background based on NIGHT MODE
 	if( (tick_time->tm_hour >= 18 || tick_time->tm_hour <= 4) && (persist_read_int(NUM_NIGHTMODE_PKEY) != 1) ){
 		persist_write_int(NUM_NIGHTMODE_PKEY, 1);
+		gbitmap_destroy(s_background_bitmap);
 		//layer_mark_dirty(bitmap_layer_get_layer(s_background_layer));
 		if(persist_read_int(NUM_LOCATION_PKEY) == 0){ 										//case woods
-			bitmap_layer_set_bitmap(s_background_layer, s_backgroundNight_bitmap);
+			s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUNDNIGHT);
 		}
 		else if(persist_read_int(NUM_LOCATION_PKEY) == 1){								//case Ice
-			bitmap_layer_set_bitmap(s_background_layer, s_backgroundIceNight_bitmap);
+			s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUNDICENIGHT);
 		}
+		bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
 	}
 	else if( (tick_time->tm_hour < 18 && tick_time->tm_hour > 4) && (persist_read_int(NUM_NIGHTMODE_PKEY) != 0) ){
 		persist_write_int(NUM_NIGHTMODE_PKEY, 0);
+		gbitmap_destroy(s_background_bitmap);
 		//layer_mark_dirty(bitmap_layer_get_layer(s_background_layer));
 		if(persist_read_int(NUM_LOCATION_PKEY) == 0){ 										//case woods
-			bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
+			s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUND);
 		}
 		else if(persist_read_int(NUM_LOCATION_PKEY) == 1){								//case Ice
-			bitmap_layer_set_bitmap(s_background_layer, s_backgroundIce_bitmap);
+			s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUNDICE);
 		}
+		bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
 	}
 	
 	
@@ -1067,11 +1086,6 @@ static void main_window_load(Window *window) {
   unobstructed_area_service_subscribe(handler, NULL);
 
   // Create GBitmap BASED ON NIGHT MODE
-	
-	s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUND);
-	s_backgroundNight_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUNDNIGHT);
-	//s_backgroundIce_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUNDICE);
-	//s_backgroundIceNight_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUNDICENIGHT);
 
   // Create BitmapLayer to display the GBitmap
   s_background_layer = bitmap_layer_create(bounds);
@@ -1079,29 +1093,29 @@ static void main_window_load(Window *window) {
   // Set the bitmap onto the layer and add to the window
 		if(persist_read_int(NUM_NIGHTMODE_PKEY) == 0){
 			if(persist_read_int(NUM_LOCATION_PKEY) == 0){ 										//case woods
+				s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUND);
 				bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
 				APP_LOG(APP_LOG_LEVEL_DEBUG, "Woods Day Background applied, because NUM_NIGHTMODE_PKEY is %d", (int)persist_read_int(NUM_NIGHTMODE_PKEY));
 			}
-			/*
 			else if(persist_read_int(NUM_LOCATION_PKEY) == 1){								//case Ice
-				bitmap_layer_set_bitmap(s_background_layer, s_backgroundIce_bitmap);
+				s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUNDICE);
+				bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
 				APP_LOG(APP_LOG_LEVEL_DEBUG, "Ice Day Background applied, because NUM_NIGHTMODE_PKEY is %d", (int)persist_read_int(NUM_NIGHTMODE_PKEY));
 			}
-			*/
 	}
 	
 	
 		else{
 			if(persist_read_int(NUM_LOCATION_PKEY) == 0){ 										//case woods
-				bitmap_layer_set_bitmap(s_background_layer, s_backgroundNight_bitmap);
+		 		s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUNDNIGHT);
+				bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
 				APP_LOG(APP_LOG_LEVEL_DEBUG, "Woods Night Background applied, because NUM_NIGHTMODE_PKEY is %d", (int)persist_read_int(NUM_NIGHTMODE_PKEY));
 			}
-			/*
 			else if(persist_read_int(NUM_LOCATION_PKEY) == 1){								//case Ice
-				bitmap_layer_set_bitmap(s_background_layer, s_backgroundIceNight_bitmap);
+				s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUNDICENIGHT);
+				bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
 				APP_LOG(APP_LOG_LEVEL_DEBUG, "IceNight Background applied, because NUM_NIGHTMODE_PKEY is %d", (int)persist_read_int(NUM_NIGHTMODE_PKEY));
 			}
-			*/
 	}
 	
   // bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
@@ -1157,7 +1171,7 @@ static void main_window_load(Window *window) {
 		char* textbuffer= "Poke Trainer";
 		if(persist_exists(STR_TEXT_PKEY)){
 			persist_read_string(STR_TEXT_PKEY, textbuffer, 15);
-			if(!(strcmp(textbuffer, ""))){ 												//strcomp = 0 => sono uguali => è vuota
+			if(((strcmp(textbuffer, "\0")) == 0) || (textbuffer = NULL) || ((strcmp(textbuffer, "(null)")) == 0)){ 		
 				text_layer_set_text(s_weather_layer, "Poke Trainer");
 				APP_LOG(APP_LOG_LEVEL_DEBUG, "TEXTBUFFER EMPTY");
 			}
@@ -1167,8 +1181,8 @@ static void main_window_load(Window *window) {
 			}
 		}
 		else{
-			text_layer_set_text(s_weather_layer, "Poke Trainer");
-			APP_LOG(APP_LOG_LEVEL_DEBUG, "TEXTBUFFER EMPTY");
+				text_layer_set_text(s_weather_layer, "Poke Trainer");
+				APP_LOG(APP_LOG_LEVEL_DEBUG, "TEXTBUFFER EMPTY");
 		}
 	}
 
@@ -1556,7 +1570,6 @@ static void main_window_unload(Window *window) {
 
   // Destroy GBitmap
   gbitmap_destroy(s_background_bitmap);
-	gbitmap_destroy(s_backgroundNight_bitmap);
 
   // Destroy BitmapLayer
   bitmap_layer_destroy(s_background_layer);

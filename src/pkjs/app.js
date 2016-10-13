@@ -86,7 +86,7 @@ Pebble.addEventListener('ready',
     console.log("PebbleKit JS ready!");
 
     // Get the initial weather
-		if(localStorage.getItem("APIKey") === '' || localStorage.lenght === 0){
+		if(localStorage.getItem("APIKey") === '' || localStorage.lenght === 0 || localStorage.getItem("APIKey") === null){
 			console.log("(ready)No API key set");
 		}
 		else{
@@ -100,7 +100,7 @@ Pebble.addEventListener('ready',
 Pebble.addEventListener('appmessage',
   function(e) {
     console.log("AppMessage received!");
-		if(localStorage.getItem("APIKey") === '' || localStorage.lenght === 0){
+		if(localStorage.getItem("APIKey") === '' || localStorage.lenght === 0 || localStorage.getItem("APIKey") === null){
 			console.log("(appmessage) No API key set");
 		}
 		else{
@@ -114,7 +114,7 @@ Pebble.addEventListener('appmessage',
 Pebble.addEventListener('webviewclosed',
   function(e) {
     console.log("AppMessage received!");
-		if(localStorage.getItem("APIKey") === '' || localStorage.lenght === 0){
+		if(localStorage.getItem("APIKey") === '' || localStorage.lenght === 0 || localStorage.getItem("APIKey") === null){
 			console.log("(webviewclosed) No API key set");
 		}
 		else{
