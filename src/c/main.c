@@ -860,7 +860,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 			if (custom_text_tuple) {         
 				snprintf(weather_layer_buffer, 15, "%s", custom_text_tuple->value->cstring);
 				persist_write_string(STR_TEXT_PKEY, weather_layer_buffer);
-				if(((strcmp(weather_layer_buffer, "\0")) == 0) || (weather_layer_buffer == NULL)){ 			
+				if((strcmp(weather_layer_buffer, "\0")) == 0){ 			
 					text_layer_set_text(s_weather_layer, "Poke Trainer");
 					APP_LOG(APP_LOG_LEVEL_DEBUG, "WEBVIEW TEXTBUFFER EMPTY");
 				}
@@ -875,6 +875,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 	// ==============================    CHANGE location   ===========================================
 	Tuple *location_tuple = dict_find(iterator, MESSAGE_KEY_LOCATION);
 	if(location_tuple){
+		gbitmap_destroy(s_background_bitmap);
 		int location = 0;
 		if(strcmp(location_tuple->value->cstring, "0") == 0){
 			location = 0;
@@ -885,7 +886,6 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 		APP_LOG(APP_LOG_LEVEL_DEBUG, "LOCATION VARIABLE IS %d", location);
 		persist_write_int(NUM_LOCATION_PKEY, location);
 		if(location == 0){ 				//woods
-				gbitmap_destroy(s_background_bitmap);
 				if(persist_read_int(NUM_NIGHTMODE_PKEY) == 1){
 					s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUNDNIGHT);
 				}
@@ -895,7 +895,6 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 				bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
 		}
 		else if (location == 1){		//Ice Cave
-				gbitmap_destroy(s_background_bitmap);
 				if(persist_read_int(NUM_NIGHTMODE_PKEY) == 1){
 					s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUNDICENIGHT);
 				}
@@ -1171,7 +1170,7 @@ static void main_window_load(Window *window) {
 		char* textbuffer= "Poke Trainer";
 		if(persist_exists(STR_TEXT_PKEY)){
 			persist_read_string(STR_TEXT_PKEY, textbuffer, 15);
-			if(((strcmp(textbuffer, "\0")) == 0) || (textbuffer = NULL) || ((strcmp(textbuffer, "(null)")) == 0)){ 		
+			if(((strcmp(textbuffer, "\0")) == 0) || (textbuffer = NULL) || ((strcmp(textbuffer, "null")) == 0)){ 		
 				text_layer_set_text(s_weather_layer, "Poke Trainer");
 				APP_LOG(APP_LOG_LEVEL_DEBUG, "TEXTBUFFER EMPTY");
 			}

@@ -171,7 +171,7 @@ module.exports = [
       },
 			{
         "type": "text",
-        "defaultValue": "<font size='2'>Bulbasaur, Charmander & Squirtle will evolve at 2500 steps, then at 10000 steps. <br>Eevee will evolve *randomly* at 5000 steps!</font>"
+        "defaultValue": "<font size='2'>Pokémon with two evolutions like Bulbasaur, Charmander & Squirtle will evolve at 2500 steps, then at 10000 steps.<br>The others will evolve at 5000 steps.<br>Eevee will evolve *randomly* at 5000 steps!</font>"
       },
       {
         "type": "radiogroup",
@@ -282,7 +282,11 @@ module.exports = [
     "items": [
       {
         "type": "heading",
-        "defaultValue": "Location Settings"
+        "defaultValue": "Location Settings <BETA>"
+      },
+			{
+        "type": "text",
+        "defaultValue": "<font size='2'>If, after changing this setting, the watchface will stop responding don't worry - just set it active again it will work. <br>I'm working on this :D</font>"
       },
       {
         "type": "radiogroup",

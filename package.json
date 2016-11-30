@@ -41,7 +41,8 @@
                     "file": "images/backgroundIce.png",
                     "name": "IMAGE_BACKGROUNDICE",
                     "targetPlatforms": [
-                        "basalt"
+                        "basalt",
+                        "emery"
                     ],
                     "type": "bitmap"
                 },
@@ -57,7 +58,8 @@
                     "file": "images/backgroundIceNIGHT.png",
                     "name": "IMAGE_BACKGROUNDICENIGHT",
                     "targetPlatforms": [
-                        "basalt"
+                        "basalt",
+                        "emery"
                     ],
                     "type": "bitmap"
                 },
@@ -549,7 +551,8 @@
                     "file": "images/backgroundNIGHT.png",
                     "name": "IMAGE_BACKGROUNDNIGHT",
                     "targetPlatforms": [
-                        "basalt"
+                        "basalt",
+                        "emery"
                     ],
                     "type": "bitmap"
                 },
@@ -557,7 +560,8 @@
                     "file": "images/background.png",
                     "name": "IMAGE_BACKGROUND",
                     "targetPlatforms": [
-                        "basalt"
+                        "basalt",
+                        "emery"
                     ],
                     "type": "bitmap"
                 },
