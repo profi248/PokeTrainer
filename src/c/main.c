@@ -1405,8 +1405,8 @@ static void main_window_load(Window *window) {
     bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
     bitmap_layer_set_background_color(s_poke_layer, GColorClear);
     bitmap_layer_set_compositing_mode(s_poke_layer, GCompOpSet);
-    layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_poke_layer));   
-
+    layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_poke_layer));
+    prv_unobstructed_change(0, NULL);
 }
 
 static void main_window_unload(Window *window) {
