@@ -8,6 +8,10 @@ uint32_t NUM_NIGHTMODE_PKEY = 5;
 uint32_t NUM_ENABLEWEATHER_PKEY = 6;
 uint32_t STR_TEXT_PKEY = 7;
 
+typedef enum {
+    TRESHOLD_LOW, TRESHOLD_MEDIUM, TRESHOLD_MAX 
+} activity_treshold_lvl_t;
+
 static Window* s_main_window;
 static TextLayer* s_time_layer;
 static TextLayer* s_weather_layer;
@@ -79,8 +83,31 @@ static void get_step_average() {
 }
 */
 
+static int get_activity_treshold(activity_treshold_lvl_t lvl) 
+{
+    switch (lvl) {
+        // first evolution for 3 stage Pokémon
+        case TRESHOLD_LOW:
+            return 2500;
+
+        // only evolution for 2 stage Pokémon
+        case TRESHOLD_MEDIUM:
+            return 5000;
+
+        // second evolution for 3 stage Pokémon
+        case TRESHOLD_MAX:
+            return 10000;
+    }
+
+    return -1;
+}
+
 static void display_step_count()
 {
+
+    // get_step_goal();
+    // APP_LOG(APP_LOG_LEVEL_DEBUG, "step goal: %d", s_step_goal);
+
     int thousands = s_step_count / 1000;
     int hundreds = s_step_count % 1000;
     text_layer_set_text_color(s_step_layer, GColorBlack);
@@ -97,7 +124,7 @@ static void display_step_count()
 
     text_layer_set_text(s_step_layer, s_current_steps_buffer);
 
-    if (s_step_count < 2500) { // <2500, basic
+    if (s_step_count < get_activity_treshold(TRESHOLD_LOW)) { // <2500, basic
         if ((persist_read_int(NUM_POKE_PKEY) == 2) || (persist_read_int(NUM_POKE_PKEY) == 3)) { // case Bulbasaur
             persist_write_int(NUM_POKE_PKEY, 1);
             gbitmap_destroy(s_poke_bitmap);
@@ -141,7 +168,7 @@ static void display_step_count()
         }
     } // ====== end evolution
 
-    else if (s_step_count > 2500 && s_step_count < 5000) {
+    else if (s_step_count > get_activity_treshold(TRESHOLD_LOW) && s_step_count < get_activity_treshold(TRESHOLD_MEDIUM)) {
         //>2500, first ev
         if (persist_read_int(NUM_POKE_PKEY) == 1) { // case Ivysaur
             persist_write_int(NUM_POKE_PKEY, 2);
@@ -170,7 +197,7 @@ static void display_step_count()
         }
     } // ====== end evolution
 
-    else if (s_step_count > 5000 && s_step_count < 10000) { 
+    else if (s_step_count > get_activity_treshold(TRESHOLD_MEDIUM) && s_step_count < get_activity_treshold(TRESHOLD_MAX)) { 
         //>5000, only ev
         if (persist_read_int(NUM_POKE_PKEY) == 133) { // case Eeveelution
             int eeveelution[8] = { 134, 135, 136, 196, 197, 470, 471, 700 };
@@ -232,7 +259,7 @@ static void display_step_count()
         }
     } // ====== end evolution
 
-    else if (s_step_count > 10000) { 
+    else if (s_step_count > get_activity_treshold(TRESHOLD_MAX)) { 
         //>10000, last evolution
         if (persist_read_int(NUM_POKE_PKEY) == 2) { // case Venusaur
             persist_write_int(NUM_POKE_PKEY, 3);
@@ -455,15 +482,15 @@ static void inbox_received_callback(DictionaryIterator* iterator,
                 // NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
         } else if (strcmp(poke_tuple->value->cstring, "1") == 0) {
             destroyAllPoke();
-            if (s_step_count < 2500) {
+            if (s_step_count < get_activity_treshold(TRESHOLD_LOW)) {
                 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE001);
                 persist_write_int(NUM_POKE_PKEY, 1); // bulbasaur
                 APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
-            } else if (s_step_count >= 2500 && s_step_count < 10000) {
+            } else if (s_step_count >= get_activity_treshold(TRESHOLD_LOW) && s_step_count < get_activity_treshold(TRESHOLD_MAX)) {
                 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE002);
                 persist_write_int(NUM_POKE_PKEY, 2); // ivysaur
                 APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
-            } else if (s_step_count >= 10000) {
+            } else if (s_step_count >= get_activity_treshold(TRESHOLD_MAX)) {
                 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE003);
                 persist_write_int(NUM_POKE_PKEY, 3); // venusaur
                 APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
@@ -472,15 +499,15 @@ static void inbox_received_callback(DictionaryIterator* iterator,
             // (int)persist_read_int(NUM_POKE_PKEY));
         } else if (strcmp(poke_tuple->value->cstring, "4") == 0) {
             destroyAllPoke();
-            if (s_step_count < 2500) {
+            if (s_step_count < get_activity_treshold(TRESHOLD_LOW)) {
                 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE004);
                 persist_write_int(NUM_POKE_PKEY, 4); // charmander
                 APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
-            } else if (s_step_count >= 2500 && s_step_count < 10000) {
+            } else if (s_step_count >= get_activity_treshold(TRESHOLD_LOW) && s_step_count < get_activity_treshold(TRESHOLD_MAX)) {
                 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE005);
                 persist_write_int(NUM_POKE_PKEY, 5); // charmeleon
                 APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
-            } else if (s_step_count >= 10000) {
+            } else if (s_step_count >= get_activity_treshold(TRESHOLD_MAX)) {
                 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE006);
                 persist_write_int(NUM_POKE_PKEY, 6); // charizard
                 APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
@@ -489,15 +516,15 @@ static void inbox_received_callback(DictionaryIterator* iterator,
             // (int)persist_read_int(NUM_POKE_PKEY));
         } else if (strcmp(poke_tuple->value->cstring, "7") == 0) {
             destroyAllPoke();
-            if (s_step_count < 2500) {
+            if (s_step_count < get_activity_treshold(TRESHOLD_LOW)) {
                 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE007);
                 persist_write_int(NUM_POKE_PKEY, 7); // squirtle
                 APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
-            } else if (s_step_count >= 2500 && s_step_count < 10000) {
+            } else if (s_step_count >= get_activity_treshold(TRESHOLD_LOW) && s_step_count < get_activity_treshold(TRESHOLD_MAX)) {
                 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE008);
                 persist_write_int(NUM_POKE_PKEY, 8); // wartortle
                 APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
-            } else if (s_step_count >= 10000) {
+            } else if (s_step_count >= get_activity_treshold(TRESHOLD_MAX)) {
                 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE009);
                 persist_write_int(NUM_POKE_PKEY, 9); // blastoise
                 APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
@@ -506,15 +533,15 @@ static void inbox_received_callback(DictionaryIterator* iterator,
             // (int)persist_read_int(NUM_POKE_PKEY));
         } else if (strcmp(poke_tuple->value->cstring, "16") == 0) {
             destroyAllPoke();
-            if (s_step_count < 2500) {
+            if (s_step_count < get_activity_treshold(TRESHOLD_LOW)) {
                 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE016);
                 persist_write_int(NUM_POKE_PKEY, 16); // pidgey
                 APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
-            } else if (s_step_count >= 2500 && s_step_count < 10000) {
+            } else if (s_step_count >= get_activity_treshold(TRESHOLD_LOW) && s_step_count < get_activity_treshold(TRESHOLD_MAX)) {
                 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE017);
                 persist_write_int(NUM_POKE_PKEY, 17); // pidgeotto
                 APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
-            } else if (s_step_count >= 10000) {
+            } else if (s_step_count >= get_activity_treshold(TRESHOLD_MAX)) {
                 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE018);
                 persist_write_int(NUM_POKE_PKEY, 18); // pidgeot
                 APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
@@ -523,7 +550,7 @@ static void inbox_received_callback(DictionaryIterator* iterator,
             // (int)persist_read_int(NUM_POKE_PKEY));
         } else if (strcmp(poke_tuple->value->cstring, "19") == 0) {
             destroyAllPoke();
-            if (s_step_count < 5000) {
+            if (s_step_count < get_activity_treshold(TRESHOLD_MEDIUM)) {
                 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE019);
                 persist_write_int(NUM_POKE_PKEY, 19); // rattata
                 APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
@@ -536,7 +563,7 @@ static void inbox_received_callback(DictionaryIterator* iterator,
             // (int)persist_read_int(NUM_POKE_PKEY));
         } else if (strcmp(poke_tuple->value->cstring, "41") == 0) {
             destroyAllPoke();
-            if (s_step_count < 5000) {
+            if (s_step_count < get_activity_treshold(TRESHOLD_MEDIUM)) {
                 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE041);
                 persist_write_int(NUM_POKE_PKEY, 41); // zubat
                 APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
@@ -564,7 +591,7 @@ static void inbox_received_callback(DictionaryIterator* iterator,
                 // NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
         } else if (strcmp(poke_tuple->value->cstring, "133") == 0) {
             destroyAllPoke();
-            if (s_step_count > 5000) {
+            if (s_step_count > get_activity_treshold(TRESHOLD_MEDIUM)) {
                 int eeveelution[8] = { 134, 135, 136, 196, 197, 470, 471, 700 };
                 int n = rand() % 8;
                 APP_LOG(APP_LOG_LEVEL_DEBUG,
@@ -699,7 +726,7 @@ static void inbox_received_callback(DictionaryIterator* iterator,
                 // NOW %d", (int)persist_read_int(NUM_POKE_PKEY));
         } else if (strcmp(poke_tuple->value->cstring, "86") == 0) {
             destroyAllPoke();
-            if (s_step_count < 5000) {
+            if (s_step_count < get_activity_treshold(TRESHOLD_MEDIUM)) {
                 s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE086);
                 persist_write_int(NUM_POKE_PKEY, 86); // seel
                 APP_LOG(APP_LOG_LEVEL_DEBUG, "step count is %d", s_step_count);
