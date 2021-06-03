@@ -7,6 +7,8 @@ uint32_t NUM_OCCUPATION_PKEY = 4;
 uint32_t NUM_NIGHTMODE_PKEY = 5;
 uint32_t NUM_ENABLEWEATHER_PKEY = 6;
 uint32_t STR_TEXT_PKEY = 7;
+uint32_t NUM_SUNRISE_PKEY = 8;
+uint32_t NUM_SUNSET_PKEY = 9;
 
 typedef enum {
     TRESHOLD_LOW, TRESHOLD_MEDIUM, TRESHOLD_MAX 
@@ -51,6 +53,9 @@ static GFont s_step_font;
 
 static bool s_use_dynamic_step_tresholds = true;
 static int s_static_base_step_treshold = 10000;
+static int s_sunset_static_hour_treshold = 19;
+static int s_sunrise_static_hour_treshold = 6;
+static int s_seconds_per_day = 3600 * 24;
 
 static char s_current_steps_buffer[16];
 static int s_step_count = 0, s_step_goal = 0; // s_step_average = 0;
@@ -769,6 +774,19 @@ static void inbox_received_callback(DictionaryIterator* iterator,
     }
     // END POKEMON SETTINGS
 
+    // =================== sunset/sunrise times =======================
+    Tuple* sunrise_tuple = dict_find(iterator, MESSAGE_KEY_Sunrise);
+    Tuple* sunset_tuple = dict_find(iterator, MESSAGE_KEY_Sunset);
+    if (sunrise_tuple) {
+        // APP_LOG(APP_LOG_LEVEL_DEBUG, "sunrise timestamp msg: %d", (int) sunrise_tuple->value->int32);
+        persist_write_int(NUM_SUNRISE_PKEY, (int) sunrise_tuple->value->int32);
+    }
+
+    if (sunset_tuple) {
+        // APP_LOG(APP_LOG_LEVEL_DEBUG, "sunset timestamp msg: %d", (int) sunset_tuple->value->int32);
+        persist_write_int(NUM_SUNSET_PKEY, (int) sunset_tuple->value->int32);
+    }
+
     // ========================================== WEATHER YES OR NO ==============
 
     Tuple* enableWeather_tuple = dict_find(iterator, MESSAGE_KEY_enableWeather);
@@ -859,11 +877,30 @@ static void battery_callback(BatteryChargeState state)
     s_battery_level = state.charge_percent;
 }
 
-static void update_time()
+bool should_use_nightmode(int hr) {
+    int sunrise_timestamp = persist_read_int(NUM_SUNRISE_PKEY) + s_seconds_per_day; // next day sunrise
+    int sunset_timestamp = persist_read_int(NUM_SUNSET_PKEY);
+    int now_timestamp = time(NULL);
+
+    //APP_LOG(APP_LOG_LEVEL_INFO, "sunrise: %d, sunset: %d, now: %d", sunrise_timestamp, sunset_timestamp, now_timestamp);
+    if (persist_read_int(NUM_ENABLEWEATHER_PKEY) != 1 || !sunset_timestamp || !sunrise_timestamp) {
+        if (hr >= s_sunset_static_hour_treshold || hr <= s_sunrise_static_hour_treshold)
+            return true;
+    } else {
+        if (now_timestamp >= sunset_timestamp && now_timestamp <= sunrise_timestamp)
+            return true;
+    }
+
+    return false;
+}
+
+static void update_time(struct tm* tick_time)
 {
-    // Get a tm structure
-    time_t temp = time(NULL);
-    struct tm* tick_time = localtime(&temp);
+    if (!tick_time) {
+        // Get a tm structure
+        time_t temp = time(NULL);
+        tick_time = localtime(&temp);
+    }
 
     // Write the current hours and minutes into a buffer
     static char s_buffer[8];
@@ -881,12 +918,14 @@ static void update_time()
     text_layer_set_text(s_date_layer, date_buffer);
 
     // change background based on NIGHT MODE
-    if ((tick_time->tm_hour >= 18 || tick_time->tm_hour <= 4) && (persist_read_int(NUM_NIGHTMODE_PKEY) != 1)) {
+    if (should_use_nightmode(tick_time->tm_hour)) {
         persist_write_int(NUM_NIGHTMODE_PKEY, 1);
+
         // layer_mark_dirty(bitmap_layer_get_layer(s_background_layer));
         bitmap_layer_set_bitmap(s_background_layer, s_backgroundNight_bitmap);
-    } else if ((tick_time->tm_hour < 18 && tick_time->tm_hour > 4) && (persist_read_int(NUM_NIGHTMODE_PKEY) != 0)) {
+    } else {
         persist_write_int(NUM_NIGHTMODE_PKEY, 0);
+
         // layer_mark_dirty(bitmap_layer_get_layer(s_background_layer));
         bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
     }
@@ -894,7 +933,7 @@ static void update_time()
 
 static void tick_handler(struct tm* tick_time, TimeUnits units_changed)
 {
-    update_time();
+    update_time(tick_time);
 
     // Get weather update every 30 minutes
     if (tick_time->tm_min % 30 == 0) {
@@ -1580,7 +1619,7 @@ static void init()
     window_stack_push(s_main_window, true);
 
     // Make sure the time is displayed from the start
-    update_time();
+    update_time(NULL);
 
     // Register with TickTimerService
     tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);

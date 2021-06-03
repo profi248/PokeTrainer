@@ -16,6 +16,8 @@
         "messageKeys": [
             "Temperature",
             "Conditions",
+            "Sunrise",
+            "Sunset",
             "UNITS",
             "TRAINER",
             "POKE",
