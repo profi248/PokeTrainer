@@ -49,6 +49,9 @@ static GFont s_step_font;
 
 // ================== START STEP INFO 
 
+static bool s_use_dynamic_step_tresholds = true;
+static int s_static_base_step_treshold = 10000;
+
 static char s_current_steps_buffer[16];
 static int s_step_count = 0, s_step_goal = 0; // s_step_average = 0;
 
@@ -70,7 +73,7 @@ static void get_step_goal()
 // Todays current step count
 static void get_step_count()
 {
-    s_step_count = (int)health_service_sum_today(HealthMetricStepCount);
+    s_step_count = (int) health_service_sum_today(HealthMetricStepCount);
 }
 
 /*
@@ -85,18 +88,29 @@ static void get_step_average() {
 
 static int get_activity_treshold(activity_treshold_lvl_t lvl) 
 {
+    int base_steps;
+
+    if (s_use_dynamic_step_tresholds) {
+        get_step_goal();
+        base_steps = s_step_goal;
+    } else {
+        base_steps = s_static_base_step_treshold;
+    }
+
+    // APP_LOG(APP_LOG_LEVEL_DEBUG, "base_steps: %d", base_steps);
+
     switch (lvl) {
         // first evolution for 3 stage Pokémon
         case TRESHOLD_LOW:
-            return 2500;
+            return base_steps / 2;
 
         // only evolution for 2 stage Pokémon
         case TRESHOLD_MEDIUM:
-            return 5000;
+            return base_steps;
 
         // second evolution for 3 stage Pokémon
         case TRESHOLD_MAX:
-            return 10000;
+            return base_steps;
     }
 
     return -1;
@@ -123,6 +137,11 @@ static void display_step_count()
     // ==================================================== STEP PART
 
     text_layer_set_text(s_step_layer, s_current_steps_buffer);
+    // APP_LOG(APP_LOG_LEVEL_DEBUG, "tresholds: %d %d %d", get_activity_treshold(TRESHOLD_LOW),
+    //                                                     get_activity_treshold(TRESHOLD_MEDIUM),
+    //                                                     get_activity_treshold(TRESHOLD_MAX));
+    // APP_LOG(APP_LOG_LEVEL_DEBUG, "step part: %d > %d", s_step_count, get_activity_treshold(TRESHOLD_MAX));
+
 
     if (s_step_count < get_activity_treshold(TRESHOLD_LOW)) { // <2500, basic
         if ((persist_read_int(NUM_POKE_PKEY) == 2) || (persist_read_int(NUM_POKE_PKEY) == 3)) { // case Bulbasaur
@@ -168,7 +187,7 @@ static void display_step_count()
         }
     } // ====== end evolution
 
-    else if (s_step_count > get_activity_treshold(TRESHOLD_LOW) && s_step_count < get_activity_treshold(TRESHOLD_MEDIUM)) {
+    else if (s_step_count >= get_activity_treshold(TRESHOLD_LOW) && s_step_count < get_activity_treshold(TRESHOLD_MEDIUM)) {
         //>2500, first ev
         if (persist_read_int(NUM_POKE_PKEY) == 1) { // case Ivysaur
             persist_write_int(NUM_POKE_PKEY, 2);
@@ -197,7 +216,37 @@ static void display_step_count()
         }
     } // ====== end evolution
 
-    else if (s_step_count > get_activity_treshold(TRESHOLD_MEDIUM) && s_step_count < get_activity_treshold(TRESHOLD_MAX)) { 
+    else if (s_step_count >= get_activity_treshold(TRESHOLD_MAX)) {
+        //>10000, last evolution
+        if (persist_read_int(NUM_POKE_PKEY) == 2) { // case Venusaur
+            persist_write_int(NUM_POKE_PKEY, 3);
+            gbitmap_destroy(s_poke_bitmap);
+            s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE003);
+            bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
+            vibes_long_pulse();
+        } else if (persist_read_int(NUM_POKE_PKEY) == 5) { // case Charizard
+            persist_write_int(NUM_POKE_PKEY, 6);
+            gbitmap_destroy(s_poke_bitmap);
+            s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE006);
+            bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
+            vibes_long_pulse();
+        } else if (persist_read_int(NUM_POKE_PKEY) == 8) { // case Blastoise
+            persist_write_int(NUM_POKE_PKEY, 9);
+            gbitmap_destroy(s_poke_bitmap);
+            s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE009);
+            bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
+            vibes_long_pulse();
+        } else if (persist_read_int(NUM_POKE_PKEY) == 17) { // case Pidgeot
+            persist_write_int(NUM_POKE_PKEY, 18);
+            gbitmap_destroy(s_poke_bitmap);
+            s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE018);
+            bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
+            vibes_long_pulse();
+        }
+
+    } // ====== end evolution
+
+    if (s_step_count >= get_activity_treshold(TRESHOLD_MEDIUM)) {
         //>5000, only ev
         if (persist_read_int(NUM_POKE_PKEY) == 133) { // case Eeveelution
             int eeveelution[8] = { 134, 135, 136, 196, 197, 470, 471, 700 };
@@ -254,37 +303,6 @@ static void display_step_count()
             persist_write_int(NUM_POKE_PKEY, 87);
             gbitmap_destroy(s_poke_bitmap);
             s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE087);
-            bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
-            vibes_long_pulse();
-        }
-    } // ====== end evolution
-
-    else if (s_step_count > get_activity_treshold(TRESHOLD_MAX)) { 
-        //>10000, last evolution
-        if (persist_read_int(NUM_POKE_PKEY) == 2) { // case Venusaur
-            persist_write_int(NUM_POKE_PKEY, 3);
-            gbitmap_destroy(s_poke_bitmap);
-            s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE003);
-            bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
-            vibes_long_pulse();
-        } else if (persist_read_int(NUM_POKE_PKEY) == 5) { // case Charizard
-            persist_write_int(NUM_POKE_PKEY, 6);
-            gbitmap_destroy(s_poke_bitmap);
-            s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE006);
-            bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
-            vibes_long_pulse();
-        } else if (persist_read_int(NUM_POKE_PKEY) == 8) { // case Blastoise
-            persist_write_int(NUM_POKE_PKEY, 9);
-            gbitmap_destroy(s_poke_bitmap);
-            s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE009);
-            bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
-            vibes_long_pulse();
-        }
-
-        else if (persist_read_int(NUM_POKE_PKEY) == 17) { // case Pidgeot
-            persist_write_int(NUM_POKE_PKEY, 18);
-            gbitmap_destroy(s_poke_bitmap);
-            s_poke_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_POKE018);
             bitmap_layer_set_bitmap(s_poke_layer, s_poke_bitmap);
             vibes_long_pulse();
         }
@@ -1137,6 +1155,8 @@ static void main_window_load(Window* window)
 
     // Subscribe to health events if we can
     if (step_data_is_available()) {
+        // get_step_count();
+        // display_step_count();
         health_service_events_subscribe(health_handler, NULL);
     }
 
