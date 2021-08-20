@@ -18,9 +18,9 @@ module.exports = [
       {
         "type": "toggle",
         "messageKey": "enableWeather",
-        "label": "Enable Weather",
+        "label": "Enable Weather and Dynamic Night Mode",
         "defaultValue": false,
-        "description": "If you turn it on you have to add your OpenWeatherMap API Key, else you can set a custom text!"
+        "description": "If you turn it on you have to add your OpenWeatherMap API Key.<br>You will see the current weather in your location right on the watch face, and night mode will switch based on current sunset/sunrise times!<br>Else you can set a custom text."
       },
 
       {
@@ -160,7 +160,7 @@ module.exports = [
       },
       {
         "type": "text",
-        "defaultValue": "<font size='2'>Bulbasaur, Charmander & Squirtle will evolve at 2500 steps, then at 10000 steps. <br>Eevee will evolve *randomly* at 5000 steps!</font>"
+        "defaultValue": "<font size='2'>Pokémon with evolutions will evolve based on your daily step count.<br>The ones with 3 stages will reach their final form when you conquer your average daily step count. Their first evolution will happen at half that amount.<br>Eevee will evolve *randomly* when you reach your average daily step count!</font>"
       },
       {
         "type": "radiogroup",
@@ -274,6 +274,6 @@ module.exports = [
   },
   {
     "type": "text",
-    "defaultValue": "Thanks to:<br> <font size='2'>Northeastpaw, twaider, TheRedHairedHero for the help;<br>Dragoon, Dazz for the sprites;<br>Nintendo, Game Freak for Pokémon!</font><br><br>© rentsmdi 2016"
+    "defaultValue": "Thanks to:<br> <font size='2'>Northeastpaw, twaider, TheRedHairedHero for the help;<br>Dragoon, Dazz for the sprites;<br>Nintendo, Game Freak for Pokémon!</font><br><br>© rentsmdi 2016<br>Updated by profi248 in 2021"
   }
 ];
