@@ -274,6 +274,10 @@ module.exports = [
   },
   {
     "type": "text",
+    "defaultValue": "Version 3.6.0"
+  },
+  {
+    "type": "text",
     "defaultValue": "Thanks to:<br> <font size='2'>Northeastpaw, twaider, TheRedHairedHero for the help;<br>Dragoon, Dazz for the sprites;<br>Nintendo, Game Freak for Pokémon!</font><br><br>© rentsmdi 2016<br>Updated by profi248 in 2021-2022"
   }
 ];
