@@ -877,17 +877,22 @@ static void battery_callback(BatteryChargeState state)
     s_battery_level = state.charge_percent;
 }
 
-bool should_use_nightmode(int hr) {
-    int sunrise_timestamp = persist_read_int(NUM_SUNRISE_PKEY) + s_seconds_per_day; // next day sunrise
+bool should_use_nightmode(tm* time) {
+    int sunrise_timestamp = persist_read_int(NUM_SUNRISE_PKEY);
     int sunset_timestamp = persist_read_int(NUM_SUNSET_PKEY);
-    int now_timestamp = time(NULL);
+    int now_timestamp = mktime(time);
+
+    int sunrise_seconds_since_midnight = sunrise_timestamp % s_seconds_per_day;
+    int sunset_seconds_since_midnight = sunset_timestamp % s_seconds_per_day;
+
+    int seconds_since_midnight = now_timestamp % s_seconds_per_day;
 
     //APP_LOG(APP_LOG_LEVEL_INFO, "sunrise: %d, sunset: %d, now: %d", sunrise_timestamp, sunset_timestamp, now_timestamp);
     if (persist_read_int(NUM_ENABLEWEATHER_PKEY) != 1 || !sunset_timestamp || !sunrise_timestamp) {
-        if (hr >= s_sunset_static_hour_threshold || hr <= s_sunrise_static_hour_threshold)
+        if (time->tm_hour >= s_sunset_static_hour_threshold || time->tm_hour <= s_sunrise_static_hour_threshold)
             return true;
     } else {
-        if (now_timestamp >= sunset_timestamp && now_timestamp <= sunrise_timestamp)
+        if (seconds_since_midnight >= sunset_seconds_since_midnight || seconds_since_midnight <= sunrise_seconds_since_midnight)
             return true;
     }
 
@@ -918,7 +923,7 @@ static void update_time(struct tm* tick_time)
     text_layer_set_text(s_date_layer, date_buffer);
 
     // change background based on NIGHT MODE
-    if (should_use_nightmode(tick_time->tm_hour)) {
+    if (should_use_nightmode(tick_time)) {
         persist_write_int(NUM_NIGHTMODE_PKEY, 1);
 
         // layer_mark_dirty(bitmap_layer_get_layer(s_background_layer));
